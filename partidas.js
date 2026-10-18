@@ -1,0 +1,25 @@
+// Partidas de pitch & putt. Para añadir una, copia la última línea, pégala debajo
+// y cambia la fecha, el número, la temporada y los 9 golpes de cada jugador.
+window.PARTIDAS = [
+  {date:"2026-09-18", num:1, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,3,2,4,3,3,3,4,5]},{name:"HAL", scores:[4,3,4,3,3,5,3,3,4]}]},
+  {date:"2026-09-18", num:2, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,3,3,3,3,3,3,3,3]},{name:"HAL", scores:[3,5,4,3,4,3,3,3,3]}]},
+  {date:"2026-10-09", num:6, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[5,3,3,3,3,3,3,3,3]},{name:"HAL", scores:[3,4,4,4,4,4,3,4,3]}]},
+  {date:"2026-10-15", num:7, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,3,3,4,2,3,3,3,3]},{name:"HAL", scores:[3,3,4,4,5,3,4,3,4]}]},
+  {date:"2026-10-17", num:8, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,4,4,4,3,4,4,4,5]},{name:"HAL", scores:[3,3,2,4,3,3,4,4,4]}]},
+  {date:"2026-01-04", num:1, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[5,5,4,2,4,3,3,3,5]},{name:"HAL", scores:[4,3,3,3,3,3,5,3,5]}]},
+  {date:"2026-01-09", num:2, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,7,4,3,3,4,3,3,4]},{name:"HAL", scores:[4,3,7,3,5,4,3,3,4]}]},
+  {date:"2026-01-16", num:3, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,4,3,4,3,3,4,4,5]},{name:"HAL", scores:[3,3,3,2,4,4,2,3,5]}]},
+  {date:"2026-01-23", num:4, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[6,4,3,4,3,3,3,4,5]},{name:"HAL", scores:[4,2,4,3,4,4,5,3,3]}]},
+  {date:"2026-01-30", num:5, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[2,3,3,3,4,3,6,5,7]},{name:"HAL", scores:[4,3,5,3,3,2,3,3,5]}]},
+  {date:"2026-02-20", num:6, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[2,5,4,4,3,3,3,3,5]},{name:"HAL", scores:[3,3,3,2,2,4,5,4,4]}]},
+  {date:"2026-03-13", num:9, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[5,4,3,5,3,4,4,3,4]},{name:"HAL", scores:[3,3,3,3,4,2,4,5,3]}]},
+  {date:"2026-03-20", num:10, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,4,4,4,2,5,3,3,4]},{name:"HAL", scores:[3,3,3,3,4,5,2,4,3]}]},
+  {date:"2026-03-31", num:11, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,6,4,4,3,4,3,2,3]},{name:"HAL", scores:[2,3,2,4,3,4,3,5,5]}]},
+  {date:"2026-05-15", num:12, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,4,4,4,5,4,4,4,4]},{name:"HAL", scores:[4,3,4,3,4,5,3,4,4]}]},
+  {date:"2026-05-17", num:13, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,3,3,4,3,3,4,4,6]},{name:"HAL", scores:[3,5,3,3,3,6,3,3,4]}]},
+  {date:"2026-06-07", num:14, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,4,2,6,4,3,3,3,3]},{name:"HAL", scores:[3,3,3,6,3,3,3,4,3]}]},
+  {date:"2026-06-09", num:15, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,3,5,4,4,3,3,3,4]},{name:"HAL", scores:[4,4,4,4,2,3,3,4,4]}]},
+  {date:"2026-07-17", num:17, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,3,4,3,4,4,2,4,2]},{name:"HAL", scores:[2,4,2,4,5,3,3,3,4]}]},
+  {date:"2026-07-24", num:18, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,4,3,4,4,4,6,2,3]},{name:"HAL", scores:[3,3,3,3,5,3,3,3,3]}]},
+  {date:"2026-08-11", num:19, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,5,5,3,4,3,5,3,4]},{name:"HAL", scores:[3,3,3,5,5,3,4,3,3]}]},
+];
