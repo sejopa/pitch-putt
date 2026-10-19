@@ -3,6 +3,7 @@
 window.PARTIDAS = [
   {date:"2026-09-18", num:1, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,3,2,4,3,3,3,4,5]},{name:"HAL", scores:[4,3,4,3,3,5,3,3,4]}]},
   {date:"2026-09-18", num:2, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,3,3,3,3,3,3,3,3]},{name:"HAL", scores:[3,5,4,3,4,3,3,3,3]}]},
+  {date:"2026-09-22", num:3, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,5,5,3,3,4,3,2,5]},{name:"HAL", scores:[3,3,3,3,3,3,4,3,5]}]},
   {date:"2026-10-09", num:6, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[5,3,3,3,3,3,3,3,3]},{name:"HAL", scores:[3,4,4,4,4,4,3,4,3]}]},
   {date:"2026-10-15", num:7, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,3,3,4,2,3,3,3,3]},{name:"HAL", scores:[3,3,4,4,5,3,4,3,4]}]},
   {date:"2026-10-17", num:8, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,4,4,4,3,4,4,4,5]},{name:"HAL", scores:[3,3,2,4,3,3,4,4,4]}]},
