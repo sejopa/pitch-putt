@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Pitch &amp; Putt · SEJOPA vs HAL</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f4f7f2;--card:#fff;--ink:#1d2a1f;--mut:#667366;--line:#dfe6db;--acc:#2f7d3b;--acc2:#e8f3e6;--win:#b8860b;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -57,8 +58,30 @@ td input{width:54px;text-align:center;padding:6px 2px}
 .btn{padding:11px 16px;border:0;border-radius:10px;background:var(--acc);color:#fff;font:inherit;cursor:pointer;width:100%;margin-top:12px}
 .del{background:none;border:0;color:var(--mut);cursor:pointer;font:inherit;margin-top:10px;padding:0;text-decoration:underline}
 .msg{color:var(--mut);text-align:center;padding:24px 8px}
-.hide{display:none}
+.hide{display:none!important}
+
+/* --- ESTILOS RETRO 16-BITS --- */
+.retro-container { margin-top: 16px; animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.retro-wrapper { font-family: 'Press Start 2P', monospace; image-rendering: pixelated; background: #0f172a; color: #fff; border-radius: 12px; overflow: hidden; border: 2px solid #3b82f6; }
+.retro-header { background: #1e1b4b; border-bottom: 4px solid #eab308; padding: 10px; text-align: center; }
+.retro-header h1 { font-size: 10px; color: #facc15; margin: 0; letter-spacing: 1px; line-height: 1.4; }
+.retro-screen { position: relative; background: #000; width: 100%; aspect-ratio: 4/3; max-height: 420px; }
+.retro-screen canvas { width: 100%; height: 100%; image-rendering: pixelated; background: #7dd3fc; }
+.retro-badge { position: absolute; top: 8px; left: 8px; background: rgba(30, 27, 75, 0.9); border: 1px solid #eab308; padding: 6px 10px; font-size: 9px; color: #facc15; border-radius: 4px; }
+.retro-subtitle { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.9); border: 2px solid #eab308; padding: 10px 16px; font-size: 10px; color: #facc15; text-align: center; line-height: 1.5; border-radius: 4px; max-width: 90%; white-space: pre-line; min-width: 250px; }
+.retro-controls { background: #1e1b4b; border-top: 2px solid #312e81; padding: 12px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
+.retro-controls button { font-family: inherit; font-size: 9px; padding: 10px 16px; border: none; border-radius: 4px; cursor: pointer; color: #fff; border-bottom: 3px solid rgba(0,0,0,0.3); transition: transform 0.1s; }
+.retro-controls button:active { transform: translateY(2px); border-bottom-width: 1px; }
+.retro-btn-play { background: #059669; }
+.retro-btn-pause { background: #d97706; }
+.retro-btn-reset { background: #dc2626; }
+.retro-btn-nav { background: #3730a3; }
+.retro-hole-label { font-size: 9px; color: #facc15; margin: 0 12px; }
+.retro-btn { background: #3730a3; color: #fff; border: 2px solid #4f46e5; font-family: 'Press Start 2P', monospace; font-size: 10px; padding: 12px; width: 100%; margin-top: 8px; cursor: pointer; border-radius: 8px; }
+.retro-btn:hover { background: #4f46e5; }
 </style>
+</head>
 <body>
 <main>
 <h1>⛳ Pitch &amp; Putt</h1>
@@ -74,6 +97,7 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return
 function sum(a){return a.reduce(function(x,y){return x+(+y||0)},0)}
 function fmtDate(d){try{return new Date(d+"T12:00:00").toLocaleDateString("es-ES",{day:"numeric",month:"short",year:"numeric"})}catch(e){return d}}
 function diff(t){var d=t-PAR;return d>0?"+"+d:String(d)}
+
 function statsFor(gs){
   var wins={},tot={},cnt={},best=null;
   gs.forEach(function(g){
@@ -89,6 +113,7 @@ function statsFor(gs){
   if(best)s+='<div class="stat"><b>'+best.t+'</b><span>mejor ronda ('+esc(best.n)+')</span></div>';
   return s;
 }
+
 function charts(g){
   var p=g.players||[];if(p.length<2)return "";
   var n=HOLES,sc=[p[0].scores,p[1].scores],nm=[p[0].name,p[1].name],a=sc[0],b=sc[1];
@@ -96,7 +121,6 @@ function charts(g){
   var lg='<div class="lg">'+[0,1].map(function(q){return '<span><i style="background:'+col[q]+'"></i>'+esc(nm[q])+'</span>'}).join("")+'</div>';
   var W=340,L=24,R=8,T=14,B=22,iw=W-L-R;
 
-  /* 1 · golpes por hoyo */
   var H1=170,ih=H1-T-B,mx=Math.max(5,Math.max.apply(null,a.concat(b)));
   var Y=function(x){return T+ih-x/mx*ih};
   var s1='<svg viewBox="0 0 '+W+' '+H1+'" class="ch" role="img" aria-label="Golpes por hoyo">';
@@ -112,7 +136,6 @@ function charts(g){
   }
   s1+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(3)+'" y2="'+Y(3)+'" style="stroke:var(--win);stroke-dasharray:4 3;stroke-width:1.3"/><text x="'+(W-R)+'" y="'+(Y(3)-3)+'" text-anchor="end" style="fill:var(--win);font-size:8px">par 3</text></svg>';
 
-  /* 2 · evolución respecto al par */
   var cum=sc.map(function(r){var c=0;return r.map(function(x){c+=x-3;return c})});
   var all=cum[0].concat(cum[1],[0]),lo=Math.min.apply(null,all)-1,hi=Math.max.apply(null,all)+1;
   var H2=160,ih2=H2-T-B;
@@ -132,7 +155,6 @@ function charts(g){
   for(i=0;i<n;i++)s2+='<text x="'+X2(i)+'" y="'+(H2-7)+'" text-anchor="middle" style="fill:var(--mut);font-size:9px">'+(i+1)+'</text>';
   s2+='</svg>';
 
-  /* 3 · tipo de resultado */
   var cats=[["Birdie o mejor",function(x){return x<=2},"#2f9e5a"],["Par",function(x){return x===3},"#4c8bd6"],["Bogey",function(x){return x===4},"#e0a030"],["Doble o más",function(x){return x>=5},"#d9534f"]];
   var dist=[0,1].map(function(q){
     var segs=cats.map(function(c){var cnt=sc[q].filter(c[1]).length;return cnt?'<span style="flex:'+cnt+';background:'+c[2]+'" title="'+c[0]+'">'+cnt+'</span>':""}).join("");
@@ -140,7 +162,6 @@ function charts(g){
   }).join("");
   var dleg='<div class="lg sm">'+cats.map(function(c){return '<span><i style="background:'+c[2]+'"></i>'+c[0]+'</span>'}).join("")+'</div>';
 
-  /* 4 · estadísticas */
   var w=[0,0,0];
   for(i=0;i<n;i++){if(a[i]<b[i])w[0]++;else if(a[i]>b[i])w[1]++;else w[2]++}
   var tt=[sum(a),sum(b)];
@@ -151,20 +172,31 @@ function charts(g){
 
   return '<div class="cg">'+lg+'<div class="ct">Golpes por hoyo</div>'+s1+'<div class="ct">Evolución respecto al par</div>'+s2+'<div class="ct">Tipo de resultado</div>'+dist+dleg+'<div class="ct">Estadísticas de la partida</div>'+tbl+'</div>';
 }
+
 function gameCard(g){
   var p=g.players||[];var t=p.map(function(x){return sum(x.scores)});
   var win=t[0]===t[1]?-1:(t[0]<t[1]?0:1);
   var sc=p.map(function(x,i){return '<div class="'+(win===i?"w":"")+'">'+esc(x.name)+(win===i?" 🏆":"")+'<br><b>'+t[i]+'</b> <small>('+diff(t[i])+')</small></div>'}).join("");
   var h="";for(var i=1;i<=HOLES;i++)h+="<th>"+i+"</th>";
   var rows=p.map(function(x){return "<tr><td>"+esc(x.name)+"</td>"+x.scores.map(function(v){return "<td>"+esc(v)+"</td>"}).join("")+"<td><b>"+sum(x.scores)+"</b></td></tr>"}).join("");
-  return '<div class="card" data-id="'+esc(g.id)+'"><div class="row"><b>Partida '+esc(g.num||"–")+'</b><small>'+fmtDate(g.date)+'</small></div><small style="color:var(--mut)">'+esc(g.course||"Sin campo")+'</small>'
+  
+  var matchJson = JSON.stringify(g).replace(/'/g, "&#39;");
+  
+  return '<div class="card" data-id="'+esc(g.id)+'" data-match=\''+matchJson+'\'>'
+    +'<div class="row"><b>Partida '+esc(g.num||"–")+'</b><small>'+fmtDate(g.date)+'</small></div>'
+    +'<small style="color:var(--mut)">'+esc(g.course||"Sin campo")+'</small>'
     +'<div class="score">'+sc+'</div>'
-    +'<div class="det hide">'+charts(g)+'<div class="ct">Detalle por hoyo</div><div class="scroll" style="margin-top:0"><table><tr><th>Hoyo</th>'+h+'<th>Total</th></tr>'+rows+'</table></div>'
+    +'<div class="det hide">'
+      +'<button class="retro-btn" onclick="event.stopPropagation(); window.toggleRetro(this, \''+esc(g.id)+'\')">🎮 Ver Replay 16-bits</button>'
+      +'<div id="retro-'+esc(g.id)+'" class="retro-container hide"></div>'
+      +charts(g)
+      +'<div class="ct">Detalle por hoyo</div><div class="scroll" style="margin-top:0"><table><tr><th>Hoyo</th>'+h+'<th>Total</th></tr>'+rows+'</table></div>'
     +'</div></div>';
 }
+
 function render(){
   var list=$("list");
-  if(!coll){list.innerHTML='<div class="msg">No se puede acceder a la base de datos compartida. Abre la página desde claude.ai con tu sesión iniciada.</div>';return}
+  if(!coll){list.innerHTML='<div class="msg">No se puede acceder a la base de datos compartida.</div>';return}
   if(!games.length){list.innerHTML='<div class="msg">Todavía no hay partidas. Añade la primera en «Nueva partida».</div>';return}
   var by={};
   games.forEach(function(g){var k=g.season||"";(by[k]=by[k]||[]).push(g)});
@@ -173,14 +205,397 @@ function render(){
     return '<h2 class="sh">'+(k?"Temporada "+esc(k):"Sin temporada")+'</h2><div class="stats">'+statsFor(by[k])+'</div>'+by[k].map(gameCard).join("");
   }).join("");
 }
+
+window.toggleRetro = function(btn, gameId) {
+  var card = btn.closest(".card");
+  var container = document.getElementById("retro-" + gameId);
+  var matchData = JSON.parse(card.getAttribute("data-match").replace(/&#39;/g, "'"));
+  
+  if (!container.classList.contains("hide")) {
+    container.classList.add("hide");
+    if (container._cleanup) container._cleanup();
+  } else {
+    container.classList.remove("hide");
+    if (!container._initialized) {
+      window.initRetroReplay(container, matchData);
+      container._initialized = true;
+    } else if (container._resume) {
+      container._resume();
+    }
+  }
+};
+
 $("list").addEventListener("click",function(e){
   var card=e.target.closest(".card");if(!card)return;
-  var d=card.querySelector(".det");if(d&&!e.target.closest(".det"))d.classList.toggle("hide");
+  if(e.target.classList.contains("retro-btn")) return;
+  var d=card.querySelector(".det");
+  if(d && !e.target.closest(".det")) {
+    var willHide = !d.classList.contains("hide");
+    d.classList.toggle("hide");
+    if (willHide) {
+      var rc = d.querySelector(".retro-container");
+      if (rc && rc._cleanup) rc._cleanup();
+    } else {
+      var rc = d.querySelector(".retro-container");
+      if (rc && rc._resume) rc._resume();
+    }
+  }
 });
+
 games=(window.PARTIDAS||[]).map(function(g,i){var o=Object.assign({},g);o.id="p"+i;return o})
   .sort(function(a,b){return (b.date||"").localeCompare(a.date||"")||((b.num||0)-(a.num||0))});
 render();
 })();
+
+// --- MOTOR DE REPLAY RETRO 16-BITS (LÓGICA AVANZADA) ---
+window.initRetroReplay = function(container, matchData) {
+  var retroHTML = '<div class="retro-wrapper"><header class="retro-header"><h1>⛳ BADALONA GOLF TOUR - RESUMEN</h1></header><div class="retro-screen"><canvas id="retroCanvas" width="640" height="480"></canvas><div id="retroBadge" class="retro-badge">TURNO: --</div><div id="retroSubtitle" class="retro-subtitle">¡Pulsa REPRODUCIR!</div></div><div class="retro-controls"><button id="retroPlayBtn" class="retro-btn-play">▶ REPRODUCIR</button><button id="retroPauseBtn" class="retro-btn-pause hide">⏸ PAUSA</button><button id="retroResetBtn" class="retro-btn-reset">🔄 REINICIAR</button><button id="retroPrevBtn" class="retro-btn-nav">◀ HOYO</button><span id="retroHoleLabel" class="retro-hole-label">HOYO 1/9</span><button id="retroNextBtn" class="retro-btn-nav">HOYO ▶</button></div></div>';
+  container.innerHTML = retroHTML;
+  
+  var players = matchData.players.map(function(p, i) {
+    return { name: p.name, color: i === 0 ? "#ef4444" : "#3b82f6", scores: p.scores };
+  });
+  
+  var courseData = {
+    name: matchData.course || "Pitch & Putt de Badalona",
+    holes: [
+      { hoyo: 1, par: 3, dist: "140m", desc: "Hoyo corto con green protegido." },
+      { hoyo: 2, par: 3, dist: "130m", desc: "Hoyo técnico con árboles a los lados." },
+      { hoyo: 3, par: 3, dist: "150m", desc: "Hoyo con obstáculo de agua lateral." },
+      { hoyo: 4, par: 3, dist: "145m", desc: "Calle estrecha con rough pronunciado." },
+      { hoyo: 5, par: 3, dist: "135m", desc: "Oportunidad de birdie con green accesible." },
+      { hoyo: 6, par: 3, dist: "125m", desc: "Par 3 técnico con búnker de arena." },
+      { hoyo: 7, par: 3, dist: "155m", desc: "El hoyo más largo. Cuidado con el viento." },
+      { hoyo: 8, par: 3, dist: "140m", desc: "Calle estrecha entre árboles altos." },
+      { hoyo: 9, par: 3, dist: "145m", desc: "Hoyo final hacia la casa club." }
+    ],
+    players: players
+  };
+
+  var state = { 
+    currentHoleIndex: 0, 
+    nextStarterIndex: 0, // 0 = SEJOPA, 1 = HAL. El ganador del hoyo anterior empieza el siguiente.
+    matchSequence: [], 
+    currentTaskIndex: 0, 
+    currentTask: null, 
+    taskProgress: 0, 
+    waitProgress: 0,
+    phase: 'WAITING', // 'ANIMATING' o 'WAITING'
+    isPlaying: false, 
+    cameraMode: 'SIDE', 
+    audioCtx: null, 
+    animFrameId: null, 
+    frameTimer: 0 
+  };
+  
+  var canvas = container.querySelector('#retroCanvas');
+  var ctx = canvas.getContext('2d');
+  var subtitleBox = container.querySelector('#retroSubtitle');
+  var badgeBox = container.querySelector('#retroBadge');
+  var playBtn = container.querySelector('#retroPlayBtn');
+  var pauseBtn = container.querySelector('#retroPauseBtn');
+  
+  // --- LÓGICA DE SECUENCIA DE GOLPES REALISTA ---
+  function getShotSequence(score) {
+    if (score === 2) return ['tee', 'putt'];
+    if (score === 3) return Math.random() > 0.4 ? ['tee', 'approach', 'putt'] : ['tee', 'putt', 'putt'];
+    if (score === 4) return Math.random() > 0.5 ? ['tee', 'field', 'putt', 'putt'] : ['tee', 'field', 'field', 'putt'];
+    // Para 5 o más: 1 Tee, varios de campo, y 1 o 2 putts al final
+    var seq = ['tee'];
+    var remaining = score - 2; // Reservamos al menos 1 putt final
+    var putts = Math.min(2, Math.max(1, Math.floor(remaining / 2)));
+    var fieldShots = remaining - putts;
+    for (var i = 0; i < fieldShots; i++) seq.push('field');
+    for (var i = 0; i < putts; i++) seq.push('putt');
+    return seq;
+  }
+
+  function initAudio() {
+    if (!state.audioCtx) state.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (state.audioCtx.state === 'suspended') state.audioCtx.resume();
+  }
+
+  function playSynthSound(type) {
+    if (!state.audioCtx) return;
+    var now = state.audioCtx.currentTime;
+    if (type === 'swing') {
+      var bufferSize = state.audioCtx.sampleRate * 0.18, buffer = state.audioCtx.createBuffer(1, bufferSize, state.audioCtx.sampleRate), output = buffer.getChannelData(0);
+      for (var i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
+      var noise = state.audioCtx.createBufferSource(); noise.buffer = buffer;
+      var filter = state.audioCtx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.setValueAtTime(200, now); filter.frequency.exponentialRampToValueAtTime(1400, now + 0.08); filter.frequency.exponentialRampToValueAtTime(150, now + 0.18);
+      var gain = state.audioCtx.createGain(); gain.gain.setValueAtTime(0.25, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
+      noise.connect(filter); filter.connect(gain); gain.connect(state.audioCtx.destination); noise.start(now);
+    } else if (type === 'hit') {
+      var osc = state.audioCtx.createOscillator(), gain = state.audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(1400, now); osc.frequency.exponentialRampToValueAtTime(220, now + 0.04); gain.gain.setValueAtTime(0.4, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04); osc.connect(gain); gain.connect(state.audioCtx.destination); osc.start(now); osc.stop(now + 0.04);
+    } else if (type === 'putt') {
+      var osc = state.audioCtx.createOscillator(), gain = state.audioCtx.createGain(); osc.type = 'sine'; osc.frequency.setValueAtTime(500, now); osc.frequency.exponentialRampToValueAtTime(180, now + 0.06); gain.gain.setValueAtTime(0.35, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06); osc.connect(gain); gain.connect(state.audioCtx.destination); osc.start(now); osc.stop(now + 0.06);
+    } else if (type === 'splash') {
+      var bufferSize = state.audioCtx.sampleRate * 0.35, buffer = state.audioCtx.createBuffer(1, bufferSize, state.audioCtx.sampleRate), output = buffer.getChannelData(0);
+      for (var i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
+      var noise = state.audioCtx.createBufferSource(); noise.buffer = buffer;
+      var filter = state.audioCtx.createBiquadFilter(); filter.type = 'bandpass'; filter.frequency.setValueAtTime(450, now);
+      var gain = state.audioCtx.createGain(); gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+      noise.connect(filter); filter.connect(gain); gain.connect(state.audioCtx.destination); noise.start(now);
+    } else if (type === 'cheer') {
+      [523.25, 659.25, 783.99, 1046.50].forEach(function(f, idx) {
+        var osc = state.audioCtx.createOscillator(), gain = state.audioCtx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(f, now + idx * 0.07); gain.gain.setValueAtTime(0.12, now + idx * 0.07); gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.22); osc.connect(gain); gain.connect(state.audioCtx.destination); osc.start(now + idx * 0.07); osc.stop(now + idx * 0.07 + 0.22);
+      });
+    } else if (type === 'groan') {
+      var osc = state.audioCtx.createOscillator(), gain = state.audioCtx.createGain(); osc.type = 'sawtooth'; osc.frequency.setValueAtTime(200, now); osc.frequency.linearRampToValueAtTime(90, now + 0.4); gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.4); osc.connect(gain); gain.connect(state.audioCtx.destination); osc.start(now); osc.stop(now + 0.4);
+    }
+  }
+
+  var DIALOGUES = { 
+    birdie: ["¡Menudo golpazo! ¡Birdie!", "¡A la cazuela! Birdie.", "¡Impresionante!"], 
+    par: ["Par muy sólido.", "Gran control. Par.", "Golpe limpio. Par."], 
+    bogey: ["Un despiste... Bogey.", "A la hierba. Bogey.", "¡Rozó el borde! Bogey."], 
+    doubleBogey: ["¡Agua va!", "Atrapado en arena...", "¡Qué sufrimiento!"] 
+  };
+  function getRandomDialogue(type) { var list = DIALOGUES[type] || DIALOGUES.par; return list[Math.floor(Math.random() * list.length)]; }
+
+  function buildHoleSequence() {
+    state.matchSequence = [];
+    var holeInfo = courseData.holes[state.currentHoleIndex];
+    var p0 = courseData.players[0];
+    var p1 = courseData.players[1];
+    var score0 = p0.scores[state.currentHoleIndex];
+    var score1 = p1.scores[state.currentHoleIndex];
+    var maxScore = Math.max(score0, score1);
+
+    var seq0 = getShotSequence(score0);
+    var seq1 = getShotSequence(score1);
+
+    var shotCount0 = 0;
+    var shotCount1 = 0;
+
+    // Determinar orden: el que ganó el hoyo anterior empieza.
+    var firstPlayerIdx = state.nextStarterIndex;
+    var secondPlayerIdx = (state.nextStarterIndex + 1) % 2;
+    var playersInOrder = [courseData.players[firstPlayerIdx], courseData.players[secondPlayerIdx]];
+
+    // Generar turnos intercalados
+    for (var s = 1; s <= maxScore; s++) {
+      for (var i = 0; i < 2; i++) {
+        var p = playersInOrder[i];
+        var origIdx = (i === 0) ? firstPlayerIdx : secondPlayerIdx;
+        var totalScore = (origIdx === 0) ? score0 : score1;
+
+        if (s <= totalScore) {
+          var currentShotForPlayer = (origIdx === 0) ? shotCount0 : shotCount1;
+          var shotType = (origIdx === 0) ? seq0[currentShotForPlayer] : seq1[currentShotForPlayer];
+          var isFinalShot = (s === totalScore);
+          
+          var cam = (shotType === 'putt') ? 'FIRST_PERSON' : 'SIDE';
+          var dialogue = "";
+
+          if (shotType === 'putt') {
+            if (isFinalShot) {
+              var diff = totalScore - holeInfo.par;
+              if (diff < 0) dialogue = p.name + ": " + getRandomDialogue('birdie');
+              else if (diff === 0) dialogue = p.name + ": " + getRandomDialogue('par');
+              else if (diff === 1) dialogue = p.name + ": " + getRandomDialogue('bogey');
+              else dialogue = p.name + ": " + getRandomDialogue('doubleBogey');
+            } else {
+              dialogue = p.name + ": Putt fallado, sigue en el green...";
+            }
+          } else if (shotType === 'tee') {
+            dialogue = p.name + ": Salida desde el tee.";
+            // Pequeña probabilidad de desastre si la puntuación final fue muy mala
+            if (totalScore >= 5 && Math.random() > 0.7) {
+               shotType = 'water'; // Fuerza animación de agua
+               dialogue = p.name + ": ¡Salida directa al agua!";
+            }
+          } else {
+            dialogue = p.name + ": Tiro de aproximación.";
+            if (totalScore >= 4 && currentShotForPlayer === totalScore - 2 && Math.random() > 0.6) {
+               shotType = 'sand';
+               dialogue = p.name + ": El tiro cae en el búnker...";
+            }
+          }
+
+          state.matchSequence.push({
+            player: p,
+            stroke: s,
+            totalStrokes: totalScore,
+            camera: cam,
+            type: shotType,
+            subtitle: dialogue,
+            playerIndex: origIdx
+          });
+
+          if (origIdx === 0) shotCount0++;
+          else shotCount1++;
+        }
+      }
+    }
+
+    // Actualizar quién empieza el PRÓXIMO hoyo (el que hizo menos golpes)
+    if (score0 < score1) state.nextStarterIndex = 0;
+    else if (score1 < score0) state.nextStarterIndex = 1;
+    // Si hay empate, mantiene el que empezó este hoyo.
+
+    resetReplay(); 
+    updateHoleUI();
+  }
+
+  function resetReplay() {
+    state.currentTaskIndex = 0; 
+    state.taskProgress = 0; 
+    state.waitProgress = 0;
+    state.phase = 'WAITING';
+    if (state.matchSequence.length > 0) { 
+      state.currentTask = state.matchSequence[0]; 
+      state.cameraMode = state.currentTask.camera; 
+      setSubtitle(state.currentTask.subtitle); 
+      updateBadge();
+    } else { 
+      state.currentTask = null; 
+    }
+  }
+
+  function setSubtitle(txt) { subtitleBox.innerText = txt; }
+  function updateBadge() { 
+    if(state.currentTask) {
+      badgeBox.innerText = "TURNO: " + state.currentTask.player.name; 
+      badgeBox.style.borderColor = state.currentTask.player.color;
+      badgeBox.style.color = state.currentTask.player.color;
+    }
+  }
+
+  function togglePlay() { if (state.isPlaying) pauseAnimation(); else startAnimation(); }
+  function startAnimation() { 
+    initAudio(); 
+    if (state.currentTaskIndex >= state.matchSequence.length) resetReplay(); 
+    state.isPlaying = true; 
+    state.phase = 'ANIMATING';
+    playBtn.classList.add('hide'); 
+    pauseBtn.classList.remove('hide'); 
+  }
+  function pauseAnimation() { 
+    state.isPlaying = false; 
+    playBtn.classList.remove('hide'); 
+    pauseBtn.classList.add('hide'); 
+  }
+  function resetMatch() { 
+    pauseAnimation(); 
+    resetReplay(); 
+    setSubtitle("¡Pulsa REPRODUCIR para empezar el hoyo " + (state.currentHoleIndex + 1) + "!"); 
+  }
+  function nextHole() { state.currentHoleIndex = (state.currentHoleIndex + 1) % 9; buildHoleSequence(); }
+  function prevHole() { state.currentHoleIndex = (state.currentHoleIndex - 1 + 9) % 9; buildHoleSequence(); }
+  function updateHoleUI() {
+    var h = courseData.holes[state.currentHoleIndex];
+    container.querySelector('#retroHoleLabel').innerText = "HOYO " + h.hoyo + "/9";
+  }
+
+  function renderLoop() {
+    state.frameTimer += 0.05;
+
+    if (state.isPlaying && state.currentTask) {
+      if (state.phase === 'ANIMATING') {
+        state.taskProgress += 0.012; // Animación del golpe
+        if (Math.abs(state.taskProgress - 0.02) < 0.01) {
+          playSynthSound(state.cameraMode === 'FIRST_PERSON' ? 'putt' : 'swing');
+        }
+        if (state.taskProgress >= 1) {
+          // Sonido de impacto al terminar la animación
+          if (state.currentTask.type === 'water') playSynthSound('splash');
+          else if (state.currentTask.type === 'sand') playSynthSound('groan');
+          else if (state.currentTask.type === 'putt') playSynthSound('cheer');
+          else playSynthSound('hit');
+
+          state.phase = 'WAITING';
+          state.waitProgress = 0;
+        }
+      } else if (state.phase === 'WAITING') {
+        state.waitProgress += 0.008; // Pausa de ~1.5 a 2 segundos entre turnos
+        if (state.waitProgress >= 1) {
+          state.currentTaskIndex++;
+          if (state.currentTaskIndex < state.matchSequence.length) {
+            state.currentTask = state.matchSequence[state.currentTaskIndex];
+            state.cameraMode = state.currentTask.camera;
+            state.taskProgress = 0;
+            state.phase = 'ANIMATING';
+            setSubtitle(state.currentTask.subtitle);
+            updateBadge();
+          } else {
+            pauseAnimation();
+            setSubtitle("🏆 ¡Hoyo " + (state.currentHoleIndex + 1) + " completado!");
+            badgeBox.innerText = "FIN DEL HOYO";
+          }
+        }
+      }
+    }
+
+    ctx.clearRect(0, 0, 640, 480);
+    if (state.cameraMode === 'SIDE') drawSideView(); else drawFirstPersonPuttView();
+    state.animFrameId = requestAnimationFrame(renderLoop);
+  }
+
+  function drawSideView() {
+    var skyGrad = ctx.createLinearGradient(0, 0, 0, 260); skyGrad.addColorStop(0, '#38bdf8'); skyGrad.addColorStop(1, '#bae6fd'); ctx.fillStyle = skyGrad; ctx.fillRect(0, 0, 640, 260);
+    ctx.fillStyle = '#fde047'; ctx.beginPath(); ctx.arc(540, 60, 24, 0, Math.PI * 2); ctx.fill();
+    drawCloud(80 + Math.sin(state.frameTimer) * 10, 50); drawCloud(320 + Math.cos(state.frameTimer * 0.8) * 15, 70);
+    ctx.fillStyle = '#475569'; ctx.beginPath(); ctx.moveTo(0, 260); ctx.lineTo(100, 160); ctx.lineTo(220, 260); ctx.lineTo(380, 140); ctx.lineTo(500, 260); ctx.lineTo(640, 180); ctx.lineTo(640, 260); ctx.fill();
+    ctx.fillStyle = '#15803d'; ctx.fillRect(0, 240, 640, 240);
+    ctx.fillStyle = '#166534'; for (var i = 0; i < 640; i += 60) ctx.fillRect(i, 240, 30, 240);
+    
+    if (state.currentTask && state.currentTask.type === 'water') { ctx.fillStyle = '#0284c7'; ctx.beginPath(); ctx.ellipse(320, 380, 70, 35, 0, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#38bdf8'; ctx.fillRect(300 + Math.sin(state.frameTimer * 2) * 4, 375, 40, 3); }
+    if (state.currentTask && state.currentTask.type === 'sand') { ctx.fillStyle = '#fde047'; ctx.beginPath(); ctx.ellipse(450, 390, 50, 25, 0, 0, Math.PI * 2); ctx.fill(); }
+    
+    var p = state.currentTask ? state.currentTask.player : courseData.players[0]; 
+    drawGolferSideProfile(100, 370, p.color);
+    
+    if (state.isPlaying && state.currentTask && state.phase === 'ANIMATING') {
+      var startX = 115, startY = 370, targetX = 500, targetY = 360;
+      if (state.currentTask.type === 'water') { targetX = 320; targetY = 380; }
+      if (state.currentTask.type === 'sand') { targetX = 450; targetY = 390; }
+      var t = state.taskProgress, ballX = startX + (targetX - startX) * t, linearY = startY + (targetY - startY) * t, arc = Math.sin(t * Math.PI) * 110, ballY = linearY - arc;
+      ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(ballX, linearY + 4, 5, 2, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(ballX, ballY, 3.5, 0, Math.PI * 2); ctx.fill();
+      if (state.currentTask.type === 'water' && t > 0.9) { ctx.fillStyle = '#7dd3fc'; ctx.fillRect(targetX - 8, targetY - 14, 4, 12); ctx.fillRect(targetX + 4, targetY - 18, 4, 16); }
+    } else { ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(115, 370, 3.5, 0, Math.PI * 2); ctx.fill(); }
+  }
+
+  function drawGolferSideProfile(x, y, shirtColor) {
+    ctx.fillStyle = shirtColor; ctx.fillRect(x - 10, y - 30, 16, 22); ctx.fillStyle = '#fed7aa'; ctx.fillRect(x - 6, y - 42, 10, 12); ctx.fillStyle = shirtColor; ctx.fillRect(x - 9, y - 45, 16, 4);
+    ctx.fillStyle = '#1e293b'; ctx.fillRect(x - 8, y - 8, 6, 12); ctx.fillRect(x + 1, y - 8, 6, 12); ctx.fillStyle = '#ffffff'; ctx.fillRect(x - 10, y + 4, 8, 4); ctx.fillRect(x + 1, y + 4, 8, 4);
+    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 3; ctx.beginPath();
+    if (state.isPlaying && state.phase === 'ANIMATING' && state.taskProgress < 0.18) { ctx.moveTo(x, y - 20); ctx.lineTo(x - 18, y - 38); } else { ctx.moveTo(x, y - 20); ctx.lineTo(x + 14, y + 2); }
+    ctx.stroke();
+  }
+
+  function drawFirstPersonPuttView() {
+    ctx.fillStyle = '#22c55e'; ctx.fillRect(0, 0, 640, 480);
+    ctx.fillStyle = '#16a34a'; for (var x = 0; x < 640; x += 16) for (var y = 0; y < 480; y += 16) if ((x + y) % 32 === 0) ctx.fillRect(x, y, 8, 8);
+    var holeX = 320, holeY = 90; ctx.fillStyle = '#0f172a'; ctx.beginPath(); ctx.ellipse(holeX, holeY, 22, 10, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(holeX - 2, holeY - 60, 4, 60); ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.moveTo(holeX + 2, holeY - 60); ctx.lineTo(holeX + 25, holeY - 50); ctx.lineTo(holeX + 2, holeY - 40); ctx.fill();
+    ctx.fillStyle = '#e2e8f0'; ctx.fillRect(200, 380, 55, 80); ctx.fillStyle = '#0f172a'; ctx.fillRect(215, 400, 25, 4); ctx.fillRect(215, 412, 25, 4);
+    ctx.fillStyle = '#e2e8f0'; ctx.fillRect(385, 380, 55, 80); ctx.fillStyle = '#0f172a'; ctx.fillRect(400, 400, 25, 4); ctx.fillRect(400, 412, 25, 4);
+    var ballX = 320, ballY = 320;
+    if (state.isPlaying && state.currentTask && state.phase === 'ANIMATING') { var t = state.taskProgress; ballY = 320 - (320 - holeY) * Math.min(1, t * 1.1); if (t > 0.85) ballY = holeY; }
+    ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(ballX, ballY + 4, 8, 4, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(ballX, ballY, 8, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#cbd5e1'; ctx.fillRect(ballX - 3, ballY - 2, 2, 2); ctx.fillRect(ballX + 2, ballY + 1, 2, 2);
+    var putterOffsetX = 0; if (state.isPlaying && state.phase === 'ANIMATING' && state.taskProgress < 0.12) putterOffsetX = -12;
+    var putterX = 320 + putterOffsetX, putterY = 345;
+    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(320, 480); ctx.lineTo(putterX, putterY); ctx.stroke();
+    ctx.fillStyle = '#cbd5e1'; ctx.fillRect(putterX - 22, putterY - 6, 44, 12); ctx.fillStyle = '#64748b'; ctx.fillRect(putterX - 22, putterY + 3, 44, 3);
+  }
+
+  function drawCloud(cx, cy) { ctx.fillStyle = '#ffffff'; ctx.fillRect(cx, cy, 50, 16); ctx.fillRect(cx + 10, cy - 8, 30, 24); }
+
+  playBtn.addEventListener('click', togglePlay);
+  pauseBtn.addEventListener('click', togglePlay);
+  container.querySelector('#retroResetBtn').addEventListener('click', resetMatch);
+  container.querySelector('#retroNextBtn').addEventListener('click', nextHole);
+  container.querySelector('#retroPrevBtn').addEventListener('click', prevHole);
+
+  buildHoleSequence();
+  state.animFrameId = requestAnimationFrame(renderLoop);
+  
+  container._cleanup = function() { if (state.animFrameId) cancelAnimationFrame(state.animFrameId); state.isPlaying = false; playBtn.classList.remove('hide'); pauseBtn.classList.add('hide'); };
+  container._resume = function() { if (!state.animFrameId) state.animFrameId = requestAnimationFrame(renderLoop); };
+};
 </script>
 </body>
 </html>
