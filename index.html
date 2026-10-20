@@ -6,325 +6,817 @@
 <title>Pitch &amp; Putt · SEJOPA vs HAL</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f7f2;--card:#fff;--ink:#1d2a1f;--mut:#667366;--line:#dfe6db;--acc:#2f7d3b;--acc2:#e8f3e6;--win:#b8860b;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a14;--card:#1b261d;--ink:#e8f0e6;--mut:#9aab9a;--line:#2b3a2d;--acc:#5fbf6e;--acc2:#233a27;--win:#e0b84a}}
-:root[data-theme="dark"]{--bg:#121a14;--card:#1b261d;--ink:#e8f0e6;--mut:#9aab9a;--line:#2b3a2d;--acc:#5fbf6e;--acc2:#233a27;--win:#e0b84a}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-main{max-width:720px;margin:0 auto;padding:16px}
-h1{font-size:1.5rem;margin:8px 0 2px}
-.sub{color:var(--mut);margin:0 0 16px;font-size:.9rem}
-.tabs{display:flex;gap:8px;margin-bottom:16px}
-.tabs button{flex:1;padding:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;font:inherit;cursor:pointer}
-.tabs button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
-:root{--c2:#d9822b}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--c2:#f0a050}}
-:root[data-theme="dark"]{--c2:#f0a050}
-.cg{margin-top:12px}
-.ct{font-size:.75rem;color:var(--mut);margin:16px 0 4px;text-transform:uppercase;letter-spacing:.05em}
-.ch{width:100%;height:auto;display:block}
-.lg{display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem;margin-bottom:4px}
-.lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}
-.lg.sm{font-size:.72rem;color:var(--mut);margin-top:6px}
-.dr{display:flex;align-items:center;gap:8px;margin:4px 0}
-.dr b{width:66px;font-size:.8rem;overflow:hidden;text-overflow:ellipsis}
-.bar{flex:1;display:flex;height:24px;border-radius:6px;overflow:hidden}
-.bar span{display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75rem;font-weight:600}
-table.st{min-width:0;width:100%}
-.st td:first-child{color:var(--mut)}
-.sh{font-size:1.15rem;margin:22px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--acc)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px}
-.stat{background:var(--acc2);border-radius:12px;padding:10px 12px}
-.stat b{display:block;font-size:1.3rem}
-.stat span{color:var(--mut);font-size:.8rem}
-.row{display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer}
-.row small{color:var(--mut)}
-.score{display:flex;gap:14px;margin-top:8px;font-size:1.05rem}
-.score div{flex:1}
-.score .w{color:var(--win);font-weight:700}
-.scroll{overflow-x:auto;margin-top:10px}
-table{border-collapse:collapse;width:100%;min-width:480px;font-size:.9rem;text-align:center}
-th,td{padding:6px 4px;border-bottom:1px solid var(--line)}
-th{color:var(--mut);font-weight:500}
-td:first-child,th:first-child{text-align:left}
-label{display:block;font-size:.85rem;color:var(--mut);margin:8px 0 3px}
-input{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-td input{width:54px;text-align:center;padding:6px 2px}
-.btn{padding:11px 16px;border:0;border-radius:10px;background:var(--acc);color:#fff;font:inherit;cursor:pointer;width:100%;margin-top:12px}
-.del{background:none;border:0;color:var(--mut);cursor:pointer;font:inherit;margin-top:10px;padding:0;text-decoration:underline}
-.msg{color:var(--mut);text-align:center;padding:24px 8px}
-.hide{display:none!important}
-
-.retro-container { margin-top: 16px; animation: fadeIn 0.3s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-.retro-wrapper { font-family: 'Press Start 2P', monospace; image-rendering: pixelated; background: #0f172a; color: #fff; border-radius: 12px; overflow: hidden; border: 2px solid #3b82f6; }
-.retro-header { background: #1e1b4b; border-bottom: 4px solid #eab308; padding: 10px; text-align: center; }
-.retro-header h1 { font-size: 10px; color: #facc15; margin: 0; letter-spacing: 1px; line-height: 1.4; }
-.retro-screen { position: relative; background: #000; width: 100%; aspect-ratio: 4/3; max-height: 420px; }
-.retro-screen canvas { width: 100%; height: 100%; image-rendering: pixelated; background: #7dd3fc; }
-.retro-badge { position: absolute; top: 8px; left: 8px; background: rgba(30, 27, 75, 0.9); border: 1px solid #eab308; padding: 6px 10px; font-size: 9px; color: #facc15; border-radius: 4px; }
-.retro-subtitle { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.9); border: 2px solid #eab308; padding: 10px 16px; font-size: 10px; color: #facc15; text-align: center; line-height: 1.5; border-radius: 4px; max-width: 90%; white-space: pre-line; min-width: 250px; }
-.retro-controls { background: #1e1b4b; border-top: 2px solid #312e81; padding: 12px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
-.retro-controls button { font-family: inherit; font-size: 9px; padding: 10px 16px; border: none; border-radius: 4px; cursor: pointer; color: #fff; border-bottom: 3px solid rgba(0,0,0,0.3); transition: transform 0.1s; }
-.retro-controls button:active { transform: translateY(2px); border-bottom-width: 1px; }
-.retro-btn-play { background: #059669; }
-.retro-btn-pause { background: #d97706; }
-.retro-btn-reset { background: #dc2626; }
-.retro-btn-nav { background: #3730a3; }
-.retro-hole-label { font-size: 9px; color: #facc15; margin: 0 12px; }
-.retro-btn { background: #3730a3; color: #fff; border: 2px solid #4f46e5; font-family: 'Press Start 2P', monospace; font-size: 10px; padding: 12px; width: 100%; margin-top: 8px; cursor: pointer; border-radius: 8px; }
-.retro-btn:hover { background: #4f46e5; }
-
-.hole-result-screen {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(15, 23, 42, 0.95);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-  padding: 20px;
+:root {
+  --bg:#f4f7f2; --card:#fff; --ink:#1d2a1f; --mut:#667366; --line:#dfe6db;
+  --acc:#2f7d3b; --acc2:#e8f3e6; --win:#b8860b; --c2:#d9822b;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
 }
-.hole-result-screen h2 { font-size: 18px; color: #ffd700; margin-bottom: 15px; text-align: center; }
-.hole-result-screen .pot { font-size: 60px; margin: 10px 0; }
-.hole-result-screen .winner { font-size: 14px; color: #4ade80; margin: 10px 0; }
-.hole-result-screen .coins { font-size: 20px; color: #ffd700; margin: 15px 0; }
+@media (prefers-color-scheme:dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#121a14; --card:#1b261d; --ink:#e8f0e6; --mut:#9aab9a; --line:#2b3a2d;
+    --acc:#5fbf6e; --acc2:#233a27; --win:#e0b84a; --c2:#f0a050;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#121a14; --card:#1b261d; --ink:#e8f0e6; --mut:#9aab9a; --line:#2b3a2d;
+  --acc:#5fbf6e; --acc2:#233a27; --win:#e0b84a; --c2:#f0a050;
+}
+html { scroll-padding-top:env(safe-area-inset-top,0px); }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+main { max-width:720px; margin:0 auto; padding:16px; }
+h1 { font-size:1.5rem; margin:8px 0 2px; }
+.sub { color:var(--mut); margin:0 0 16px; font-size:.9rem; }
+
+.cg { margin-top:12px; }
+.ct { font-size:.75rem; color:var(--mut); margin:16px 0 4px; text-transform:uppercase; letter-spacing:.05em; }
+.ch { width:100%; height:auto; display:block; }
+.lg { display:flex; gap:14px; flex-wrap:wrap; font-size:.85rem; margin-bottom:4px; }
+.lg i { display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px; }
+.lg.sm { font-size:.72rem; color:var(--mut); margin-top:6px; }
+.dr { display:flex; align-items:center; gap:8px; margin:4px 0; }
+.dr b { width:66px; font-size:.8rem; overflow:hidden; text-overflow:ellipsis; }
+.bar { flex:1; display:flex; height:24px; border-radius:6px; overflow:hidden; }
+.bar span { display:flex; align-items:center; justify-content:center; color:#fff; font-size:.75rem; font-weight:600; }
+table.st { min-width:0; width:100%; }
+.st td:first-child { color:var(--mut); }
+.sh { font-size:1.15rem; margin:22px 0 10px; padding-bottom:6px; border-bottom:2px solid var(--acc); }
+.card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:12px; }
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:8px; margin-bottom:12px; }
+.stat { background:var(--acc2); border-radius:12px; padding:10px 12px; }
+.stat b { display:block; font-size:1.3rem; }
+.stat span { color:var(--mut); font-size:.8rem; }
+.row { display:flex; justify-content:space-between; align-items:center; gap:8px; cursor:pointer; }
+.row small { color:var(--mut); }
+.score { display:flex; gap:14px; margin-top:8px; font-size:1.05rem; }
+.score div { flex:1; }
+.score .w { color:var(--win); font-weight:700; }
+.scroll { overflow-x:auto; margin-top:10px; }
+table { border-collapse:collapse; width:100%; min-width:480px; font-size:.9rem; text-align:center; }
+th, td { padding:6px 4px; border-bottom:1px solid var(--line); }
+th { color:var(--mut); font-weight:500; }
+td:first-child, th:first-child { text-align:left; }
+.msg { color:var(--mut); text-align:center; padding:24px 8px; }
+.hide { display:none !important; }
+
+/* ---------- ESTILOS RETRO ---------- */
+.retro-container { margin-top:16px; animation:fadeIn .3s ease-in-out; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+.retro-wrapper {
+  font-family:'Press Start 2P', monospace;
+  image-rendering:pixelated;
+  background:#0f172a; color:#fff;
+  border-radius:12px; overflow:hidden; border:2px solid #3b82f6;
+}
+.retro-header { background:#1e1b4b; border-bottom:4px solid #eab308; padding:10px; text-align:center; }
+.retro-header h1 { font-size:10px; color:#facc15; margin:0; letter-spacing:1px; line-height:1.4; }
+.retro-screen { position:relative; background:#000; width:100%; aspect-ratio:4/3; max-height:420px; }
+.retro-screen canvas { width:100%; height:100%; image-rendering:pixelated; background:#7dd3fc; }
+.retro-badge {
+  position:absolute; top:8px; left:8px;
+  background:rgba(30,27,75,0.85); border:1px solid #eab308;
+  padding:5px 9px; font-size:8px; color:#facc15; border-radius:4px; z-index:50;
+}
+/* Barra de narración: FUERA del canvas, no tapa la escena */
+.retro-commentary {
+  background:#0b1020; border-top:2px solid #312e81;
+  padding:9px 12px; min-height:34px;
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  font-size:9px; color:#facc15; line-height:1.5;
+}
+.retro-controls {
+  background:#1e1b4b; border-top:2px solid #312e81; padding:12px;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:8px;
+}
+.retro-controls button {
+  font-family:inherit; font-size:9px; padding:10px 16px; border:none; border-radius:4px;
+  cursor:pointer; color:#fff; border-bottom:3px solid rgba(0,0,0,0.3); transition:transform .1s;
+}
+.retro-controls button:active { transform:translateY(2px); border-bottom-width:1px; }
+.retro-btn-play { background:#059669; }
+.retro-btn-pause { background:#d97706; }
+.retro-btn-reset { background:#dc2626; }
+.retro-btn-nav { background:#3730a3; }
+.retro-hole-label { font-size:9px; color:#facc15; margin:0 12px; }
+.retro-btn {
+  background:#3730a3; color:#fff; border:2px solid #4f46e5;
+  font-family:'Press Start 2P', monospace; font-size:10px;
+  padding:12px; width:100%; margin-top:8px; cursor:pointer; border-radius:8px;
+}
+.retro-btn:hover { background:#4f46e5; }
+
+/* ---------- PANTALLAS DE RESULTADO ---------- */
+.hole-result-screen {
+  position:absolute; top:0; left:0; right:0; bottom:0;
+  background:rgba(15,23,42,0.95);
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  z-index:100; padding:20px; overflow-y:auto;
+}
+.hole-result-screen h2 { font-size:18px; color:#ffd700; margin-bottom:15px; text-align:center; }
+.hole-result-screen .pot { font-size:60px; margin:10px 0; }
+.hole-result-screen .winner { font-size:14px; color:#4ade80; margin:10px 0; }
+.hole-result-screen .coins { font-size:20px; color:#ffd700; margin:15px 0; }
 .hole-result-screen .scores { margin-top:15px; font-size:11px; color:#a8d8ea; line-height:1.8; }
 .hole-result-screen button {
-  margin-top: 20px; padding: 12px 24px; font-family: inherit; font-size: 11px;
-  background: #059669; color: #fff; border: none; border-radius: 8px; cursor: pointer;
-  border-bottom: 4px solid #047857;
+  margin-top:20px; padding:12px 24px; font-family:inherit; font-size:11px;
+  background:#059669; color:#fff; border:none; border-radius:8px; cursor:pointer;
+  border-bottom:4px solid #047857;
 }
-.hole-result-screen button:active { transform: translateY(2px); border-bottom-width: 2px; }
+.hole-result-screen button:active { transform:translateY(2px); border-bottom-width:2px; }
 </style>
 </head>
 <body>
 <main>
 <h1>⛳ Pitch &amp; Putt</h1>
-<p class="sub">Pitch &amp; Putt de Badalona · 9 hoyos</p>
+<p class="sub">Pitch &amp; Putt de Badalona · 9 hoyos · Par 3</p>
 <section id="v1"><div id="list"><div class="msg">Cargando…</div></div></section>
 </main>
 <script src="partidas.js"></script>
 <script>
-(function(){
-var HOLES=9, PAR=27, games=[], coll=true;
-var $=function(id){return document.getElementById(id)};
-function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
-function sum(a){return a.reduce(function(x,y){return x+(+y||0)},0)}
-function fmtDate(d){try{return new Date(d+"T12:00:00").toLocaleDateString("es-ES",{day:"numeric",month:"short",year:"numeric"})}catch(e){return d}}
-function diff(t){var d=t-PAR;return d>0?"+"+d:String(d)}
+(function () {
+  var HOLES = 9, PAR = 27, games = [], coll = true;
+  var $ = function (id) { return document.getElementById(id); };
 
-function statsFor(gs){
-  var wins={},tot={},cnt={},best=null;
-  gs.forEach(function(g){
-    var p=g.players||[];if(p.length<2)return;
-    var t=p.map(function(x){return sum(x.scores)});
-    p.forEach(function(x,i){var k=x.name;tot[k]=(tot[k]||0)+t[i];cnt[k]=(cnt[k]||0)+1;
-      if(!best||t[i]<best.t)best={t:t[i],n:k}});
-    if(t[0]!==t[1]){var w=t[0]<t[1]?p[0].name:p[1].name;wins[w]=(wins[w]||0)+1}
-  });
-  var s='<div class="stat"><b>'+gs.length+'</b><span>partidas jugadas</span></div>';
-  Object.keys(cnt).forEach(function(k){
-    s+='<div class="stat"><b>'+(wins[k]||0)+' 🏆</b><span>'+esc(k)+' · media '+(tot[k]/cnt[k]).toFixed(1)+'</span></div>'});
-  if(best)s+='<div class="stat"><b>'+best.t+'</b><span>mejor ronda ('+esc(best.n)+')</span></div>';
-  return s;
-}
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+  function sum(a) { return a.reduce(function (x, y) { return x + (+y || 0); }, 0); }
+  function fmtDate(d) {
+    try { return new Date(d + "T12:00:00").toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" }); }
+    catch (e) { return d; }
+  }
+  function diff(t) { var d = t - PAR; return d > 0 ? "+" + d : String(d); }
 
-function charts(g){
-  var p=g.players||[];if(p.length<2)return "";
-  var n=HOLES,sc=[p[0].scores,p[1].scores],nm=[p[0].name,p[1].name],a=sc[0],b=sc[1];
-  var col=["var(--acc)","var(--c2)"],i,k,v;
-  var lg='<div class="lg">'+[0,1].map(function(q){return '<span><i style="background:'+col[q]+'"></i>'+esc(nm[q])+'</span>'}).join("")+'</div>';
-  var W=340,L=24,R=8,T=14,B=22,iw=W-L-R;
-  var H1=170,ih=H1-T-B,mx=Math.max(5,Math.max.apply(null,a.concat(b)));
-  var Y=function(x){return T+ih-x/mx*ih};
-  var s1='<svg viewBox="0 0 '+W+' '+H1+'" class="ch" role="img" aria-label="Golpes por hoyo">';
-  for(v=0;v<=mx;v++){s1+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" style="stroke:var(--line)"/><text x="'+(L-5)+'" y="'+(Y(v)+3)+'" text-anchor="end" style="fill:var(--mut);font-size:9px">'+v+'</text>'}
-  var gw=iw/n,bw=gw*0.36;
-  for(i=0;i<n;i++){
-    var cx=L+gw*i+gw/2;
-    for(k=0;k<2;k++){
-      var val=sc[k][i],x=k?cx+1:cx-bw-1;
-      s1+='<rect x="'+x+'" y="'+Y(val)+'" width="'+bw+'" height="'+(Y(0)-Y(val))+'" rx="2" style="fill:'+col[k]+'"/><text x="'+(x+bw/2)+'" y="'+(Y(val)-3)+'" text-anchor="middle" style="fill:var(--ink);font-size:8px">'+val+'</text>';
+  function statsFor(gs) {
+    var wins = {}, tot = {}, cnt = {}, best = null;
+    gs.forEach(function (g) {
+      var p = g.players || [];
+      if (p.length < 2) return;
+      var t = p.map(function (x) { return sum(x.scores); });
+      p.forEach(function (x, i) {
+        var k = x.name;
+        tot[k] = (tot[k] || 0) + t[i];
+        cnt[k] = (cnt[k] || 0) + 1;
+        if (!best || t[i] < best.t) best = { t: t[i], n: k };
+      });
+      if (t[0] !== t[1]) { var w = t[0] < t[1] ? p[0].name : p[1].name; wins[w] = (wins[w] || 0) + 1; }
+    });
+    var s = '<div class="stat"><b>' + gs.length + '</b><span>partidas jugadas</span></div>';
+    Object.keys(cnt).forEach(function (k) {
+      s += '<div class="stat"><b>' + (wins[k] || 0) + ' 🏆</b><span>' + esc(k) + ' · media ' + (tot[k] / cnt[k]).toFixed(1) + '</span></div>';
+    });
+    if (best) s += '<div class="stat"><b>' + best.t + '</b><span>mejor ronda (' + esc(best.n) + ')</span></div>';
+    return s;
+  }
+
+  function charts(g) {
+    var p = g.players || [];
+    if (p.length < 2) return "";
+    var n = HOLES, sc = [p[0].scores, p[1].scores], nm = [p[0].name, p[1].name], a = sc[0], b = sc[1];
+    var col = ["var(--acc)", "var(--c2)"], i, k, v, T0 = 14, B = 22;
+    var lg = '<div class="lg">' + [0, 1].map(function (q) {
+      return '<span><i style="background:' + col[q] + '"></i>' + esc(nm[q]) + '</span>';
+    }).join("") + '</div>';
+    var W = 340, L = 24, R = 8, iw = W - L - R;
+
+    var H1 = 170, ih = H1 - T0 - B, mx = Math.max(5, Math.max.apply(null, a.concat(b)));
+    var Y = function (x) { return T0 + ih - x / mx * ih; };
+    var s1 = '<svg viewBox="0 0 ' + W + ' ' + H1 + '" class="ch" role="img" aria-label="Golpes por hoyo">';
+    for (v = 0; v <= mx; v++) {
+      s1 += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" style="stroke:var(--line)"/>' +
+            '<text x="' + (L - 5) + '" y="' + (Y(v) + 3) + '" text-anchor="end" style="fill:var(--mut);font-size:9px">' + v + '</text>';
     }
-    s1+='<text x="'+cx+'" y="'+(H1-7)+'" text-anchor="middle" style="fill:var(--mut);font-size:9px">'+(i+1)+'</text>';
-  }
-  s1+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(3)+'" y2="'+Y(3)+'" style="stroke:var(--win);stroke-dasharray:4 3;stroke-width:1.3"/><text x="'+(W-R)+'" y="'+(Y(3)-3)+'" text-anchor="end" style="fill:var(--win);font-size:8px">par 3</text></svg>';
-  var cum=sc.map(function(r){var c=0;return r.map(function(x){c+=x-3;return c})});
-  var all=cum[0].concat(cum[1],[0]),lo=Math.min.apply(null,all)-1,hi=Math.max.apply(null,all)+1;
-  var H2=160,ih2=H2-T-B;
-  var Y2=function(x){return T+ih2-(x-lo)/(hi-lo)*ih2};
-  var X2=function(j){return L+iw*(j+0.5)/n};
-  var fmt=function(x){return x>0?"+"+x:String(x)};
-  var s2='<svg viewBox="0 0 '+W+' '+H2+'" class="ch" role="img" aria-label="Evolución respecto al par">';
-  var step=Math.max(1,Math.ceil((hi-lo)/6));
-  for(v=Math.ceil(lo);v<=hi;v+=step){s2+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y2(v)+'" y2="'+Y2(v)+'" style="stroke:var(--line)"/><text x="'+(L-5)+'" y="'+(Y2(v)+3)+'" text-anchor="end" style="fill:var(--mut);font-size:9px">'+fmt(v)+'</text>'}
-  s2+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y2(0)+'" y2="'+Y2(0)+'" style="stroke:var(--win);stroke-dasharray:4 3;stroke-width:1.3"/><text x="'+(W-R)+'" y="'+(Y2(0)-3)+'" text-anchor="end" style="fill:var(--win);font-size:8px">par</text>';
-  for(k=0;k<2;k++){
-    s2+='<polyline fill="none" style="stroke:'+col[k]+';stroke-width:2.2;stroke-linejoin:round" points="'+cum[k].map(function(c,j){return X2(j)+","+Y2(c)}).join(" ")+'"/>';
-    cum[k].forEach(function(c,j){s2+='<circle cx="'+X2(j)+'" cy="'+Y2(c)+'" r="2.6" style="fill:'+col[k]+'"/>'});
-    var last=cum[k][n-1];
-    s2+='<text x="'+(X2(n-1)+5)+'" y="'+(Y2(last)+(k?11:-5))+'" text-anchor="end" style="fill:'+col[k]+';font-size:9px;font-weight:700">'+fmt(last)+'</text>';
-  }
-  for(i=0;i<n;i++)s2+='<text x="'+X2(i)+'" y="'+(H2-7)+'" text-anchor="middle" style="fill:var(--mut);font-size:9px">'+(i+1)+'</text>';
-  s2+='</svg>';
-  var cats=[["Birdie o mejor",function(x){return x<=2},"#2f9e5a"],["Par",function(x){return x===3},"#4c8bd6"],["Bogey",function(x){return x===4},"#e0a030"],["Doble o más",function(x){return x>=5},"#d9534f"]];
-  var dist=[0,1].map(function(q){
-    var segs=cats.map(function(c){var cnt=sc[q].filter(c[1]).length;return cnt?'<span style="flex:'+cnt+';background:'+c[2]+'" title="'+c[0]+'">'+cnt+'</span>':""}).join("");
-    return '<div class="dr"><b>'+esc(nm[q])+'</b><div class="bar">'+segs+'</div></div>';
-  }).join("");
-  var dleg='<div class="lg sm">'+cats.map(function(c){return '<span><i style="background:'+c[2]+'"></i>'+c[0]+'</span>'}).join("")+'</div>';
-  var w=[0,0,0];
-  for(i=0;i<n;i++){if(a[i]<b[i])w[0]++;else if(a[i]>b[i])w[1]++;else w[2]++}
-  var tt=[sum(a),sum(b)];
-  var mn=function(r){var m=Math.min.apply(null,r);return m+" · hoyo "+(r.indexOf(m)+1)};
-  var mxx=function(r){var m=Math.max.apply(null,r);return m+" · hoyo "+(r.indexOf(m)+1)};
-  var rows=[["Total",tt[0],tt[1]],["Respecto al par",diff(tt[0]),diff(tt[1])],["Media por hoyo",(tt[0]/n).toFixed(2),(tt[1]/n).toFixed(2)],["Hoyos ganados",w[0],w[1]],["Mejor hoyo",mn(a),mn(b)],["Peor hoyo",mxx(a),mxx(b)]];
-  var tbl='<table class="st"><tr><th></th><th>'+esc(nm[0])+'</th><th>'+esc(nm[1])+'</th></tr>'+rows.map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>'}).join("")+'</table><div class="lg sm" style="margin-top:6px">Hoyos empatados: '+w[2]+'</div>';
-  return '<div class="cg">'+lg+'<div class="ct">Golpes por hoyo</div>'+s1+'<div class="ct">Evolución respecto al par</div>'+s2+'<div class="ct">Tipo de resultado</div>'+dist+dleg+'<div class="ct">Estadísticas de la partida</div>'+tbl+'</div>';
-}
-
-function gameCard(g){
-  var p=g.players||[];var t=p.map(function(x){return sum(x.scores)});
-  var win=t[0]===t[1]?-1:(t[0]<t[1]?0:1);
-  var sc=p.map(function(x,i){return '<div class="'+(win===i?"w":"")+'">'+esc(x.name)+(win===i?" 🏆":"")+'<br><b>'+t[i]+'</b> <small>('+diff(t[i])+')</small></div>'}).join("");
-  var h="";for(var i=1;i<=HOLES;i++)h+="<th>"+i+"</th>";
-  var rows=p.map(function(x){return "<tr><td>"+esc(x.name)+"</td>"+x.scores.map(function(v){return "<td>"+esc(v)+"</td>"}).join("")+"<td><b>"+sum(x.scores)+"</b></td></tr>"}).join("");
-  var matchJson = JSON.stringify(g).replace(/'/g, "&#39;");
-  return '<div class="card" data-id="'+esc(g.id)+'" data-match=\''+matchJson+'\'>'
-    +'<div class="row"><b>Partida '+esc(g.num||"–")+'</b><small>'+fmtDate(g.date)+'</small></div>'
-    +'<small style="color:var(--mut)">'+esc(g.course||"Sin campo")+'</small>'
-    +'<div class="score">'+sc+'</div>'
-    +'<div class="det hide">'
-      +'<button class="retro-btn" onclick="event.stopPropagation(); window.toggleRetro(this, \''+esc(g.id)+'\')">🎮 Ver Replay 16-bits</button>'
-      +'<div id="retro-'+esc(g.id)+'" class="retro-container hide"></div>'
-      +charts(g)
-      +'<div class="ct">Detalle por hoyo</div><div class="scroll" style="margin-top:0"><table><tr><th>Hoyo</th>'+h+'<th>Total</th></tr>'+rows+'</table></div>'
-    +'</div></div>';
-}
-
-function render(){
-  var list=$("list");
-  if(!coll){list.innerHTML='<div class="msg">No se puede acceder a la base de datos compartida.</div>';return}
-  if(!games.length){list.innerHTML='<div class="msg">Todavía no hay partidas.</div>';return}
-  var by={};
-  games.forEach(function(g){var k=g.season||"";(by[k]=by[k]||[]).push(g)});
-  var ks=Object.keys(by).sort().reverse();
-  list.innerHTML=ks.map(function(k){
-    return '<h2 class="sh">'+(k?"Temporada "+esc(k):"Sin temporada")+'</h2><div class="stats">'+statsFor(by[k])+'</div>'+by[k].map(gameCard).join("");
-  }).join("");
-}
-
-window.toggleRetro = function(btn, gameId) {
-  var card = btn.closest(".card");
-  var container = document.getElementById("retro-" + gameId);
-  var matchData = JSON.parse(card.getAttribute("data-match").replace(/&#39;/g, "'"));
-  if (!container.classList.contains("hide")) {
-    container.classList.add("hide");
-    if (container._cleanup) container._cleanup();
-  } else {
-    container.classList.remove("hide");
-    if (!container._initialized) {
-      window.initRetroReplay(container, matchData);
-      container._initialized = true;
-    } else if (container._resume) {
-      container._resume();
+    var gw = iw / n, bw = gw * 0.36;
+    for (i = 0; i < n; i++) {
+      var cx = L + gw * i + gw / 2;
+      for (k = 0; k < 2; k++) {
+        var val = sc[k][i], x = k ? cx + 1 : cx - bw - 1;
+        s1 += '<rect x="' + x + '" y="' + Y(val) + '" width="' + bw + '" height="' + (Y(0) - Y(val)) + '" rx="2" style="fill:' + col[k] + '"/>' +
+              '<text x="' + (x + bw / 2) + '" y="' + (Y(val) - 3) + '" text-anchor="middle" style="fill:var(--ink);font-size:8px">' + val + '</text>';
+      }
+      s1 += '<text x="' + cx + '" y="' + (H1 - 7) + '" text-anchor="middle" style="fill:var(--mut);font-size:9px">' + (i + 1) + '</text>';
     }
-  }
-};
+    s1 += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(3) + '" y2="' + Y(3) + '" style="stroke:var(--win);stroke-dasharray:4 3;stroke-width:1.3"/>' +
+          '<text x="' + (W - R) + '" y="' + (Y(3) - 3) + '" text-anchor="end" style="fill:var(--win);font-size:8px">par 3</text></svg>';
 
-$("list").addEventListener("click",function(e){
-  var card=e.target.closest(".card");if(!card)return;
-  if(e.target.classList.contains("retro-btn")) return;
-  var d=card.querySelector(".det");
-  if(d && !e.target.closest(".det")) {
-    var willHide = !d.classList.contains("hide");
-    d.classList.toggle("hide");
-    if (willHide) {
-      var rc = d.querySelector(".retro-container");
-      if (rc && rc._cleanup) rc._cleanup();
+    var cum = sc.map(function (r) { var c = 0; return r.map(function (x) { c += x - 3; return c; }); });
+    var all = cum[0].concat(cum[1], [0]);
+    var lo = Math.min.apply(null, all) - 1, hi = Math.max.apply(null, all) + 1;
+    var H2 = 160, ih2 = H2 - T0 - B;
+    var Y2 = function (x) { return T0 + ih2 - (x - lo) / (hi - lo) * ih2; };
+    var X2 = function (j) { return L + iw * (j + 0.5) / n; };
+    var fmt = function (x) { return x > 0 ? "+" + x : String(x); };
+    var s2 = '<svg viewBox="0 0 ' + W + ' ' + H2 + '" class="ch" role="img" aria-label="Evolución respecto al par">';
+    var step = Math.max(1, Math.ceil((hi - lo) / 6));
+    for (v = Math.ceil(lo); v <= hi; v += step) {
+      s2 += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y2(v) + '" y2="' + Y2(v) + '" style="stroke:var(--line)"/>' +
+            '<text x="' + (L - 5) + '" y="' + (Y2(v) + 3) + '" text-anchor="end" style="fill:var(--mut);font-size:9px">' + fmt(v) + '</text>';
+    }
+    s2 += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y2(0) + '" y2="' + Y2(0) + '" style="stroke:var(--win);stroke-dasharray:4 3;stroke-width:1.3"/>' +
+          '<text x="' + (W - R) + '" y="' + (Y2(0) - 3) + '" text-anchor="end" style="fill:var(--win);font-size:8px">par</text>';
+    for (k = 0; k < 2; k++) {
+      s2 += '<polyline fill="none" style="stroke:' + col[k] + ';stroke-width:2.2;stroke-linejoin:round" points="' +
+            cum[k].map(function (c, j) { return X2(j) + "," + Y2(c); }).join(" ") + '"/>';
+      cum[k].forEach(function (c, j) { s2 += '<circle cx="' + X2(j) + '" cy="' + Y2(c) + '" r="2.6" style="fill:' + col[k] + '"/>'; });
+      var last = cum[k][n - 1];
+      s2 += '<text x="' + (X2(n - 1) + 5) + '" y="' + (Y2(last) + (k ? 11 : -5)) + '" text-anchor="end" style="fill:' + col[k] + ';font-size:9px;font-weight:700">' + fmt(last) + '</text>';
+    }
+    for (i = 0; i < n; i++) s2 += '<text x="' + X2(i) + '" y="' + (H2 - 7) + '" text-anchor="middle" style="fill:var(--mut);font-size:9px">' + (i + 1) + '</text>';
+    s2 += '</svg>';
+
+    var cats = [
+      ["Birdie o mejor", function (x) { return x <= 2; }, "#2f9e5a"],
+      ["Par", function (x) { return x === 3; }, "#4c8bd6"],
+      ["Bogey", function (x) { return x === 4; }, "#e0a030"],
+      ["Doble o más", function (x) { return x >= 5; }, "#d9534f"]
+    ];
+    var dist = [0, 1].map(function (q) {
+      var segs = cats.map(function (c) {
+        var cnt = sc[q].filter(c[1]).length;
+        return cnt ? '<span style="flex:' + cnt + ';background:' + c[2] + '" title="' + c[0] + '">' + cnt + '</span>' : "";
+      }).join("");
+      return '<div class="dr"><b>' + esc(nm[q]) + '</b><div class="bar">' + segs + '</div></div>';
+    }).join("");
+    var dleg = '<div class="lg sm">' + cats.map(function (c) {
+      return '<span><i style="background:' + c[2] + '"></i>' + c[0] + '</span>';
+    }).join("") + '</div>';
+
+    var w = [0, 0, 0];
+    for (i = 0; i < n; i++) { if (a[i] < b[i]) w[0]++; else if (a[i] > b[i]) w[1]++; else w[2]++; }
+    var tt = [sum(a), sum(b)];
+    var mn = function (r) { var m = Math.min.apply(null, r); return m + " · hoyo " + (r.indexOf(m) + 1); };
+    var mxx = function (r) { var m = Math.max.apply(null, r); return m + " · hoyo " + (r.indexOf(m) + 1); };
+    var rows = [
+      ["Total", tt[0], tt[1]],
+      ["Respecto al par", diff(tt[0]), diff(tt[1])],
+      ["Media por hoyo", (tt[0] / n).toFixed(2), (tt[1] / n).toFixed(2)],
+      ["Hoyos ganados", w[0], w[1]],
+      ["Mejor hoyo", mn(a), mn(b)],
+      ["Peor hoyo", mxx(a), mxx(b)]
+    ];
+    var tbl = '<table class="st"><tr><th></th><th>' + esc(nm[0]) + '</th><th>' + esc(nm[1]) + '</th></tr>' +
+      rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '</td></tr>'; }).join("") +
+      '</table><div class="lg sm" style="margin-top:6px">Hoyos empatados: ' + w[2] + '</div>';
+
+    return '<div class="cg">' + lg +
+      '<div class="ct">Golpes por hoyo</div>' + s1 +
+      '<div class="ct">Evolución respecto al par</div>' + s2 +
+      '<div class="ct">Tipo de resultado</div>' + dist + dleg +
+      '<div class="ct">Estadísticas de la partida</div>' + tbl + '</div>';
+  }
+
+  function gameCard(g) {
+    var p = g.players || [];
+    var t = p.map(function (x) { return sum(x.scores); });
+    var win = t[0] === t[1] ? -1 : (t[0] < t[1] ? 0 : 1);
+    var sc = p.map(function (x, i) {
+      return '<div class="' + (win === i ? "w" : "") + '">' + esc(x.name) + (win === i ? " 🏆" : "") +
+             '<br><b>' + t[i] + '</b> <small>(' + diff(t[i]) + ')</small></div>';
+    }).join("");
+    var h = "";
+    for (var i = 1; i <= HOLES; i++) h += "<th>" + i + "</th>";
+    var rows = p.map(function (x) {
+      return "<tr><td>" + esc(x.name) + "</td>" + x.scores.map(function (v) { return "<td>" + esc(v) + "</td>"; }).join("") +
+             "<td><b>" + sum(x.scores) + "</b></td></tr>";
+    }).join("");
+    var matchJson = JSON.stringify(g).replace(/'/g, "&#39;");
+    return '<div class="card" data-id="' + esc(g.id) + '" data-match=\'' + matchJson + '\'>' +
+      '<div class="row"><b>Partida ' + esc(g.num || "–") + '</b><small>' + fmtDate(g.date) + '</small></div>' +
+      '<small style="color:var(--mut)">' + esc(g.course || "Sin campo") + '</small>' +
+      '<div class="score">' + sc + '</div>' +
+      '<div class="det hide">' +
+        '<button class="retro-btn" onclick="event.stopPropagation(); window.toggleRetro(this, \'' + esc(g.id) + '\')">🎮 Ver Replay 16-bits</button>' +
+        '<div id="retro-' + esc(g.id) + '" class="retro-container hide"></div>' +
+        charts(g) +
+        '<div class="ct">Detalle por hoyo</div><div class="scroll" style="margin-top:0"><table><tr><th>Hoyo</th>' + h + '<th>Total</th></tr>' + rows + '</table></div>' +
+      '</div></div>';
+  }
+
+  function render() {
+    var list = $("list");
+    if (!coll) { list.innerHTML = '<div class="msg">No se puede acceder a la base de datos compartida.</div>'; return; }
+    if (!games.length) { list.innerHTML = '<div class="msg">Todavía no hay partidas.</div>'; return; }
+    var by = {};
+    games.forEach(function (g) { var k = g.season || ""; (by[k] = by[k] || []).push(g); });
+    var ks = Object.keys(by).sort().reverse();
+    list.innerHTML = ks.map(function (k) {
+      return '<h2 class="sh">' + (k ? "Temporada " + esc(k) : "Sin temporada") + '</h2>' +
+             '<div class="stats">' + statsFor(by[k]) + '</div>' + by[k].map(gameCard).join("");
+    }).join("");
+  }
+
+  window.toggleRetro = function (btn, gameId) {
+    var card = btn.closest(".card");
+    var container = document.getElementById("retro-" + gameId);
+    var matchData = JSON.parse(card.getAttribute("data-match").replace(/&#39;/g, "'"));
+    if (!container.classList.contains("hide")) {
+      container.classList.add("hide");
+      if (container._cleanup) container._cleanup();
     } else {
-      var rc = d.querySelector(".retro-container");
-      if (rc && rc._resume) rc._resume();
+      container.classList.remove("hide");
+      if (!container._initialized) { window.initRetroReplay(container, matchData); container._initialized = true; }
+      else if (container._resume) container._resume();
     }
-  }
-});
+  };
 
-games=(window.PARTIDAS||[]).map(function(g,i){var o=Object.assign({},g);o.id="p"+i;return o})
-  .sort(function(a,b){return (b.date||"").localeCompare(a.date||"")||((b.num||0)-(a.num||0))});
-render();
+  $("list").addEventListener("click", function (e) {
+    var card = e.target.closest(".card");
+    if (!card) return;
+    if (e.target.classList.contains("retro-btn")) return;
+    var d = card.querySelector(".det");
+    if (d && !e.target.closest(".det")) {
+      var willHide = !d.classList.contains("hide");
+      d.classList.toggle("hide");
+      var rc = d.querySelector(".retro-container");
+      if (rc) {
+        if (willHide && rc._cleanup) rc._cleanup();
+        else if (!willHide && rc._resume) rc._resume();
+      }
+    }
+  });
+
+  games = (window.PARTIDAS || []).map(function (g, i) { var o = Object.assign({}, g); o.id = "p" + i; return o; })
+    .sort(function (a, b) { return (b.date || "").localeCompare(a.date || "") || ((b.num || 0) - (a.num || 0)); });
+  render();
 })();
 
-// --- MOTOR DE REPLAY RETRO 16-BITS ---
-window.initRetroReplay = function(container, matchData) {
-  var retroHTML = '<div class="retro-wrapper"><header class="retro-header"><h1>⛳ BADALONA GOLF TOUR</h1></header><div class="retro-screen"><canvas id="retroCanvas" width="640" height="480"></canvas><div id="retroBadge" class="retro-badge">TURNO: --</div><div id="retroSubtitle" class="retro-subtitle">¡Pulsa REPRODUCIR!</div><div id="holeResultScreen" class="hole-result-screen hide"></div></div><div class="retro-controls"><button id="retroPlayBtn" class="retro-btn-play">▶ REPRODUCIR</button><button id="retroPauseBtn" class="retro-btn-pause hide">⏸ PAUSA</button><button id="retroResetBtn" class="retro-btn-reset">🔄 REINICIAR</button><button id="retroPrevBtn" class="retro-btn-nav">◀ HOYO</button><span id="retroHoleLabel" class="retro-hole-label">HOYO 1/9</span><button id="retroNextBtn" class="retro-btn-nav">HOYO ▶</button></div></div>';
+
+// ============================================================
+//  MOTOR DE REPLAY · REGLAS PITCH & PUTT · ESTÉTICA AÑO 2000
+// ============================================================
+window.initRetroReplay = function (container, matchData) {
+
+  var retroHTML =
+    '<div class="retro-wrapper">' +
+      '<header class="retro-header"><h1>⛳ BADALONA GOLF TOUR</h1></header>' +
+      '<div class="retro-screen">' +
+        '<canvas id="retroCanvas" width="640" height="480"></canvas>' +
+        '<div id="retroBadge" class="retro-badge">TURNO: --</div>' +
+        '<div id="holeResultScreen" class="hole-result-screen hide"></div>' +
+      '</div>' +
+      '<div id="retroCommentary" class="retro-commentary">¡Pulsa REPRODUCIR!</div>' +
+      '<div class="retro-controls">' +
+        '<button id="retroPlayBtn" class="retro-btn-play">▶ REPRODUCIR</button>' +
+        '<button id="retroPauseBtn" class="retro-btn-pause hide">⏸ PAUSA</button>' +
+        '<button id="retroResetBtn" class="retro-btn-reset">🔄 REINICIAR</button>' +
+        '<button id="retroPrevBtn" class="retro-btn-nav">◀ HOYO</button>' +
+        '<span id="retroHoleLabel" class="retro-hole-label">HOYO 1/9</span>' +
+        '<button id="retroNextBtn" class="retro-btn-nav">HOYO ▶</button>' +
+      '</div>' +
+    '</div>';
   container.innerHTML = retroHTML;
-  
-  var players = matchData.players.map(function(p, i) {
+
+  var players = matchData.players.map(function (p, i) {
     return { name: p.name, color: i === 0 ? "#ef4444" : "#3b82f6", scores: p.scores };
   });
-  
+
   var courseData = {
-    name: matchData.course || "Pitch & Putt de Badalona",
     holes: [
-      { hoyo: 1, par: 3, dist: "140m", desc: "Hoyo corto con green protegido." },
-      { hoyo: 2, par: 3, dist: "130m", desc: "Hoyo técnico con árboles a los lados." },
-      { hoyo: 3, par: 3, dist: "150m", desc: "Hoyo con obstáculo de agua lateral." },
-      { hoyo: 4, par: 3, dist: "145m", desc: "Calle estrecha con rough pronunciado." },
-      { hoyo: 5, par: 3, dist: "135m", desc: "Oportunidad de birdie con green accesible." },
-      { hoyo: 6, par: 3, dist: "125m", desc: "Par 3 técnico con búnker de arena." },
-      { hoyo: 7, par: 3, dist: "155m", desc: "El hoyo más largo. Cuidado con el viento." },
-      { hoyo: 8, par: 3, dist: "140m", desc: "Calle estrecha entre árboles altos." },
-      { hoyo: 9, par: 3, dist: "145m", desc: "Hoyo final hacia la casa club." }
+      { hoyo: 1, par: 3 }, { hoyo: 2, par: 3 }, { hoyo: 3, par: 3 },
+      { hoyo: 4, par: 3 }, { hoyo: 5, par: 3 }, { hoyo: 6, par: 3 },
+      { hoyo: 7, par: 3 }, { hoyo: 8, par: 3 }, { hoyo: 9, par: 3 }
     ],
     players: players
   };
 
-  var state = { 
-    currentHoleIndex: 0, 
+  var state = {
+    currentHoleIndex: 0,
     nextStarterIndex: 0,
-    matchSequence: [], 
-    currentTaskIndex: 0, 
-    currentTask: null, 
-    taskProgress: 0, 
+    matchSequence: [],
+    currentTaskIndex: 0,
+    currentTask: null,
+    taskProgress: 0,
     waitProgress: 0,
     phase: 'WAITING',
-    isPlaying: false, 
-    cameraMode: 'SIDE', 
-    audioCtx: null, 
-    animFrameId: null, 
+    holdEnd: false,          // mantiene la bola en su sitio final durante la pausa
+    isPlaying: false,
+    cameraMode: 'TEE',
+    audioCtx: null,
+    animFrameId: null,
     frameTimer: 0,
     pot: 1,
     holeWinnings: [0, 0],
     holeResults: []
   };
-  
+
   var canvas = container.querySelector('#retroCanvas');
   var ctx = canvas.getContext('2d');
-  var subtitleBox = container.querySelector('#retroSubtitle');
+  var commentaryBox = container.querySelector('#retroCommentary');
   var badgeBox = container.querySelector('#retroBadge');
   var playBtn = container.querySelector('#retroPlayBtn');
   var pauseBtn = container.querySelector('#retroPauseBtn');
   var holeResultScreen = container.querySelector('#holeResultScreen');
 
-  function getShotSequence(score) {
-    if (score === 2) return ['tee', 'putt'];
-    if (score === 3) return Math.random() > 0.4 ? ['tee', 'approach', 'putt'] : ['tee', 'putt', 'putt'];
-    if (score === 4) return Math.random() > 0.5 ? ['tee', 'field', 'putt', 'putt'] : ['tee', 'field', 'field', 'putt'];
-    var seq = ['tee'];
-    var remaining = score - 2;
-    var putts = Math.min(2, Math.max(1, Math.floor(remaining / 2)));
-    var fieldShots = remaining - putts;
-    for (var i = 0; i < fieldShots; i++) seq.push('field');
-    for (var i = 0; i < putts; i++) seq.push('putt');
-    return seq;
+
+  // ---------- UTILIDADES GRÁFICAS ----------
+  var TAU = Math.PI * 2;
+
+  function rr(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
   }
 
+  function shade(hex, amt) {
+    var n = parseInt(hex.slice(1), 16);
+    var r = Math.max(0, Math.min(255, (n >> 16) + amt));
+    var g = Math.max(0, Math.min(255, ((n >> 8) & 255) + amt));
+    var b = Math.max(0, Math.min(255, (n & 255) + amt));
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+  }
+
+  function ease(x) { return x * x * (3 - 2 * x); }
+
+  function swingAngle(t) {
+    var kf = [[0, 0.45], [0.26, -2.35], [0.38, -2.35], [0.52, 0.85], [0.74, 2.55], [1, 2.55]];
+    for (var i = 0; i < kf.length - 1; i++) {
+      if (t <= kf[i + 1][0]) {
+        var f = ease((t - kf[i][0]) / (kf[i + 1][0] - kf[i][0]));
+        return kf[i][1] + (kf[i + 1][1] - kf[i][1]) * f;
+      }
+    }
+    return 2.55;
+  }
+
+  function drawCloudSoft(cx, cy, s) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(s, s);
+    ctx.fillStyle = 'rgba(255,255,255,0.92)';
+    ctx.beginPath();
+    ctx.arc(0, 0, 18, 0, TAU);
+    ctx.arc(20, -6, 14, 0, TAU);
+    ctx.arc(40, 0, 16, 0, TAU);
+    ctx.arc(20, 6, 15, 0, TAU);
+    ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.beginPath();
+    ctx.arc(8, -10, 10, 0, TAU);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function hill(x, baseY, w, h) {
+    ctx.beginPath();
+    ctx.moveTo(x, baseY);
+    ctx.quadraticCurveTo(x + w / 2, baseY - h, x + w, baseY);
+    ctx.fill();
+  }
+
+  function treeBlob(x, y, r) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, TAU);
+    ctx.arc(x - r * 0.7, y + r * 0.35, r * 0.75, 0, TAU);
+    ctx.arc(x + r * 0.7, y + r * 0.35, r * 0.75, 0, TAU);
+    ctx.fill();
+  }
+
+  function drawTree3D(x, y, s) {
+    ctx.fillStyle = '#6b4a2b';
+    ctx.fillRect(x - 2 * s, y - 26 * s, 4 * s, 26 * s);
+    ctx.fillStyle = '#2f6b2a';
+    treeBlob(x, y - 30 * s, 14 * s);
+    ctx.fillStyle = '#3c8434';
+    treeBlob(x - 4 * s, y - 36 * s, 9 * s);
+  }
+
+  function drawFlag(x, y, time, s) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(s, s);
+    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    ctx.beginPath();
+    ctx.ellipse(0, 1, 5, 2.2, 0, 0, TAU);
+    ctx.fill();
+    ctx.strokeStyle = '#f5f5f5';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(0, -46);
+    ctx.stroke();
+    ctx.fillStyle = '#e03131';
+    ctx.beginPath();
+    ctx.moveTo(1, -46);
+    ctx.quadraticCurveTo(14, -44 + Math.sin(time * 3) * 2, 26, -40 + Math.sin(time * 3 + 1) * 2.5);
+    ctx.lineTo(24, -30 + Math.sin(time * 3 + 2) * 2);
+    ctx.quadraticCurveTo(12, -34 + Math.sin(time * 3 + 1) * 2, 1, -32);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawBall(x, y, r) {
+    var g = ctx.createRadialGradient(x - r * 0.35, y - r * 0.35, r * 0.2, x, y, r);
+    g.addColorStop(0, '#ffffff');
+    g.addColorStop(1, '#c9ced6');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, TAU);
+    ctx.fill();
+  }
+
+  function ballShadow(x, y, s) {
+    ctx.fillStyle = 'rgba(0,0,0,0.28)';
+    ctx.beginPath();
+    ctx.ellipse(x, y, 5 * s, 2.2 * s, 0, 0, TAU);
+    ctx.fill();
+  }
+
+
+  // ---------- GOLFISTAS ----------
+  function drawGolferDetailed(x, y, shirt, ang, t, shank) {
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    ctx.beginPath();
+    ctx.ellipse(x, y + 4, 26, 8, 0, 0, TAU);
+    ctx.fill();
+
+    ctx.strokeStyle = '#2b3a55';
+    ctx.lineWidth = 9;
+    ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x - 4, y - 34); ctx.lineTo(x - 10, y - 2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x + 4, y - 34); ctx.lineTo(x + 10, y - 2); ctx.stroke();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.ellipse(x - 12, y, 9, 4, 0, 0, TAU); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x + 12, y, 9, 4, 0, 0, TAU); ctx.fill();
+
+    var lean = Math.sin(ang) * 0.12;
+    ctx.save();
+    ctx.translate(x, y - 34);
+    ctx.rotate(lean);
+    var tg = ctx.createLinearGradient(0, 0, 0, -32);
+    tg.addColorStop(0, shade(shirt, -35));
+    tg.addColorStop(1, shirt);
+    ctx.fillStyle = tg;
+    rr(-11, -32, 22, 34, 6);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(-6, -32, 12, 4);
+    ctx.restore();
+
+    var hx = x - Math.sin(lean) * 6, hy = y - 72;
+    ctx.fillStyle = '#f2c078';
+    ctx.beginPath(); ctx.arc(hx, hy, 9, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(hx, hy - 2, 9, Math.PI, 0); ctx.fill();
+    ctx.fillRect(hx, hy - 4, 12, 3);
+
+    var sx = x + 2, sy = y - 62, handDist = 16, shaftLen = 34;
+    var hxA = sx + Math.sin(ang) * handDist;
+    var hyA = sy + Math.cos(ang) * handDist;
+    ctx.strokeStyle = '#f2c078';
+    ctx.lineWidth = 6;
+    ctx.beginPath(); ctx.moveTo(sx - 4, sy + 2); ctx.lineTo(hxA, hyA); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(sx + 4, sy + 2); ctx.lineTo(hxA, hyA); ctx.stroke();
+    ctx.fillStyle = '#e8b06a';
+    ctx.beginPath(); ctx.arc(hxA, hyA, 4, 0, TAU); ctx.fill();
+
+    var cx2 = hxA + Math.sin(ang) * shaftLen;
+    var cy2 = hyA + Math.cos(ang) * shaftLen;
+    var sg = ctx.createLinearGradient(hxA, hyA, cx2, cy2);
+    sg.addColorStop(0, '#e8ecf1');
+    sg.addColorStop(1, '#9aa0a8');
+    ctx.strokeStyle = sg;
+    ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(hxA, hyA); ctx.lineTo(cx2, cy2); ctx.stroke();
+    ctx.save();
+    ctx.translate(cx2, cy2);
+    ctx.rotate(-ang);
+    ctx.fillStyle = '#7d838c';
+    ctx.fillRect(-2, -2, 11, 6);
+    ctx.restore();
+
+    if (shank && t > 0.5 && t < 0.8) {
+      var dt = (t - 0.5) / 0.3;
+      ctx.fillStyle = '#7a5230';
+      for (var d = 0; d < 7; d++) {
+        var a = -1.9 + d * 0.28;
+        ctx.fillRect(x + 16 + Math.cos(a) * dt * 46, y - 2 + Math.sin(a) * dt * 40 + dt * dt * 34, 3, 3);
+      }
+      ctx.fillStyle = 'rgba(90,60,30,0.6)';
+      ctx.beginPath();
+      ctx.ellipse(x + 16, y, 8, 3, 0, 0, TAU);
+      ctx.fill();
+    }
+  }
+
+  function drawGolferBack(x, y, shirt, ang, t, shank) {
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    ctx.beginPath();
+    ctx.ellipse(x, y + 4, 24, 8, 0, 0, TAU);
+    ctx.fill();
+
+    ctx.fillStyle = '#d8d8e0';
+    rr(x - 11, y - 36, 9, 36, 3); ctx.fill();
+    rr(x + 2, y - 36, 9, 36, 3); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.ellipse(x - 7, y, 8, 4, 0, 0, TAU); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x + 7, y, 8, 4, 0, 0, TAU); ctx.fill();
+
+    var lean = Math.sin(ang) * 0.10;
+    ctx.save();
+    ctx.translate(x, y - 36);
+    ctx.rotate(lean);
+    var tg = ctx.createLinearGradient(-12, 0, 12, 0);
+    tg.addColorStop(0, shade(shirt, -30));
+    tg.addColorStop(0.5, shirt);
+    tg.addColorStop(1, shade(shirt, -20));
+    ctx.fillStyle = tg;
+    rr(-13, -34, 26, 36, 7);
+    ctx.fill();
+    ctx.restore();
+
+    var hy = y - 78;
+    ctx.fillStyle = '#f2c078';
+    ctx.beginPath(); ctx.arc(x, hy, 9, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(x, hy - 2, 9.5, Math.PI, 0); ctx.fill();
+    ctx.fillStyle = '#e0e0e0';
+    ctx.fillRect(x - 3, hy - 6, 6, 3);
+
+    var hx2 = x + 8, hy2 = y - 46;
+    ctx.strokeStyle = '#f2c078';
+    ctx.lineWidth = 6;
+    ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x - 10, y - 62); ctx.lineTo(hx2, hy2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x + 10, y - 62); ctx.lineTo(hx2, hy2); ctx.stroke();
+    ctx.fillStyle = '#e8b06a';
+    ctx.beginPath(); ctx.arc(hx2, hy2, 4.5, 0, TAU); ctx.fill();
+
+    var cx2 = hx2 + Math.sin(ang) * 40;
+    var cy2 = hy2 + Math.cos(ang) * 40;
+    var sg = ctx.createLinearGradient(hx2, hy2, cx2, cy2);
+    sg.addColorStop(0, '#e8ecf1');
+    sg.addColorStop(1, '#9aa0a8');
+    ctx.strokeStyle = sg;
+    ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(hx2, hy2); ctx.lineTo(cx2, cy2); ctx.stroke();
+    ctx.fillStyle = '#7d838c';
+    ctx.save();
+    ctx.translate(cx2, cy2);
+    ctx.rotate(-ang);
+    ctx.fillRect(-2, -2, 11, 6);
+    ctx.restore();
+
+    if (shank && t > 0.5 && t < 0.8) {
+      var dt = (t - 0.5) / 0.3;
+      ctx.fillStyle = '#7a5230';
+      for (var d = 0; d < 7; d++) {
+        var a = -1.9 + d * 0.28;
+        ctx.fillRect(x + 20 + Math.cos(a) * dt * 46, y - 2 + Math.sin(a) * dt * 40 + dt * dt * 34, 3, 3);
+      }
+    }
+  }
+
+
+  // ---------- COMPAÑERO DE PARTIDA + BOLSA ----------
+  function drawBag(x, y) {
+    ctx.fillStyle = 'rgba(0,0,0,0.22)';
+    ctx.beginPath();
+    ctx.ellipse(x + 4, y + 5, 16, 5, 0, 0, TAU);
+    ctx.fill();
+    ctx.strokeStyle = '#c8ccd4';
+    ctx.lineWidth = 2;
+    for (var i = 0; i < 4; i++) {
+      ctx.beginPath();
+      ctx.moveTo(x - 5 + i * 4, y - 8);
+      ctx.lineTo(x - 11 + i * 5, y - 40);
+      ctx.stroke();
+      ctx.fillStyle = ['#7d838c', '#9aa0a8', '#6b7280', '#aab0b8'][i];
+      ctx.beginPath();
+      ctx.arc(x - 11 + i * 5, y - 41, 3, 0, TAU);
+      ctx.fill();
+    }
+    var bg = ctx.createLinearGradient(x - 12, 0, x + 12, 0);
+    bg.addColorStop(0, '#7a2e2e');
+    bg.addColorStop(0.5, '#b23b3b');
+    bg.addColorStop(1, '#7a2e2e');
+    ctx.fillStyle = bg;
+    rr(x - 12, y - 12, 24, 26, 5);
+    ctx.fill();
+    ctx.fillStyle = '#2b2b2b';
+    ctx.fillRect(x - 12, y - 2, 24, 4);
+    ctx.fillStyle = '#e8d59a';
+    ctx.fillRect(x - 8, y + 6, 16, 5);
+  }
+
+  function drawSpectator(x, y, color, pose, t, flip) {
+    ctx.save();
+    ctx.translate(x, y);
+    if (flip) ctx.scale(-1, 1);
+    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+    ctx.beginPath();
+    ctx.ellipse(0, 4, 13, 4, 0, 0, TAU);
+    ctx.fill();
+
+    if (pose === 0) {
+      // Animando: brazos arriba alternando
+      var up = Math.sin(t * 9) > 0;
+      ctx.strokeStyle = '#2b3a55'; ctx.lineWidth = 6; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(-3, -16); ctx.lineTo(-6, 0); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(3, -16); ctx.lineTo(6, 0); ctx.stroke();
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.ellipse(-6, 1, 6, 3, 0, 0, TAU); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(6, 1, 6, 3, 0, 0, TAU); ctx.fill();
+      var tg = ctx.createLinearGradient(0, -34, 0, -16);
+      tg.addColorStop(0, color); tg.addColorStop(1, shade(color, -30));
+      ctx.fillStyle = tg; rr(-8, -34, 16, 20, 4); ctx.fill();
+      ctx.strokeStyle = '#f2c078'; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(-7, -30); ctx.lineTo(-13, up ? -46 : -36); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(7, -30); ctx.lineTo(13, up ? -36 : -46); ctx.stroke();
+      ctx.fillStyle = '#f2c078'; ctx.beginPath(); ctx.arc(0, -41, 7, 0, TAU); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(0, -43, 7, Math.PI, 0); ctx.fill();
+    } else if (pose === 1) {
+      // En silencio: brazos cruzados
+      ctx.strokeStyle = '#2b3a55'; ctx.lineWidth = 6; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(-3, -16); ctx.lineTo(-5, 0); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(3, -16); ctx.lineTo(5, 0); ctx.stroke();
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.ellipse(-5, 1, 6, 3, 0, 0, TAU); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(5, 1, 6, 3, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = color; rr(-8, -34, 16, 20, 4); ctx.fill();
+      ctx.strokeStyle = '#f2c078'; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(-7, -28); ctx.lineTo(6, -22); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(7, -28); ctx.lineTo(-6, -22); ctx.stroke();
+      ctx.fillStyle = '#f2c078'; ctx.beginPath(); ctx.arc(0, -41, 7, 0, TAU); ctx.fill();
+      ctx.fillStyle = '#1e293b'; ctx.beginPath(); ctx.arc(0, -43, 7, Math.PI, 0); ctx.fill();
+    } else if (pose === 2) {
+      // Estirado en el suelo
+      ctx.fillStyle = color; rr(-26, -8, 40, 11, 4); ctx.fill();
+      ctx.fillStyle = '#2b3a55'; rr(12, -7, 18, 9, 3); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.ellipse(31, 0, 5, 3, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = '#f2c078'; ctx.beginPath(); ctx.arc(-30, -6, 7, 0, TAU); ctx.fill();
+      ctx.fillStyle = '#e03131'; ctx.beginPath(); ctx.arc(-30, -9, 7, Math.PI, 0); ctx.fill();
+    } else {
+      // Charlando: burbuja "..."
+      ctx.strokeStyle = '#2b3a55'; ctx.lineWidth = 6; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(-3, -16); ctx.lineTo(-5, 0); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(3, -16); ctx.lineTo(5, 0); ctx.stroke();
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.ellipse(-5, 1, 6, 3, 0, 0, TAU); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(5, 1, 6, 3, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = color; rr(-8, -34, 16, 20, 4); ctx.fill();
+      ctx.strokeStyle = '#f2c078'; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(-7, -30); ctx.lineTo(-11, -20); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(7, -30); ctx.lineTo(12, -38 + Math.sin(t * 6) * 3); ctx.stroke();
+      ctx.fillStyle = '#f2c078'; ctx.beginPath(); ctx.arc(0, -41, 7, 0, TAU); ctx.fill();
+      ctx.fillStyle = '#f08c00'; ctx.beginPath(); ctx.arc(0, -43, 7, Math.PI, 0); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.strokeStyle = '#333'; ctx.lineWidth = 1.5;
+      rr(11, -58, 24, 15, 5); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#333'; ctx.font = '9px "Press Start 2P"'; ctx.textAlign = 'center';
+      ctx.fillText('...', 23, -48);
+    }
+    ctx.restore();
+  }
+
+  // Solo los COMPAÑEROS DE LA PARTIDA (en 2 jugadores => 1 extra) + bolsa
+  function getOpponents(task) {
+    if (!task) return [courseData.players[1]];
+    return courseData.players.filter(function (pl, i) { return i !== task.playerIndex; });
+  }
+
+  function ensureExtras(task, slots) {
+    if (!task || task._extras) return;
+    var opponents = getOpponents(task);
+    var extras = [];
+    for (var i = 0; i < opponents.length; i++) {
+      extras.push({
+        slot: i % slots.length,
+        color: opponents[i].color,
+        pose: Math.floor(Math.random() * 4),
+        flip: Math.random() > 0.5
+      });
+    }
+    extras.push({
+      bag: true,
+      slot: Math.floor(Math.random() * slots.length),
+      ox: (Math.random() > 0.5 ? 1 : -1) * (28 + Math.random() * 22)
+    });
+    task._extras = extras;
+  }
+
+  function drawExtras(task, positions) {
+    if (!task || !task._extras) return;
+    var t = state.frameTimer;
+    for (var i = 0; i < task._extras.length; i++) {
+      var e = task._extras[i];
+      var p = positions[e.slot];
+      if (!p) continue;
+      if (e.bag) drawBag(p.x + e.ox, p.y);
+      else drawSpectator(p.x, p.y, e.color, e.pose, t, e.flip);
+    }
+  }
+
+
+  // ---------- AUDIO ----------
   function initAudio() {
     if (!state.audioCtx) state.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     if (state.audioCtx.state === 'suspended') state.audioCtx.resume();
@@ -333,316 +825,366 @@ window.initRetroReplay = function(container, matchData) {
   function playSynthSound(type) {
     if (!state.audioCtx) return;
     var now = state.audioCtx.currentTime;
+
     if (type === 'swing') {
-      var bufferSize = state.audioCtx.sampleRate * 0.18, buffer = state.audioCtx.createBuffer(1, bufferSize, state.audioCtx.sampleRate), output = buffer.getChannelData(0);
+      var bufferSize = state.audioCtx.sampleRate * 0.18;
+      var buffer = state.audioCtx.createBuffer(1, bufferSize, state.audioCtx.sampleRate);
+      var output = buffer.getChannelData(0);
       for (var i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
-      var noise = state.audioCtx.createBufferSource(); noise.buffer = buffer;
-      var filter = state.audioCtx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.setValueAtTime(200, now); filter.frequency.exponentialRampToValueAtTime(1400, now + 0.08); filter.frequency.exponentialRampToValueAtTime(150, now + 0.18);
-      var gain = state.audioCtx.createGain(); gain.gain.setValueAtTime(0.25, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
-      noise.connect(filter); filter.connect(gain); gain.connect(state.audioCtx.destination); noise.start(now);
+      var noise = state.audioCtx.createBufferSource();
+      noise.buffer = buffer;
+      var filter = state.audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(200, now);
+      filter.frequency.exponentialRampToValueAtTime(1400, now + 0.08);
+      filter.frequency.exponentialRampToValueAtTime(150, now + 0.18);
+      var gain = state.audioCtx.createGain();
+      gain.gain.setValueAtTime(0.25, now);
+      gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
+      noise.connect(filter); filter.connect(gain); gain.connect(state.audioCtx.destination);
+      noise.start(now);
+
     } else if (type === 'hit') {
-      var osc = state.audioCtx.createOscillator(), gain = state.audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(1400, now); osc.frequency.exponentialRampToValueAtTime(220, now + 0.04); gain.gain.setValueAtTime(0.4, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04); osc.connect(gain); gain.connect(state.audioCtx.destination); osc.start(now); osc.stop(now + 0.04);
+      var osc = state.audioCtx.createOscillator();
+      var gain = state.audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(1400, now);
+      osc.frequency.exponentialRampToValueAtTime(220, now + 0.04);
+      gain.gain.setValueAtTime(0.4, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
+      osc.connect(gain); gain.connect(state.audioCtx.destination);
+      osc.start(now); osc.stop(now + 0.04);
+
     } else if (type === 'putt') {
-      var osc = state.audioCtx.createOscillator(), gain = state.audioCtx.createGain(); osc.type = 'sine'; osc.frequency.setValueAtTime(500, now); osc.frequency.exponentialRampToValueAtTime(180, now + 0.06); gain.gain.setValueAtTime(0.35, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06); osc.connect(gain); gain.connect(state.audioCtx.destination); osc.start(now); osc.stop(now + 0.06);
+      var osc = state.audioCtx.createOscillator();
+      var gain = state.audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(500, now);
+      osc.frequency.exponentialRampToValueAtTime(180, now + 0.06);
+      gain.gain.setValueAtTime(0.35, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
+      osc.connect(gain); gain.connect(state.audioCtx.destination);
+      osc.start(now); osc.stop(now + 0.06);
+
     } else if (type === 'splash') {
-      var bufferSize = state.audioCtx.sampleRate * 0.35, buffer = state.audioCtx.createBuffer(1, bufferSize, state.audioCtx.sampleRate), output = buffer.getChannelData(0);
+      var bufferSize = state.audioCtx.sampleRate * 0.35;
+      var buffer = state.audioCtx.createBuffer(1, bufferSize, state.audioCtx.sampleRate);
+      var output = buffer.getChannelData(0);
       for (var i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
-      var noise = state.audioCtx.createBufferSource(); noise.buffer = buffer;
-      var filter = state.audioCtx.createBiquadFilter(); filter.type = 'bandpass'; filter.frequency.setValueAtTime(450, now);
-      var gain = state.audioCtx.createGain(); gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
-      noise.connect(filter); filter.connect(gain); gain.connect(state.audioCtx.destination); noise.start(now);
+      var noise = state.audioCtx.createBufferSource();
+      noise.buffer = buffer;
+      var filter = state.audioCtx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(450, now);
+      var gain = state.audioCtx.createGain();
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+      noise.connect(filter); filter.connect(gain); gain.connect(state.audioCtx.destination);
+      noise.start(now);
+
     } else if (type === 'cheer') {
-      [523.25, 659.25, 783.99, 1046.50].forEach(function(f, idx) {
-        var osc = state.audioCtx.createOscillator(), gain = state.audioCtx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(f, now + idx * 0.07); gain.gain.setValueAtTime(0.12, now + idx * 0.07); gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.22); osc.connect(gain); gain.connect(state.audioCtx.destination); osc.start(now + idx * 0.07); osc.stop(now + idx * 0.07 + 0.22);
+      [523.25, 659.25, 783.99, 1046.50].forEach(function (f, idx) {
+        var osc = state.audioCtx.createOscillator();
+        var gain = state.audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(f, now + idx * 0.07);
+        gain.gain.setValueAtTime(0.12, now + idx * 0.07);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.22);
+        osc.connect(gain); gain.connect(state.audioCtx.destination);
+        osc.start(now + idx * 0.07);
+        osc.stop(now + idx * 0.07 + 0.22);
       });
+
     } else if (type === 'groan') {
-      var osc = state.audioCtx.createOscillator(), gain = state.audioCtx.createGain(); osc.type = 'sawtooth'; osc.frequency.setValueAtTime(200, now); osc.frequency.linearRampToValueAtTime(90, now + 0.4); gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.4); osc.connect(gain); gain.connect(state.audioCtx.destination); osc.start(now); osc.stop(now + 0.4);
+      var osc = state.audioCtx.createOscillator();
+      var gain = state.audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(200, now);
+      osc.frequency.linearRampToValueAtTime(90, now + 0.4);
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
+      osc.connect(gain); gain.connect(state.audioCtx.destination);
+      osc.start(now); osc.stop(now + 0.4);
     }
   }
 
-  var DIALOGUES = { 
-    birdie: ["¡Menudo golpazo! ¡Birdie!", "¡A la cazuela! Birdie.", "¡Impresionante!"], 
-    par: ["Par muy sólido.", "Gran control. Par.", "Golpe limpio. Par."], 
-    bogey: ["Un despiste... Bogey.", "A la hierba. Bogey.", "¡Rozó el borde! Bogey."], 
-    doubleBogey: ["¡Agua va!", "Atrapado en arena...", "¡Qué sufrimiento!"] 
+  var DIALOGUES = {
+    birdie: ["¡Menudo golpazo! ¡Birdie!", "¡A la cazuela! Birdie.", "¡Impresionante!"],
+    par: ["Par muy sólido.", "Gran control. Par.", "Golpe limpio. Par."],
+    bogey: ["Un despiste... Bogey.", "A la hierba. Bogey.", "¡Rozó el borde! Bogey."],
+    doubleBogey: ["¡Agua va!", "Atrapado en arena...", "¡Qué sufrimiento!"]
   };
-  function getRandomDialogue(type) { var list = DIALOGUES[type] || DIALOGUES.par; return list[Math.floor(Math.random() * list.length)]; }
+  function getRandomDialogue(type) {
+    var list = DIALOGUES[type] || DIALOGUES.par;
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+
+  // ---------- SECUENCIA SEGÚN REGLAS PITCH & PUTT ----------
+  function getShotSequence(score) {
+    if (score === 2) return ['tee', 'putt'];
+    if (score === 3) return Math.random() > 0.4 ? ['tee', 'wedge', 'putt'] : ['tee', 'putt', 'putt'];
+    if (score === 4) return Math.random() > 0.5 ? ['tee', 'iron', 'putt', 'putt'] : ['tee', 'iron', 'wedge', 'putt'];
+    var seq = ['tee'];
+    var remaining = score - 1;
+    var putts = Math.min(2, Math.max(1, Math.floor(remaining / 2)));
+    var midShots = remaining - putts;
+    for (var i = 0; i < midShots; i++) seq.push(i % 2 === 0 ? 'iron' : 'wedge');
+    for (var j = 0; j < putts; j++) seq.push('putt');
+    return seq;
+  }
 
   function buildHoleSequence() {
     state.matchSequence = [];
     var holeInfo = courseData.holes[state.currentHoleIndex];
-    var p0 = courseData.players[0];
-    var p1 = courseData.players[1];
+    var p0 = courseData.players[0], p1 = courseData.players[1];
     var score0 = p0.scores[state.currentHoleIndex];
     var score1 = p1.scores[state.currentHoleIndex];
-    var maxScore = Math.max(score0, score1);
-
     var seq0 = getShotSequence(score0);
     var seq1 = getShotSequence(score1);
 
-    var shotCount0 = 0;
-    var shotCount1 = 0;
+    var strokesDone = [0, 0];
+    var onGreen = [false, false];
+    var firstTee = true;
 
-    var firstPlayerIdx = state.nextStarterIndex;
-    var secondPlayerIdx = (state.nextStarterIndex + 1) % 2;
-    var playersInOrder = [courseData.players[firstPlayerIdx], courseData.players[secondPlayerIdx]];
+    while (strokesDone[0] < score0 || strokesDone[1] < score1) {
+      var done0 = strokesDone[0] >= score0;
+      var done1 = strokesDone[1] >= score1;
+      if (done0 && done1) break;
 
-    for (var s = 1; s <= maxScore; s++) {
-      for (var i = 0; i < 2; i++) {
-        var p = playersInOrder[i];
-        var origIdx = (i === 0) ? firstPlayerIdx : secondPlayerIdx;
-        var totalScore = (origIdx === 0) ? score0 : score1;
-
-        if (s <= totalScore) {
-          var currentShotForPlayer = (origIdx === 0) ? shotCount0 : shotCount1;
-          var shotType = (origIdx === 0) ? seq0[currentShotForPlayer] : seq1[currentShotForPlayer];
-          var isFinalShot = (s === totalScore);
-          var isLastPutt = (shotType === 'putt' && isFinalShot);
-          
-          var cam = (shotType === 'putt') ? 'FIRST_PERSON' : 'SIDE';
-          var dialogue = "";
-
-          if (shotType === 'putt') {
-            if (isLastPutt) {
-              var diff = totalScore - holeInfo.par;
-              if (diff < 0) dialogue = p.name + ": " + getRandomDialogue('birdie');
-              else if (diff === 0) dialogue = p.name + ": " + getRandomDialogue('par');
-              else if (diff === 1) dialogue = p.name + ": " + getRandomDialogue('bogey');
-              else dialogue = p.name + ": " + getRandomDialogue('doubleBogey');
-            } else {
-              dialogue = p.name + ": Putt fallado, sigue en el green...";
-            }
-          } else if (shotType === 'tee') {
-            dialogue = p.name + ": Salida desde el tee.";
-            if (totalScore >= 5 && Math.random() > 0.7) {
-               shotType = 'water';
-               dialogue = p.name + ": ¡Salida directa al agua!";
-            }
-          } else {
-            dialogue = p.name + ": Tiro de aproximación.";
-            if (totalScore >= 4 && currentShotForPlayer === totalScore - 2 && Math.random() > 0.6) {
-               shotType = 'sand';
-               dialogue = p.name + ": El tiro cae en el búnker...";
-            }
-          }
-
-          state.matchSequence.push({
-            player: p,
-            stroke: s,
-            strokeNum: s,
-            totalStrokes: totalScore,
-            camera: cam,
-            type: shotType,
-            subtitle: dialogue,
-            playerIndex: origIdx,
-            isLastPutt: isLastPutt
-          });
-
-          if (origIdx === 0) shotCount0++;
-          else shotCount1++;
-        }
+      var idx;
+      if (strokesDone[0] === 0 && strokesDone[1] === 0) {
+        idx = state.nextStarterIndex;                       // honour en el tee
+      } else if (done0) {
+        idx = 1;
+      } else if (done1) {
+        idx = 0;
+      } else if (onGreen[0] !== onGreen[1]) {
+        idx = onGreen[0] ? 1 : 0;                           // el que NO está en green (más lejos) juega
+      } else {
+        var rem0 = score0 - strokesDone[0];
+        var rem1 = score1 - strokesDone[1];
+        if (rem0 !== rem1) idx = rem0 > rem1 ? 0 : 1;       // más golpes restantes = más lejos = juega antes
+        else idx = firstTee ? state.nextStarterIndex : (1 - state.nextStarterIndex);
       }
+
+      var p = courseData.players[idx];
+      var totalScore = (idx === 0) ? score0 : score1;
+      var shotType = (idx === 0) ? seq0[strokesDone[0]] : seq1[strokesDone[1]];
+      var isFinalShot = (strokesDone[idx] === totalScore - 1);
+      var isLastPutt = (shotType === 'putt' && isFinalShot);
+
+      var cam = 'SIDE';
+      if (shotType === 'putt') cam = 'FIRST_PERSON';
+      else if (shotType === 'tee') cam = 'TEE';
+      else if (shotType === 'wedge') cam = 'NEAR';
+
+      var dialogue = "", hazard = null;
+      if (shotType === 'putt') {
+        if (isLastPutt) {
+          var df = totalScore - holeInfo.par;
+          if (df < 0) dialogue = p.name + ": " + getRandomDialogue('birdie');
+          else if (df === 0) dialogue = p.name + ": " + getRandomDialogue('par');
+          else if (df === 1) dialogue = p.name + ": " + getRandomDialogue('bogey');
+          else dialogue = p.name + ": " + getRandomDialogue('doubleBogey');
+        } else {
+          dialogue = p.name + ": Putt fallado, sigue en el green...";
+        }
+      } else if (shotType === 'tee') {
+        dialogue = p.name + ": Salida desde el tee.";
+        if (totalScore >= 5 && Math.random() > 0.72) {
+          hazard = 'water';
+          dialogue = p.name + ": ¡Al agua! Stroke & distance.";
+        }
+      } else if (shotType === 'wedge') {
+        dialogue = p.name + ": Wedge de aproximación.";
+        if (totalScore >= 4 && Math.random() > 0.62) {
+          hazard = 'sand';
+          dialogue = p.name + ": Cae al búnker.";
+        }
+      } else {
+        dialogue = p.name + ": Hierro desde la calle.";
+      }
+
+      state.matchSequence.push({
+        player: p,
+        strokeNum: strokesDone[idx] + 1,
+        totalStrokes: totalScore,
+        camera: cam,
+        type: hazard || shotType,
+        shotKind: shotType,
+        subtitle: dialogue,
+        playerIndex: idx,
+        isLastPutt: isLastPutt
+      });
+
+      if (shotType === 'wedge' || shotType === 'putt' || (shotType === 'iron' && isFinalShot)) onGreen[idx] = true;
+      strokesDone[idx]++;
+      firstTee = false;
     }
 
     if (score0 < score1) state.nextStarterIndex = 0;
     else if (score1 < score0) state.nextStarterIndex = 1;
 
-    resetReplay(); 
+    resetReplay();
     updateHoleUI();
   }
 
   function resetReplay() {
-    state.currentTaskIndex = 0; 
-    state.taskProgress = 0; 
+    state.currentTaskIndex = 0;
+    state.taskProgress = 0;
     state.waitProgress = 0;
     state.phase = 'WAITING';
-    
-    // 🧹 Limpiar destinos de putt calculados para que se recalculen al reiniciar
-    state.matchSequence.forEach(function(task) {
+    state.holdEnd = false;
+    state.matchSequence.forEach(function (task) {
       delete task._puttTarget;
+      delete task._miss;
+      delete task._teeSpot;
+      delete task._extras;
     });
-
-    if (state.matchSequence.length > 0) { 
-      state.currentTask = state.matchSequence[0]; 
-      state.cameraMode = state.currentTask.camera; 
-      setSubtitle(state.currentTask.subtitle); 
+    if (state.matchSequence.length > 0) {
+      state.currentTask = state.matchSequence[0];
+      state.cameraMode = state.currentTask.camera;
+      setSubtitle(state.currentTask.subtitle);
       updateBadge();
-    } else { 
-      state.currentTask = null; 
+    } else {
+      state.currentTask = null;
     }
   }
 
-  function setSubtitle(txt) { subtitleBox.innerText = txt; }
-  function updateBadge() { 
-    if(state.currentTask) {
-      badgeBox.innerText = "TURNO: " + state.currentTask.player.name + " | GOLPE " + state.currentTask.strokeNum + "/" + state.currentTask.totalStrokes;
+  function setSubtitle(txt) { commentaryBox.innerText = txt; }
+
+  function updateBadge() {
+    if (state.currentTask) {
+      badgeBox.innerText = "TURNO: " + state.currentTask.player.name + " | GOLPE " +
+        state.currentTask.strokeNum + "/" + state.currentTask.totalStrokes;
       badgeBox.style.borderColor = state.currentTask.player.color;
       badgeBox.style.color = state.currentTask.player.color;
     }
   }
 
+
+  // ---------- RESULTADO DE HOYO (BOTE DE EUROS) ----------
   function showHoleResult() {
     var holeInfo = courseData.holes[state.currentHoleIndex];
-    var p0 = courseData.players[0];
-    var p1 = courseData.players[1];
+    var p0 = courseData.players[0], p1 = courseData.players[1];
     var score0 = p0.scores[state.currentHoleIndex];
     var score1 = p1.scores[state.currentHoleIndex];
     var winner = score0 < score1 ? 0 : (score1 < score0 ? 1 : -1);
-    
     var currentPot = state.pot;
-    
-    if (winner === 0) {
-      state.holeWinnings[0] += currentPot;
-      state.pot = 1;
-    } else if (winner === 1) {
-      state.holeWinnings[1] += currentPot;
-      state.pot = 1;
-    } else {
-      state.pot = currentPot + 1;
-    }
-    
+
+    if (winner === 0) { state.holeWinnings[0] += currentPot; state.pot = 1; }
+    else if (winner === 1) { state.holeWinnings[1] += currentPot; state.pot = 1; }
+    else { state.pot = currentPot + 1; }
+
     state.holeResults.push({
       hole: state.currentHoleIndex + 1,
-      score0: score0,
-      score1: score1,
+      score0: score0, score1: score1,
       winner: winner,
       potWon: winner !== -1 ? currentPot : 0
     });
 
-    var html = '';
-    html += '<h2>🏌️ HOYO ' + holeInfo.hoyo + ' COMPLETADO</h2>';
-    html += '<div class="pot">🏆</div>';
-    
-    if (winner === 0) {
-      html += '<div class="winner">' + p0.name + ' GANA EL HOYO</div>';
-      html += '<div class="coins">💰 Se lleva ' + currentPot + '€</div>';
-    } else if (winner === 1) {
-      html += '<div class="winner">' + p1.name + ' GANA EL HOYO</div>';
-      html += '<div class="coins">💰 Se lleva ' + currentPot + '€</div>';
-    } else {
-      html += '<div class="winner">EMPATE - El bote se acumula</div>';
-      html += '<div class="coins">💰 Bote para el siguiente: ' + state.pot + '€</div>';
-    }
-    
-    html += '<div class="scores">';
-    html += p0.name + ': ' + score0 + ' golpes<br>';
-    html += p1.name + ': ' + score1 + ' golpes';
-    html += '</div>';
-    
-    // ✅ Usamos IDs para asignar el evento de forma segura después de inyectar el HTML
-    if (state.currentHoleIndex < 8) {
-      html += '<button id="btnContinue">CONTINUAR</button>';
-    } else {
-      html += '<button id="btnSummary">🏆 VER RESUMEN FINAL</button>';
-    }
-    
+    var html = '<h2>🏌️ HOYO ' + holeInfo.hoyo + ' COMPLETADO</h2><div class="pot">🏆</div>';
+    if (winner === 0) html += '<div class="winner">' + p0.name + ' GANA EL HOYO</div><div class="coins">💰 Se lleva ' + currentPot + '€</div>';
+    else if (winner === 1) html += '<div class="winner">' + p1.name + ' GANA EL HOYO</div><div class="coins">💰 Se lleva ' + currentPot + '€</div>';
+    else html += '<div class="winner">EMPATE - El bote se acumula</div><div class="coins">💰 Bote siguiente: ' + state.pot + '€</div>';
+    html += '<div class="scores">' + p0.name + ': ' + score0 + ' golpes<br>' + p1.name + ': ' + score1 + ' golpes</div>';
+    html += (state.currentHoleIndex < 8) ? '<button id="btnContinue">CONTINUAR</button>' : '<button id="btnSummary">🏆 VER RESUMEN FINAL</button>';
+
     holeResultScreen.innerHTML = html;
     holeResultScreen.classList.remove('hide');
 
-    // ✅ Asignar eventos justo después de crear el HTML (solución infalible)
-    var btnContinue = holeResultScreen.querySelector('#btnContinue');
-    if (btnContinue) {
-      btnContinue.addEventListener('click', function() {
-        holeResultScreen.classList.add('hide');
-        state.currentHoleIndex++;
-        buildHoleSequence();
-      });
-    }
-
-    var btnSummary = holeResultScreen.querySelector('#btnSummary');
-    if (btnSummary) {
-      btnSummary.addEventListener('click', function() {
-        holeResultScreen.classList.add('hide');
-        showMatchSummary();
-      });
-    }
+    var bc = holeResultScreen.querySelector('#btnContinue');
+    if (bc) bc.addEventListener('click', function () {
+      holeResultScreen.classList.add('hide');
+      state.currentHoleIndex++;
+      buildHoleSequence();
+    });
+    var bs = holeResultScreen.querySelector('#btnSummary');
+    if (bs) bs.addEventListener('click', function () {
+      holeResultScreen.classList.add('hide');
+      showMatchSummary();
+    });
   }
 
   function showMatchSummary() {
-    var p0 = courseData.players[0];
-    var p1 = courseData.players[1];
-    var total0 = sum(p0.scores);
-    var total1 = sum(p1.scores);
+    var p0 = courseData.players[0], p1 = courseData.players[1];
+    var total0 = p0.scores.reduce(function (a, b) { return a + b; }, 0);
+    var total1 = p1.scores.reduce(function (a, b) { return a + b; }, 0);
+    var d0 = total0 - 27, d1 = total1 - 27;
     var winnerName = total0 < total1 ? p0.name : (total1 < total0 ? p1.name : "EMPATE");
-    
+
     var html = '<h2>🏆 RESUMEN DE LA PARTIDA</h2>';
-    html += '<div style="font-size:11px;margin:15px 0;line-height:2;text-align:left;max-width:400px">';
-    html += '<strong>HOYO A HOYO:</strong><br>';
-    state.holeResults.forEach(function(r) {
+    html += '<div style="font-size:10px;margin:10px 0;line-height:2;text-align:left;max-width:420px"><strong>HOYO A HOYO:</strong><br>';
+    state.holeResults.forEach(function (r) {
       var w = r.winner === 0 ? p0.name : (r.winner === 1 ? p1.name : "EMPATE");
-      var potText = r.potWon > 0 ? ' (+' + r.potWon + '€)' : '';
-      html += 'Hoyo ' + r.hole + ': ' + p0.name + ' ' + r.score0 + ' - ' + p1.name + ' ' + r.score1 + ' → ' + w + potText + '<br>';
+      html += 'Hoyo ' + r.hole + ': ' + r.score0 + ' - ' + r.score1 + ' → ' + w +
+              (r.potWon > 0 ? ' (+' + r.potWon + '€)' : '') + '<br>';
     });
     html += '</div>';
-    
-    html += '<div style="font-size:13px;margin:15px 0;border-top:2px solid #eab308;padding-top:15px">';
-    html += '<strong>TOTAL:</strong><br>';
-    html += p0.name + ': ' + total0 + ' golpes (' + diff(total0) + ')<br>';
-    html += p1.name + ': ' + total1 + ' golpes (' + diff(total1) + ')<br>';
-    html += '</div>';
-    
-    html += '<div style="font-size:18px;color:#ffd700;margin:20px 0">';
-    html += '🏆 GANADOR: ' + winnerName + '</div>';
-    
-    html += '<div style="font-size:14px;margin:15px 0">';
-    html += '💰 ' + p0.name + ': ' + state.holeWinnings[0] + '€<br>';
-    html += '💰 ' + p1.name + ': ' + state.holeWinnings[1] + '€';
-    html += '</div>';
-    
+    html += '<div style="font-size:12px;margin:12px 0;border-top:2px solid #eab308;padding-top:12px">' +
+            p0.name + ': ' + total0 + ' (' + (d0 > 0 ? '+' : '') + d0 + ')<br>' +
+            p1.name + ': ' + total1 + ' (' + (d1 > 0 ? '+' : '') + d1 + ')</div>';
+    html += '<div style="font-size:16px;color:#ffd700;margin:15px 0">🏆 GANADOR: ' + winnerName + '</div>';
+    html += '<div style="font-size:13px;margin:10px 0">💰 ' + p0.name + ': ' + state.holeWinnings[0] + '€ · 💰 ' + p1.name + ': ' + state.holeWinnings[1] + '€</div>';
     html += '<button id="btnRestart">🔄 JUGAR DE NUEVO</button>';
-    
+
     holeResultScreen.innerHTML = html;
     holeResultScreen.classList.remove('hide');
 
-    // ✅ Asignar evento al botón de reiniciar
-    var btnRestart = holeResultScreen.querySelector('#btnRestart');
-    if (btnRestart) {
-      btnRestart.addEventListener('click', function() {
-        holeResultScreen.classList.add('hide');
-        resetMatch();
-      });
-    }
+    var br = holeResultScreen.querySelector('#btnRestart');
+    if (br) br.addEventListener('click', function () {
+      holeResultScreen.classList.add('hide');
+      resetMatch();
+    });
   }
 
+
+  // ---------- CONTROLES ----------
   function togglePlay() { if (state.isPlaying) pauseAnimation(); else startAnimation(); }
-  function startAnimation() { 
-    initAudio(); 
-    if (state.currentTaskIndex >= state.matchSequence.length) resetReplay(); 
-    state.isPlaying = true; 
+
+  function startAnimation() {
+    initAudio();
+    if (state.currentTaskIndex >= state.matchSequence.length) resetReplay();
+    state.isPlaying = true;
     state.phase = 'ANIMATING';
-    playBtn.classList.add('hide'); 
-    pauseBtn.classList.remove('hide'); 
+    playBtn.classList.add('hide');
+    pauseBtn.classList.remove('hide');
   }
-  function pauseAnimation() { 
-    state.isPlaying = false; 
-    playBtn.classList.remove('hide'); 
-    pauseBtn.classList.add('hide'); 
+
+  function pauseAnimation() {
+    state.isPlaying = false;
+    playBtn.classList.remove('hide');
+    pauseBtn.classList.add('hide');
   }
-  function resetMatch() { 
-    pauseAnimation(); 
+
+  function resetMatch() {
+    pauseAnimation();
     state.holeWinnings = [0, 0];
     state.holeResults = [];
     state.pot = 1;
     state.currentHoleIndex = 0;
     state.nextStarterIndex = 0;
-    resetReplay(); 
-    setSubtitle("¡Pulsa REPRODUCIR para empezar el hoyo 1!"); 
     buildHoleSequence();
-  }
-  function nextHole() { 
-    if (state.currentHoleIndex < 8) {
-      state.currentHoleIndex++; 
-      buildHoleSequence(); 
-    } else {
-      showMatchSummary();
-    }
-  }
-  function prevHole() { state.currentHoleIndex = Math.max(0, state.currentHoleIndex - 1); buildHoleSequence(); }
-  function updateHoleUI() {
-    var h = courseData.holes[state.currentHoleIndex];
-    container.querySelector('#retroHoleLabel').innerText = "HOYO " + h.hoyo + "/9";
+    setSubtitle("¡Pulsa REPRODUCIR para empezar el hoyo 1!");
   }
 
+  function nextHole() {
+    if (state.currentHoleIndex < 8) { state.currentHoleIndex++; buildHoleSequence(); }
+    else showMatchSummary();
+  }
+
+  function prevHole() {
+    state.currentHoleIndex = Math.max(0, state.currentHoleIndex - 1);
+    buildHoleSequence();
+  }
+
+  function updateHoleUI() {
+    container.querySelector('#retroHoleLabel').innerText = "HOYO " + (state.currentHoleIndex + 1) + "/9";
+  }
+
+
+  // ---------- BUCLE PRINCIPAL ----------
   function renderLoop() {
     state.frameTimer += 0.05;
 
@@ -653,12 +1195,14 @@ window.initRetroReplay = function(container, matchData) {
           playSynthSound(state.cameraMode === 'FIRST_PERSON' ? 'putt' : 'swing');
         }
         if (state.taskProgress >= 1) {
-          if (state.currentTask.type === 'water') playSynthSound('splash');
+          // El sonido de "bola dentro" SOLO en el último golpe
+          if (state.currentTask.isLastPutt) playSynthSound('cheer');
+          else if (state.currentTask.type === 'water') playSynthSound('splash');
           else if (state.currentTask.type === 'sand') playSynthSound('groan');
-          else if (state.currentTask.type === 'putt') playSynthSound('cheer');
           else playSynthSound('hit');
           state.phase = 'WAITING';
           state.waitProgress = 0;
+          state.holdEnd = true;   // la bola se queda donde cayó durante la pausa
         }
       } else if (state.phase === 'WAITING') {
         state.waitProgress += 0.008;
@@ -668,6 +1212,7 @@ window.initRetroReplay = function(container, matchData) {
             state.currentTask = state.matchSequence[state.currentTaskIndex];
             state.cameraMode = state.currentTask.camera;
             state.taskProgress = 0;
+            state.holdEnd = false;
             state.phase = 'ANIMATING';
             setSubtitle(state.currentTask.subtitle);
             updateBadge();
@@ -680,94 +1225,386 @@ window.initRetroReplay = function(container, matchData) {
     }
 
     ctx.clearRect(0, 0, 640, 480);
-    if (state.cameraMode === 'SIDE') drawSideView(); else drawFirstPersonPuttView();
+    if (state.cameraMode === 'FIRST_PERSON') drawFirstPersonPuttView();
+    else if (state.cameraMode === 'TEE') drawTeeView();
+    else if (state.cameraMode === 'NEAR') drawSideView(true);
+    else drawSideView(false);
+
     state.animFrameId = requestAnimationFrame(renderLoop);
   }
 
-  function drawSideView() {
-    var skyGrad = ctx.createLinearGradient(0, 0, 0, 260); skyGrad.addColorStop(0, '#38bdf8'); skyGrad.addColorStop(1, '#bae6fd'); ctx.fillStyle = skyGrad; ctx.fillRect(0, 0, 640, 260);
-    ctx.fillStyle = '#fde047'; ctx.beginPath(); ctx.arc(540, 60, 24, 0, Math.PI * 2); ctx.fill();
-    drawCloud(80 + Math.sin(state.frameTimer) * 10, 50); drawCloud(320 + Math.cos(state.frameTimer * 0.8) * 15, 70);
-    ctx.fillStyle = '#475569'; ctx.beginPath(); ctx.moveTo(0, 260); ctx.lineTo(100, 160); ctx.lineTo(220, 260); ctx.lineTo(380, 140); ctx.lineTo(500, 260); ctx.lineTo(640, 180); ctx.lineTo(640, 260); ctx.fill();
-    ctx.fillStyle = '#15803d'; ctx.fillRect(0, 240, 640, 240);
-    ctx.fillStyle = '#166534'; for (var i = 0; i < 640; i += 60) ctx.fillRect(i, 240, 30, 240);
-    if (state.currentTask && state.currentTask.type === 'water') { ctx.fillStyle = '#0284c7'; ctx.beginPath(); ctx.ellipse(320, 380, 70, 35, 0, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#38bdf8'; ctx.fillRect(300 + Math.sin(state.frameTimer * 2) * 4, 375, 40, 3); }
-    if (state.currentTask && state.currentTask.type === 'sand') { ctx.fillStyle = '#fde047'; ctx.beginPath(); ctx.ellipse(450, 390, 50, 25, 0, 0, Math.PI * 2); ctx.fill(); }
-    var p = state.currentTask ? state.currentTask.player : courseData.players[0]; 
-    drawGolferSideProfile(100, 370, p.color);
-    if (state.isPlaying && state.currentTask && state.phase === 'ANIMATING') {
-      var startX = 115, startY = 370, targetX = 500, targetY = 360;
-      if (state.currentTask.type === 'water') { targetX = 320; targetY = 380; }
-      if (state.currentTask.type === 'sand') { targetX = 450; targetY = 390; }
-      var t = state.taskProgress, ballX = startX + (targetX - startX) * t, linearY = startY + (targetY - startY) * t, arc = Math.sin(t * Math.PI) * 110, ballY = linearY - arc;
-      ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(ballX, linearY + 4, 5, 2, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(ballX, ballY, 3.5, 0, Math.PI * 2); ctx.fill();
-      if (state.currentTask.type === 'water' && t > 0.9) { ctx.fillStyle = '#7dd3fc'; ctx.fillRect(targetX - 8, targetY - 14, 4, 12); ctx.fillRect(targetX + 4, targetY - 18, 4, 16); }
-    } else { ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(115, 370, 3.5, 0, Math.PI * 2); ctx.fill(); }
+  // Tiempo de animación: congela el frame final durante la pausa
+  function animT() {
+    if (state.phase === 'ANIMATING') return state.taskProgress;
+    return state.holdEnd ? 1 : 0;
   }
 
-  function drawGolferSideProfile(x, y, shirtColor) {
-    ctx.fillStyle = shirtColor; ctx.fillRect(x - 10, y - 30, 16, 22); ctx.fillStyle = '#fed7aa'; ctx.fillRect(x - 6, y - 42, 10, 12); ctx.fillStyle = shirtColor; ctx.fillRect(x - 9, y - 45, 16, 4);
-    ctx.fillStyle = '#1e293b'; ctx.fillRect(x - 8, y - 8, 6, 12); ctx.fillRect(x + 1, y - 8, 6, 12); ctx.fillStyle = '#ffffff'; ctx.fillRect(x - 10, y + 4, 8, 4); ctx.fillRect(x + 1, y + 4, 8, 4);
-    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 3; ctx.beginPath();
-    if (state.isPlaying && state.phase === 'ANIMATING' && state.taskProgress < 0.18) { ctx.moveTo(x, y - 20); ctx.lineTo(x - 18, y - 38); } else { ctx.moveTo(x, y - 20); ctx.lineTo(x + 14, y + 2); }
-    ctx.stroke();
+
+  // ---------- VISTA LATERAL ----------
+  function drawSideView(near) {
+    var task = state.currentTask;
+    var t = animT();
+    var time = state.frameTimer;
+
+    var gX = near ? 450 : 470, gY = near ? 320 : 268;
+    var gRX = near ? 200 : 110, gRY = near ? 55 : 26;
+    var fS = near ? 1.8 : 1;
+
+    var sky = ctx.createLinearGradient(0, 0, 0, 230);
+    sky.addColorStop(0, '#1e6fd9');
+    sky.addColorStop(0.6, '#6db3f2');
+    sky.addColorStop(1, '#cfe8ff');
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, 640, 230);
+
+    var glow = ctx.createRadialGradient(520, 70, 5, 520, 70, 60);
+    glow.addColorStop(0, 'rgba(255,250,200,0.95)');
+    glow.addColorStop(0.4, 'rgba(255,240,160,0.45)');
+    glow.addColorStop(1, 'rgba(255,240,160,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(520, 70, 60, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#fff7c0';
+    ctx.beginPath(); ctx.arc(520, 70, 16, 0, TAU); ctx.fill();
+
+    drawCloudSoft(90 + Math.sin(time * 0.2) * 8, 60, 1.0);
+    drawCloudSoft(300 + Math.cos(time * 0.15) * 12, 45, 0.8);
+
+    ctx.fillStyle = '#9db8d2';
+    hill(0, 230, 180, 60); hill(140, 230, 220, 80); hill(360, 230, 200, 55); hill(520, 230, 160, 70);
+    ctx.fillStyle = '#5d7a52';
+    for (var i = 0; i < 24; i++) treeBlob(i * 28 - 10, 214 - (i % 3) * 6, 14 + (i % 4) * 4);
+
+    var g = ctx.createLinearGradient(0, 230, 0, 480);
+    g.addColorStop(0, '#79b356');
+    g.addColorStop(1, '#3f7d2c');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 230, 640, 250);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.06)';
+    var yy = 230, hgt = 6, band = 0;
+    while (yy < 480) {
+      if (band % 2 === 0) ctx.fillRect(0, yy, 640, hgt);
+      yy += hgt; hgt *= 1.35; band++;
+    }
+
+    ctx.fillStyle = '#57a44b';
+    ctx.beginPath(); ctx.ellipse(gX, gY, gRX, gRY, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.10)';
+    ctx.beginPath(); ctx.ellipse(gX - 15, gY - 6, gRX * 0.6, gRY * 0.5, 0, 0, TAU); ctx.fill();
+    ctx.strokeStyle = '#4a8f3f';
+    ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.ellipse(gX, gY, gRX, gRY, 0, 0, TAU); ctx.stroke();
+    drawFlag(gX - 20, gY - 6, time, fS);
+
+    if (near) {
+      ctx.fillStyle = '#e8d59a';
+      ctx.beginPath(); ctx.ellipse(gX - 150, gY + 30, 55, 18, 0, 0, TAU); ctx.fill();
+      ctx.strokeStyle = 'rgba(180,150,80,0.4)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.ellipse(gX - 150, gY + 30, 40, 12, 0, 0, Math.PI); ctx.stroke();
+    }
+    if (task && task.type === 'water') {
+      var wg = ctx.createLinearGradient(0, 300, 0, 360);
+      wg.addColorStop(0, '#2a7fc9'); wg.addColorStop(1, '#1b5fa8');
+      ctx.fillStyle = wg;
+      ctx.beginPath(); ctx.ellipse(330, 330, 110, 34, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      for (var s2 = 0; s2 < 6; s2++) ctx.fillRect(260 + s2 * 24 + Math.sin(time * 2 + s2) * 6, 322 + (s2 % 3) * 8, 10, 2);
+    }
+    if (task && task.type === 'sand') {
+      ctx.fillStyle = '#e8d59a';
+      ctx.beginPath(); ctx.ellipse(gX - 60, gY + 10, 70, 24, 0, 0, TAU); ctx.fill();
+    }
+
+    var shank = task && !task.isLastPutt && task.shotKind !== 'putt' && task.totalStrokes >= 6;
+    var p = task ? task.player : courseData.players[0];
+
+    // Compañero de partida + bolsa (detrás del jugador)
+    var sideSlots = near
+      ? [{ x: 58, y: 408 }, { x: 104, y: 416 }, { x: 300, y: 412 }, { x: 350, y: 420 }]
+      : [{ x: 46, y: 408 }, { x: 92, y: 416 }, { x: 290, y: 410 }, { x: 340, y: 418 }];
+    ensureExtras(task, sideSlots);
+    drawExtras(task, sideSlots);
+
+    drawGolferDetailed(near ? 170 : 150, 400, p.color, swingAngle(t), t, shank);
+
+    var bsX = (near ? 170 : 150) + 18, bsY = 398, target;
+    if (task && task.type === 'water') target = { x: 330, y: 326 };
+    else if (task && task.type === 'sand') target = { x: gX - 60, y: gY + 6 };
+    else if (shank) target = { x: bsX + 110, y: bsY - 6 };
+    else {
+      var remaining = task ? (task.totalStrokes - task.strokeNum) : 1;
+      var d = 10 + remaining * 16;
+      target = { x: gX - 20 - d * 0.7, y: gY - 6 + d * 0.4 };
+    }
+    var arcH = shank ? 26 : (near ? 70 : 120);
+
+    if (t < 0.52) {
+      ballShadow(bsX, bsY + 4, 1);
+      drawBall(bsX, bsY, 4);
+    } else {
+      var f = Math.min(1, (t - 0.52) / 0.48);
+      var bx = bsX + (target.x - bsX) * f;
+      var by = bsY + (target.y - bsY) * f - Math.sin(f * Math.PI) * arcH;
+      var gY2 = bsY + (target.y - bsY) * f;
+      for (var gh = 1; gh <= 3; gh++) {
+        var ff = Math.max(0, f - gh * 0.06);
+        ctx.fillStyle = 'rgba(255,255,255,' + (0.35 - gh * 0.1) + ')';
+        ctx.beginPath();
+        ctx.arc(bsX + (target.x - bsX) * ff, bsY + (target.y - bsY) * ff - Math.sin(ff * Math.PI) * arcH, 3, 0, TAU);
+        ctx.fill();
+      }
+      ballShadow(bx, gY2 + 3, 1 - 0.4 * f);
+      drawBall(bx, by, 4 * (1 - 0.5 * f) + 1);
+    }
   }
 
+
+  // ---------- VISTA TEE (detrás del jugador mirando al hoyo) ----------
+  function drawTeeView() {
+    var task = state.currentTask;
+    var t = animT();
+    var time = state.frameTimer;
+    var VPX = 320, VPY = 150;
+
+    var sky = ctx.createLinearGradient(0, 0, 0, VPY + 20);
+    sky.addColorStop(0, '#2a7bd4');
+    sky.addColorStop(0.7, '#7db8ec');
+    sky.addColorStop(1, '#d8ecff');
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, 640, VPY + 20);
+
+    var glow = ctx.createRadialGradient(540, 60, 4, 540, 60, 50);
+    glow.addColorStop(0, 'rgba(255,250,200,0.9)');
+    glow.addColorStop(1, 'rgba(255,240,160,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(540, 60, 50, 0, TAU); ctx.fill();
+    drawCloudSoft(120 + Math.sin(time * 0.2) * 8, 50, 0.9);
+    drawCloudSoft(420 + Math.cos(time * 0.15) * 10, 40, 0.7);
+
+    ctx.fillStyle = '#8fa3b8';
+    hill(60, VPY + 6, 220, 40); hill(240, VPY + 6, 260, 55); hill(430, VPY + 6, 200, 38);
+
+    var g = ctx.createLinearGradient(0, VPY, 0, 480);
+    g.addColorStop(0, '#6fae4e');
+    g.addColorStop(1, '#3c7a2a');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, VPY, 640, 480 - VPY);
+
+    function fwX(u, side) {
+      var lx = VPX - 14 + (40 - (VPX - 14)) * u;
+      var rx = VPX + 14 + (600 - (VPX + 14)) * u;
+      return side ? rx : lx;
+    }
+    var fg = ctx.createLinearGradient(0, VPY, 0, 480);
+    fg.addColorStop(0, '#7cb85a');
+    fg.addColorStop(1, '#4c8c34');
+    ctx.fillStyle = fg;
+    ctx.beginPath();
+    ctx.moveTo(VPX - 14, VPY); ctx.lineTo(VPX + 14, VPY);
+    ctx.lineTo(600, 480); ctx.lineTo(40, 480);
+    ctx.fill();
+
+    var u = 0, band = 0, uStep = 0.09;
+    while (u < 1) {
+      var u2 = Math.min(1, u + uStep);
+      if (band % 2 === 0) {
+        ctx.fillStyle = 'rgba(255,255,255,0.07)';
+        ctx.beginPath();
+        ctx.moveTo(fwX(u, 0), VPY + (480 - VPY) * u);
+        ctx.lineTo(fwX(u, 1), VPY + (480 - VPY) * u);
+        ctx.lineTo(fwX(u2, 1), VPY + (480 - VPY) * u2);
+        ctx.lineTo(fwX(u2, 0), VPY + (480 - VPY) * u2);
+        ctx.fill();
+      }
+      u = u2; uStep *= 1.3; band++;
+    }
+
+    for (var i = 0; i < 7; i++) {
+      var uT = 0.10 + i * 0.13;
+      var yT = VPY + (480 - VPY) * uT * 0.72;
+      var sT = 0.25 + uT * 1.05;
+      drawTree3D(fwX(uT, 0) - 34 * sT, yT, sT);
+      drawTree3D(fwX(uT, 1) + 34 * sT, yT, sT);
+    }
+
+    ctx.fillStyle = '#57a44b';
+    ctx.beginPath(); ctx.ellipse(VPX + 8, VPY + 14, 46, 12, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.12)';
+    ctx.beginPath(); ctx.ellipse(VPX + 2, VPY + 11, 26, 6, 0, 0, TAU); ctx.fill();
+    drawFlag(VPX + 10, VPY + 12, time, 0.8);
+
+    if (task && task.type === 'water') {
+      var wg2 = ctx.createLinearGradient(0, VPY + 70, 0, VPY + 110);
+      wg2.addColorStop(0, '#2a7fc9'); wg2.addColorStop(1, '#1b5fa8');
+      ctx.fillStyle = wg2;
+      ctx.beginPath(); ctx.ellipse(VPX - 40, VPY + 90, 70, 20, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      for (var w2 = 0; w2 < 4; w2++) ctx.fillRect(VPX - 80 + w2 * 30 + Math.sin(time * 2 + w2) * 5, VPY + 84 + (w2 % 2) * 8, 12, 2);
+    }
+    if (task && task.type === 'sand') {
+      ctx.fillStyle = '#e8d59a';
+      ctx.beginPath(); ctx.ellipse(VPX + 44, VPY + 26, 26, 9, 0, 0, TAU); ctx.fill();
+    }
+
+    var p = task ? task.player : courseData.players[0];
+    var shank = task && task.totalStrokes >= 6;
+
+    // Compañero de partida + bolsa
+    var teeSlots = [{ x: 150, y: 438 }, { x: 205, y: 446 }, { x: 430, y: 440 }, { x: 486, y: 448 }];
+    ensureExtras(task, teeSlots);
+    drawExtras(task, teeSlots);
+
+    drawGolferBack(285, 430, p.color, swingAngle(t), t, shank);
+
+    var bsX = 318, bsY = 442, target;
+    if (task && task.type === 'water') target = { x: VPX - 40, y: VPY + 88 };
+    else if (task && task.type === 'sand') target = { x: VPX + 44, y: VPY + 24 };
+    else if (shank) target = { x: bsX + 90, y: bsY - 30 };
+    else {
+      var ts = task ? task.totalStrokes : 4;
+      if (!task._teeSpot) {
+        if (ts <= 2) task._teeSpot = { x: VPX + 14, y: VPY + 18 };
+        else if (ts === 3) task._teeSpot = { x: VPX - 16 + Math.random() * 10, y: VPY + 26 };
+        else if (ts === 4) task._teeSpot = { x: VPX + 8, y: VPY + 64 };
+        else task._teeSpot = { x: VPX - 46, y: VPY + 104 };
+      }
+      target = task._teeSpot;
+    }
+
+    if (t < 0.52) {
+      ballShadow(bsX, bsY + 4, 1);
+      drawBall(bsX, bsY, 4.5);
+    } else {
+      var f = Math.min(1, (t - 0.52) / 0.48);
+      var groundY = bsY + (target.y - bsY) * f;
+      var bx = bsX + (target.x - bsX) * f;
+      var by = groundY - Math.sin(f * Math.PI) * (shank ? 20 : 90) * (1 - f * 0.3);
+      for (var gh = 1; gh <= 3; gh++) {
+        var ff = Math.max(0, f - gh * 0.06);
+        ctx.fillStyle = 'rgba(255,255,255,' + (0.35 - gh * 0.1) + ')';
+        ctx.beginPath();
+        ctx.arc(bsX + (target.x - bsX) * ff, (bsY + (target.y - bsY) * ff) - Math.sin(ff * Math.PI) * 90 * (1 - ff * 0.3), 3 * (1 - ff * 0.7), 0, TAU);
+        ctx.fill();
+      }
+      ballShadow(bx, groundY + 2, 1 - f * 0.7);
+      drawBall(bx, by, 4.5 * (1 - f * 0.8) + 0.8);
+      if (task && task.type === 'water' && f > 0.9) {
+        ctx.fillStyle = '#7dd3fc';
+        ctx.fillRect(target.x - 6, target.y - 10, 3, 9);
+        ctx.fillRect(target.x + 4, target.y - 13, 3, 12);
+      }
+    }
+  }
+
+
+  // ---------- VISTA DE PUTT (primera persona) ----------
   function drawFirstPersonPuttView() {
-    ctx.fillStyle = '#22c55e'; ctx.fillRect(0, 0, 640, 480);
-    ctx.fillStyle = '#16a34a'; for (var x = 0; x < 640; x += 16) for (var y = 0; y < 480; y += 16) if ((x + y) % 32 === 0) ctx.fillRect(x, y, 8, 8);
-    var holeX = 320, holeY = 90; ctx.fillStyle = '#0f172a'; ctx.beginPath(); ctx.ellipse(holeX, holeY, 22, 10, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#ffffff'; ctx.fillRect(holeX - 2, holeY - 60, 4, 60); ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.moveTo(holeX + 2, holeY - 60); ctx.lineTo(holeX + 25, holeY - 50); ctx.lineTo(holeX + 2, holeY - 40); ctx.fill();
-    ctx.fillStyle = '#e2e8f0'; ctx.fillRect(200, 380, 55, 80); ctx.fillStyle = '#0f172a'; ctx.fillRect(215, 400, 25, 4); ctx.fillRect(215, 412, 25, 4);
-    ctx.fillStyle = '#e2e8f0'; ctx.fillRect(385, 380, 55, 80); ctx.fillStyle = '#0f172a'; ctx.fillRect(400, 400, 25, 4); ctx.fillRect(400, 412, 25, 4);
-    
-    var ballX = 320, ballY = 320;
+    var task = state.currentTask;
+    var t = animT();
+    var time = state.frameTimer;
 
-    // 🎯 Destino del putt
-    if (!state.currentTask._puttTarget) {
-      if (state.currentTask.isLastPutt) {
-        state.currentTask._puttTarget = { x: 320, y: holeY, miss: false };
+    var gg = ctx.createRadialGradient(320, 240, 50, 320, 240, 420);
+    gg.addColorStop(0, '#5cb85c');
+    gg.addColorStop(1, '#3e8e41');
+    ctx.fillStyle = gg;
+    ctx.fillRect(0, 0, 640, 480);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+    for (var i = 0; i < 8; i++) if (i % 2 === 0) ctx.fillRect(i * 80, 0, 80, 480);
+    ctx.fillStyle = '#4a8f3f';
+    ctx.fillRect(0, 0, 640, 36);
+
+    ctx.fillStyle = 'rgba(0,0,0,0.15)';
+    for (var m = 0; m < 5; m++) {
+      ctx.beginPath();
+      ctx.arc(100 + m * 120, 160 + (m % 2) * 190, 3, 0, TAU);
+      ctx.fill();
+    }
+
+    var holeX = 320, holeY = 110;
+    ctx.fillStyle = 'rgba(0,0,0,0.35)';
+    ctx.beginPath(); ctx.ellipse(holeX, holeY + 2, 17, 7.5, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#0d2b12';
+    ctx.beginPath(); ctx.ellipse(holeX, holeY, 15, 6.5, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#000';
+    ctx.beginPath(); ctx.ellipse(holeX, holeY + 1, 12, 5, 0, 0, TAU); ctx.fill();
+    drawFlag(holeX, holeY, time, 2.1);
+
+    if (t < 0.05) {
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath(); ctx.moveTo(320, 332); ctx.lineTo(holeX, holeY + 8); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    var stX = 320, stY = 332, bx = stX, by = stY, roll = 0;
+    if (t > 0.12 && task) {
+      var f = 1 - Math.pow(1 - Math.min(1, (t - 0.12) / 0.75), 2);
+      if (task.isLastPutt) {
+        bx = stX + (holeX - stX) * f;
+        by = stY + (holeY - stY) * f;
+        if (f > 0.96) { bx = holeX; by = holeY; }
       } else {
-        var missSide = Math.random() > 0.5 ? 1 : -1;
-        var missDistance = 100 + Math.random() * 80;  
-        var missY = holeY + 30 + Math.random() * 40;  
-        state.currentTask._puttTarget = { 
-          x: 320 + missSide * missDistance,
-          y: missY,
-          miss: true 
-        };
+        if (!task._miss) {
+          var side = Math.random() > 0.5 ? 1 : -1;
+          task._miss = { x: holeX + side * (90 + Math.random() * 70), y: holeY + 20 + Math.random() * 50 };
+        }
+        var mm = task._miss;
+        var cqx = (stX + mm.x) / 2 + (mm.x > 320 ? -45 : 45);
+        var cqy = (stY + mm.y) / 2;
+        bx = (1 - f) * (1 - f) * stX + 2 * (1 - f) * f * cqx + f * f * mm.x;
+        by = (1 - f) * (1 - f) * stY + 2 * (1 - f) * f * cqy + f * f * mm.y;
       }
+      roll = f * 12;
     }
+    ballShadow(bx + 2, by + 5, 1.2);
+    drawBall(bx, by, 7);
+    ctx.fillStyle = 'rgba(120,130,140,0.7)';
+    ctx.beginPath();
+    ctx.arc(bx + Math.cos(roll) * 3, by + Math.sin(roll) * 3, 1.6, 0, TAU);
+    ctx.fill();
 
-    if (state.isPlaying && state.currentTask && state.phase === 'ANIMATING') { 
-      var t = state.taskProgress;
-      var target = state.currentTask._puttTarget;
-      
-      ballX = 320 + (target.x - 320) * Math.min(1, t * 1.1);
-      ballY = 320 + (target.y - 320) * Math.min(1, t * 1.1);
-      
-      if (target.miss === false && t > 0.85) {
-        ballX = 320;
-        ballY = holeY;
-      }
-      
-      if (target.miss === true && t > 0.3 && t < 0.8) {
-        var curveAmount = Math.sin((t - 0.3) / 0.5 * Math.PI) * 15;
-        ballX += curveAmount * (target.x > 320 ? 1 : -1);
-      }
-    }
+    var pOff = 0;
+    if (t > 0 && t < 0.12) pOff = -(t / 0.12) * 26;
+    else if (t >= 0.12 && t < 0.22) pOff = -26 + ((t - 0.12) / 0.1) * 30;
+    else if (t >= 0.22) pOff = 4;
+    var px = 320 + pOff, py = 356;
 
-    ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(ballX, ballY + 4, 8, 4, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(ballX, ballY, 8, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#cbd5e1'; ctx.fillRect(ballX - 3, ballY - 2, 2, 2); ctx.fillRect(ballX + 2, ballY + 1, 2, 2);
-    var putterOffsetX = 0; if (state.isPlaying && state.phase === 'ANIMATING' && state.taskProgress < 0.12) putterOffsetX = -12;
-    var putterX = 320 + putterOffsetX, putterY = 345;
-    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(320, 480); ctx.lineTo(putterX, putterY); ctx.stroke();
-    ctx.fillStyle = '#cbd5e1'; ctx.fillRect(putterX - 22, putterY - 6, 44, 12); ctx.fillStyle = '#64748b'; ctx.fillRect(putterX - 22, putterY + 3, 44, 3);
+    var mg = ctx.createLinearGradient(330, 480, px, py);
+    mg.addColorStop(0, '#9aa0a8');
+    mg.addColorStop(1, '#d7dbe0');
+    ctx.strokeStyle = mg;
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(332, 480); ctx.lineTo(px, py); ctx.stroke();
+
+    var hg = ctx.createLinearGradient(0, py - 7, 0, py + 7);
+    hg.addColorStop(0, '#f2f4f7');
+    hg.addColorStop(0.5, '#b9bec6');
+    hg.addColorStop(1, '#7d838c');
+    ctx.fillStyle = hg;
+    rr(px - 26, py - 6, 52, 12, 4);
+    ctx.fill();
+    ctx.fillStyle = '#333';
+    ctx.fillRect(px - 1, py - 6, 2, 12);
+
+    ctx.fillStyle = '#f2c078';
+    ctx.beginPath(); ctx.arc(334, 468, 10, 0, TAU); ctx.fill();
+    ctx.beginPath(); ctx.arc(320, 452, 10, 0, TAU); ctx.fill();
+
+    ctx.font = '12px "Press Start 2P"';
+    ctx.textAlign = 'center';
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#000';
+    //ctx.strokeText('4.2 m', 320, 60);
+    ctx.fillStyle = '#fff';
+    //ctx.fillText('4.2 m', 320, 60);
   }
 
-  function drawCloud(cx, cy) { ctx.fillStyle = '#ffffff'; ctx.fillRect(cx, cy, 50, 16); ctx.fillRect(cx + 10, cy - 8, 30, 24); }
 
+  // ---------- ARRANQUE ----------
   playBtn.addEventListener('click', togglePlay);
   pauseBtn.addEventListener('click', togglePlay);
   container.querySelector('#retroResetBtn').addEventListener('click', resetMatch);
@@ -776,9 +1613,16 @@ window.initRetroReplay = function(container, matchData) {
 
   buildHoleSequence();
   state.animFrameId = requestAnimationFrame(renderLoop);
-  
-  container._cleanup = function() { if (state.animFrameId) cancelAnimationFrame(state.animFrameId); state.isPlaying = false; playBtn.classList.remove('hide'); pauseBtn.classList.add('hide'); };
-  container._resume = function() { if (!state.animFrameId) state.animFrameId = requestAnimationFrame(renderLoop); };
+
+  container._cleanup = function () {
+    if (state.animFrameId) cancelAnimationFrame(state.animFrameId);
+    state.isPlaying = false;
+    playBtn.classList.remove('hide');
+    pauseBtn.classList.add('hide');
+  };
+  container._resume = function () {
+    if (!state.animFrameId) state.animFrameId = requestAnimationFrame(renderLoop);
+  };
 };
 </script>
 </body>
