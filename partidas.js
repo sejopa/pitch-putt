@@ -23,4 +23,23 @@ window.PARTIDAS = [
   {date:"2026-07-17", num:17, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,3,4,3,4,4,2,4,2]},{name:"HAL", scores:[2,4,2,4,5,3,3,3,4]}]},
   {date:"2026-07-24", num:18, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,4,3,4,4,4,6,2,3]},{name:"HAL", scores:[3,3,3,3,5,3,3,3,3]}]},
   {date:"2026-08-11", num:19, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,5,5,3,4,3,5,3,4]},{name:"HAL", scores:[3,3,3,5,5,3,4,3,3]}]},
-];
+],{
+  date: "2025-08-11",
+  num: 1,
+  season: "24/25",
+  course: "Pitch & Putt de Badalona",
+  players: [
+    {
+      name: "SEJOPA",
+      scores: [3, 5, 5, 3, 4, 3, 5, 3, 4]
+    },
+    {
+      name: "HAL",
+      scores: [3, 3, 3, 5, 5, 3, 4, 3, 3]
+    },
+    {
+      name: "CARABALLO",
+      scores: [5, 5, 5, 5, 5, 5, 5, 5, 5]
+    }
+  ]
+};
