@@ -1,4 +1,4 @@
-// Partidas de pitch & putt. Para añadir una, copia la última línea, pégala debajo
+8// Partidas de pitch & putt. Para añadir una, copia la última línea, pégala debajo
 // y cambia la fecha, el número, la temporada y los 9 golpes de cada jugador.
 window.PARTIDAS = [
   {date:"2026-09-15", num:1, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,3,2,4,3,3,3,4,5]},{name:"HAL", scores:[4,3,4,3,3,5,3,3,4]}]},
@@ -25,8 +25,8 @@ window.PARTIDAS = [
   {date:"2026-08-11", num:19, season:"25/26", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,5,5,3,4,3,5,3,4]},{name:"HAL", scores:[3,3,3,5,5,3,4,3,3]}]},
 ],{
   date: "2025-08-11",
-  num: 1,
-  season: "24/25",
+  num: 0,
+  season: "26/26",
   course: "Pitch & Putt de Badalona",
   players: [
     {
