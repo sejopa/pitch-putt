@@ -250,8 +250,22 @@
       card.querySelector('.det').classList.remove('hide');
       var rc = card.querySelector('.retro-container');
       rc.classList.remove('hide');
-      window.initRetroReplay(rc, fake);
+          window.initRetroReplay(rc, fake);
       rc._initialized = true;
+      // Botones para descargar cada avatar como .glb real
+      var exp = document.createElement('div');
+      exp.style.cssText = 'margin:12px 0;display:flex;gap:8px;flex-wrap:wrap;';
+      ['SEJOPA', 'HAL', 'CARABALLO'].forEach(function (n, i) {
+        var b = document.createElement('button');
+        b.textContent = '⬇ GLB ' + n;
+        b.style.cssText = 'padding:8px 12px;font:11px monospace;background:#3730a3;color:#fff;border:none;border-radius:6px;cursor:pointer;';
+        b.addEventListener('click', function () {
+          var col = [0xef4444, 0x3b82f6, 0x10b981][i];
+          window.GolfAvatars.exportarGLB(n, col).catch(function (e) { alert('Error exportando: ' + e); });
+        });
+        exp.appendChild(b);
+      });
+      card.appendChild(exp);
     }
   } else {
     games = (window.PARTIDAS || []).map(function (g, i) { var o = Object.assign({}, g); o.id = "p" + i; return o; })

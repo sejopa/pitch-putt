@@ -43,9 +43,15 @@ window.initRetroReplay = function (container, matchData) {
   var retroHTML =
     '<div class="retro-wrapper">' +
       '<header class="retro-header"><h1>⛳ BADALONA GOLF TOUR · DIRECTO</h1></header>' +
+      //'<div class="retro-screen" id="scr">' +
+      //  '<div id="retroBadge" class="retro-badge">TURNO: --</div>' +
+      //  '<div id="retroScore" class="retro-score"></div>' +
+      //CAMBIO CON RESULTADOS
+      '<div id="retroScore" class="retro-score"></div>' +
       '<div class="retro-screen" id="scr">' +
         '<div id="retroBadge" class="retro-badge">TURNO: --</div>' +
-        '<div id="retroScore" class="retro-score"></div>' +
+      //FIN
+
         '<div id="specHint" class="retro-badge hide" style="top:auto;bottom:8px;left:8px">🖱️ Arrastra: girar · Rueda: zoom</div>' +
         '<div id="holeResultScreen" class="hole-result-screen hide"></div>' +
       '</div>' +
@@ -63,6 +69,8 @@ window.initRetroReplay = function (container, matchData) {
         '<span id="retroHoleLabel" class="retro-hole-label">HOYO 1/9</span>' +
         '<button id="retroNextBtn" class="retro-btn-nav">HOYO ▶</button>' +
         '<button id="retroSpecBtn" class="retro-btn-nav">👁️ ESPECTADOR</button>' +
+        //añadimos boton control pantalla completa.
+        '<button id="retroFsBtn" class="retro-btn-nav">⛶ PANTALLA</button>' +
       '</div>' +
     '</div>';
   container.innerHTML = retroHTML;
@@ -161,11 +169,28 @@ window.initRetroReplay = function (container, matchData) {
   var campo = window.GolfCourse.crearCampo(scene);
   var HOLE = campo.HOLE;
 
-  var golfers = players.map(function (p, i) {
-    var g = window.GolfAvatars.crearHumano(p.color, p.name, i);
-    scene.add(g);
-    return g;
+  // Precargar modelos 3D antes de crear avatares
+  var playerNames = players.map(function (p) { return p.name; });
+  // Crear avatares (si los modelos aún no están en caché, se crea fallback;
+  // una vez cargados en segundo plano, el próximo replay los usará).
+  window.GolfAvatars.precargarActivos(playerNames).then(function () {
+    // Recargar si ya estábamos mostrando algo (primer arranque tras precarga)
+    if (!golfersBuilt) rebuildGolfers();
   });
+
+  var golfers = [];
+  var golfersBuilt = false;
+  function rebuildGolfers() {
+    golfers.forEach(function (g) { scene.remove(g); });
+    golfers = players.map(function (p, i) {
+      var g = window.GolfAvatars.crearHumano(p.color, p.name);
+      scene.add(g);
+      return g;
+    });
+    golfersBuilt = true;
+  }
+  rebuildGolfers();
+  
 
   // Antonio, el vendedor de bolas (NPC ocasional)
   var vendor = window.GolfAvatars.crearVendedor();
@@ -427,20 +452,36 @@ window.initRetroReplay = function (container, matchData) {
     var scores = players.map(function (p) { return p.scores[h]; });
     var seedBase = (matchData.id || 'm') + '|' + h + '|';
 
-    var teeSpacing = 0.7;
+    //var teeSpacing = 0.7;
+    //var simBalls = players.map(function (p, i) {
+    //  var offset = (i - (numPlayers - 1) / 2) * teeSpacing;
+    //  return { i: i, pos: { x: offset, z: 0 }, dist: len, lie: 'tee', strokes: 0, done: false };
+    //});
+    // Todos los jugadores salen del MISMO punto del tee; la bola, siempre igual
+    var TEE_SPOT = { x: 0.35, z: 0.3 };
     var simBalls = players.map(function (p, i) {
-      var offset = (i - (numPlayers - 1) / 2) * teeSpacing;
-      return { i: i, pos: { x: offset, z: 0 }, dist: len, lie: 'tee', strokes: 0, done: false };
+      return { i: i, pos: { x: TEE_SPOT.x, z: TEE_SPOT.z }, dist: len, lie: 'tee', strokes: 0, done: false };
     });
+    //FIN
+
     var plans = scores.map(function (s, i) {
       return makePlan(s, len, lay, mulberry32(fnv(seedBase + 'p' + i)));
     });
     var shotRng = mulberry32(fnv(seedBase + 'shots'));
 
     // Antonio: casi siempre en el hoyo 7, a veces en el 5, nunca en el resto
+    //var vr = mulberry32(fnv(seedBase + 'antonio'));
+    //state.vendorPresent = (h === 6) ? (vr() < 0.75) : (h === 4) ? (vr() < 0.30) : false;
+    //state.vendorPos.set((vr() < 0.5 ? 3.6 : -3.6), 0, -len * 0.35 + vr() * 8);
+    //state.vendorPhase = vr() * 9;
     var vr = mulberry32(fnv(seedBase + 'antonio'));
-    state.vendorPresent = (h === 6) ? (vr() < 0.75) : (h === 4) ? (vr() < 0.30) : false;
-    state.vendorPos.set((vr() < 0.5 ? 3.6 : -3.6), 0, -len * 0.35 + vr() * 8);
+    state.vendorPresent = (h === 6) ? (vr() < 0.85) : (h === 4) ? (vr() < 0.30) : false;
+    if (h === 6) {
+      // En el 7, Antonio viene por la riera, detrás del muro derecho
+      state.vendorPos.set(10.6 + vr() * 1.6, 0, -len * (0.30 + vr() * 0.35));
+    } else {
+      state.vendorPos.set((vr() < 0.5 ? 3.6 : -3.6), 0, -len * 0.35 + vr() * 8);
+    }
     state.vendorPhase = vr() * 9;
 
     var starter = state.nextStarterIndex;
@@ -883,13 +924,18 @@ window.initRetroReplay = function (container, matchData) {
     var otherIdx = 0;
     for (var gi = 0; gi < numPlayers; gi++) {
       if (gi === task.playerIndex) continue;
-      var side = (otherIdx % 2 === 0) ? 1 : -1;
-      //var depth = 0.4 + Math.floor(otherIdx / 2) * 0.9;
-      //var lateral = 1.7 + (otherIdx % 2) * 0.8;
-      // espectadores más separados
-      var depth = 0.6 + Math.floor(otherIdx / 2) * 1.0;
-      var lateral = 2.2 + (otherIdx % 2) * 0.9;
-
+      //INI extras siempre juntos
+      //var side = (otherIdx % 2 === 0) ? 1 : -1;
+        //var depth = 0.4 + Math.floor(otherIdx / 2) * 0.9;
+        //var lateral = 1.7 + (otherIdx % 2) * 0.8;
+        // espectadores más separados
+        //var depth = 0.6 + Math.floor(otherIdx / 2) * 1.0;
+        //var lateral = 2.2 + (otherIdx % 2) * 0.9;
+      
+      var side = 1;                        // todos al mismo lado, juntos
+      var depth = 0.8 + otherIdx * 0.55;   // fila escalonada hacia atrás
+      var lateral = 2.3 + otherIdx * 0.75; // en columna, uno junto al otro
+      //FIN  extras siempre juntos  
 
       var specPos = sV.clone().addScaledVector(sideV, side * lateral).addScaledVector(fwd, -depth);
       var olGy = groundY(task._lies[gi].dist) + (task._lies[gi].onTee ? campo.TEE_MAT_H : 0);
@@ -904,7 +950,10 @@ window.initRetroReplay = function (container, matchData) {
       otherIdx++;
     }
 
-    bag.position.copy(sV.clone().addScaledVector(sideV, 2.3 + (numPlayers - 2) * 0.3).addScaledVector(fwd, -1.1));
+    //bag.position.copy(sV.clone().addScaledVector(sideV, 2.3 + (numPlayers - 2) * 0.3).addScaledVector(fwd, -1.1));
+    //bolsa aparte del grupo
+    bag.position.copy(sV.clone().addScaledVector(sideV, 4.4).addScaledVector(fwd, -2.2));
+
     bag.position.y = gyS;
 
     // ----- Antonio y su bocadillo -----
@@ -921,7 +970,7 @@ window.initRetroReplay = function (container, matchData) {
     } else {
       vendor.visible = false;
     }
-    
+
 
     // ---------- Bola ----------
     var isPutt = task.club === 'putt';
@@ -960,8 +1009,14 @@ window.initRetroReplay = function (container, matchData) {
       bzp = lerp(s.z, g.z, f2);
       byp = lerp(gyS, gyT, f2) + BALL_R * bm + flightF * arcHeight(task.club) * (task._shank ? 0.2 : 1);
     }
+    
+    //balls[activeBallIdx].position.set(bxp, byp, bzp);
+    //balls[activeBallIdx].scale.setScalar(bScale * bm);
+    balls[activeBallIdx].visible = true;          // la bola activa siempre se ve
+    ballShadows[activeBallIdx].visible = true;
     balls[activeBallIdx].position.set(bxp, byp, bzp);
     balls[activeBallIdx].scale.setScalar(bScale * bm);
+    
     ballShadows[activeBallIdx].position.set(bxp, gyS + 0.015, bzp);
     var shS = Math.max(0.35, 1 - (byp - gyS - BALL_R * bm) * 0.09);
     ballShadows[activeBallIdx].scale.set(shS * bScale * bm, shS * bScale * bm, shS * bScale * bm);
@@ -1167,7 +1222,38 @@ window.initRetroReplay = function (container, matchData) {
     e.preventDefault();
     orbit.radius = Math.max(2, Math.min(45, orbit.radius + e.deltaY * 0.02));
   }, { passive: false });
-
+  // ---------- Pantalla completa del vídeo ----------
+  var fsBtn = container.querySelector('#retroFsBtn');
+  function fsWrapper() { return container.querySelector('.retro-wrapper'); }
+  function fsActive() { return document.fullscreenElement || document.webkitFullscreenElement; }
+  function toggleFs() {
+    var el = fsWrapper();
+    if (!fsActive()) {
+      if (el.requestFullscreen) el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    }
+  }
+  function resizeRenderer() {
+    requestAnimationFrame(function () {
+      var w = screenEl.clientWidth, h = screenEl.clientHeight;
+      if (w > 0 && h > 0) {
+        renderer.setSize(w, h, false);          // más resolución en pantalla completa
+        camera.aspect = w / h;                  // sin deformación
+        camera.updateProjectionMatrix();
+      }
+    });
+  }
+  function onFsChange() {
+    fsBtn.textContent = fsActive() ? '🗗 SALIR' : '⛶ PANTALLA';
+    resizeRenderer();
+  }
+  fsBtn.addEventListener('click', toggleFs);
+  document.addEventListener('fullscreenchange', onFsChange);
+  document.addEventListener('webkitfullscreenchange', onFsChange);
+  
   // ---------- Arranque ----------
   playBtn.addEventListener('click', togglePlay);
   pauseBtn.addEventListener('click', togglePlay);
@@ -1184,6 +1270,11 @@ window.initRetroReplay = function (container, matchData) {
     state.isPlaying = false;
     playBtn.classList.remove('hide');
     pauseBtn.classList.add('hide');
+    // Si este vídeo está a pantalla completa y se oculta, salimos limpiamente
+    if (fsActive() === fsWrapper()) {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    }
   };
   container._resume = function () { ensureLoop(); };
 };

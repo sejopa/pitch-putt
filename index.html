@@ -76,10 +76,12 @@ td:first-child, th:first-child { text-align:left; }
   background:rgba(30,27,75,0.85); border:1px solid #eab308;
   padding:5px 9px; font-size:8px; color:#facc15; border-radius:4px; z-index:50;
 }
+
 .retro-score {
-  position:absolute; top:8px; right:8px;
-  background:rgba(30,27,75,0.85); border:1px solid #eab308;
-  padding:5px 9px; font-size:8px; color:#facc15; border-radius:4px; z-index:50;
+  background:#151238; border-bottom:2px solid #312e81;
+  padding:6px 10px;
+  display:flex; flex-wrap:wrap; justify-content:center; gap:4px 12px;
+  font-size:8px; color:#facc15; text-align:center; line-height:1.6;
 }
 .retro-commentary {
   background:#0b1020; border-top:2px solid #312e81;
@@ -107,6 +109,18 @@ td:first-child, th:first-child { text-align:left; }
   padding:12px; width:100%; margin-top:8px; cursor:pointer; border-radius:8px;
 }
 .retro-btn:hover { background:#4f46e5; }
+/* ---------- PANTALLA COMPLETA DEL VÍDEO ---------- */
+.retro-wrapper:fullscreen,
+.retro-wrapper:-webkit-full-screen {
+  display:flex; flex-direction:column;
+  width:100vw; height:100vh; max-height:none;
+  border:none; border-radius:0;
+}
+.retro-wrapper:fullscreen .retro-screen,
+.retro-wrapper:-webkit-full-screen .retro-screen {
+  flex:1 1 auto; min-height:0;
+  width:100%; height:auto; aspect-ratio:auto; max-height:none;
+}
 
 /* ---------- BARRA DE TIEMPO TIPO VÍDEO ---------- */
 .retro-timeline {
@@ -153,6 +167,12 @@ td:first-child, th:first-child { text-align:left; }
 
 <!-- Orden de carga: librería 3D → datos → ajustes → avatares → campo → motor → interfaz -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- GLTFLoader para cargar modelos .glb -->
+<script src="https://unpkg.com/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
+
+<script src="https://unpkg.com/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
+
 <script src="partidas.js"></script>
 <script src="js/tuning.js"></script>
 <script src="js/avatars.js"></script>

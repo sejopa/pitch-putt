@@ -63,7 +63,15 @@
   var stoneMat = new THREE.MeshLambertMaterial({ map: stoneTexture() });
   var matTurf = new THREE.MeshLambertMaterial({ color: 0x2e8b57 });
   var concreteMat = new THREE.MeshLambertMaterial({ color: 0xb5aea2 });
+  
   var hillMat = new THREE.MeshLambertMaterial({ color: 0x8fa8c0 });
+  //muro derecho y riera seca en el hoyo 7
+  var dryMat = new THREE.MeshLambertMaterial({ color: 0xc9b896 });
+  var rockMat = new THREE.MeshLambertMaterial({ color: 0x8a8a86 });
+  var dryGrassMat = new THREE.MeshLambertMaterial({ color: 0xd8c880, side: THREE.DoubleSide });
+  var rockGeo = new THREE.DodecahedronGeometry(0.3, 0);
+  var tuftGeo = new THREE.ConeGeometry(0.14, 0.5, 5, 1, true);
+
   var sandMat = new THREE.MeshLambertMaterial({ color: 0xe8d59a });
   var sandLipMat = new THREE.MeshLambertMaterial({ color: 0xcbb47c, side: THREE.DoubleSide });
   var waterMat = new THREE.MeshLambertMaterial({ color: 0x2a7fc9, transparent: true, opacity: 0.9 });
@@ -390,6 +398,36 @@
         palm2.position.set((h % 2 === 0 ? -1 : 1) * 12, 0, -len * 0.7);
         group.add(palm2);
       }
+    
+    // Hoyo 7: muro lateral derecho y riera seca detrás (el camino de Antonio)
+    if (h === 6) {
+      var wallR = makeStoneWall(len + 12, 1.5, true);
+      wallR.rotation.y = Math.PI / 2;
+      wallR.position.set(8.5, 0, -len / 2);
+      group.add(wallR);
+      var bed = new THREE.Mesh(new THREE.PlaneGeometry(4.5, len + 16), dryMat);
+      bed.rotation.x = -Math.PI / 2;
+      bed.position.set(11.5, 0.02, -len / 2);
+      bed.receiveShadow = true;
+      group.add(bed);
+      var rr = mulberry32(fnv('riera|' + h));
+      for (var rk = 0; rk < 14; rk++) {
+        var rock = new THREE.Mesh(rockGeo, rockMat);
+        rock.scale.setScalar(0.25 + rr() * 0.5);
+        rock.position.set(10 + rr() * 3, 0.06, -rr() * (len + 8));
+        rock.rotation.set(rr() * 3, rr() * 3, rr() * 3);
+        rock.castShadow = true;
+        group.add(rock);
+      }
+      for (var tu = 0; tu < 10; tu++) {
+        var tuft = new THREE.Mesh(tuftGeo, dryGrassMat);
+        tuft.position.set(9.8 + rr() * 3.6, 0.15, -rr() * (len + 10));
+        tuft.rotation.y = rr() * 3;
+        group.add(tuft);
+      }
+    }
+
+
       for (var hi2 = 0; hi2 < 3; hi2++) {
         var hmesh = new THREE.Mesh(moundGeo, hillMat);
         hmesh.scale.set(60 + hi2 * 25, 10 + hi2 * 4, 30);
@@ -405,7 +443,7 @@
       rimRing.position.set(0, GREEN_TOP + 0.002, -len);
       pole.position.set(0, (GREEN_TOP - 0.09) + 1.05, -len);
       flag.position.set(0, GREEN_TOP + 1.86, -len);
-      
+
       // Número del hoyo en la bandera
       if (flag.material.map) flag.material.map.dispose();
       flag.material.map = flagTexture(h + 1);

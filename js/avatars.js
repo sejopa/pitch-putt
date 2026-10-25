@@ -1,72 +1,261 @@
 /* ============================================================
-   AVATARES · cuerpos, ropa, caras y palos + pose/swing
-   Expone window.GolfAvatars
+   AVATARES CARTOON DE ALTA CALIDAD · geometría rica en código
+   + pipeline opcional de activos GLB externos + exportador GLB
+   Mantiene la API pública: crearHumano, poseHumano, makeClub…
    ============================================================ */
 (function () {
 
-  // ---------- Rostros procedurales ----------
+  // ---------- Utilidades de construcción ----------
+  function matL(c) { return new THREE.MeshLambertMaterial({ color: c }); }
+  function ell(rx, ry, rz, mat, x, y, z) {
+    var m = new THREE.Mesh(new THREE.SphereGeometry(1, 12, 10), mat);
+    m.scale.set(rx, ry, rz);
+    m.position.set(x || 0, y || 0, z || 0);
+    m.castShadow = true;
+    return m;
+  }
+  function box(w, h, d, mat, x, y, z) {
+    var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+    m.position.set(x || 0, y || 0, z || 0);
+    m.castShadow = true;
+    return m;
+  }
+  function shadeHex(hex, amt) {
+    var c = new THREE.Color(hex);
+    c.offsetHSL(0, 0, amt / 255);
+    return c.getHex();
+  }
+  function limb(len, r1, r2, mat) {
+    var m = new THREE.Mesh(new THREE.CylinderGeometry(r1, r2, len, 10), mat);
+    m.position.y = -len / 2;
+    m.castShadow = true;
+    return m;
+  }
+  function joint(r, mat) {
+    var m = new THREE.Mesh(new THREE.SphereGeometry(r, 10, 8), mat);
+    m.castShadow = true;
+    return m;
+  }
+
+  // ---------- Identidades (colores + estilos, sin rutas externas) ----------
   var CARAS_CONFIG = {
-    "SEJOPA":    { skin: 0xe8b078, hair: 0x2b2b2b, cap: null,     patch: false, beard: 0.25, beardColor: 0x3a3a3a, brow: 0x2b2b2b, smile: 0.70, nose: 1.00 },
-    "HAL":       { skin: 0xe8b078, hair: 0x4a3527, cap: 0x141414, patch: true,  beard: 0.60, beardColor: 0x8f8f8f, brow: 0x4a3527, smile: 0.55, nose: 1.10 },
-    "CARABALLO": { skin: 0xdfa870, hair: 0x9a9a9a, cap: null,     patch: false, beard: 0.50, beardColor: 0x9a9a9a, brow: 0x6a6a6a, smile: 1.10, nose: 1.15 }
+    "SEJOPA":    { skin: 0xe8b078, hair: 0xa8a8a8, hairStyle: 'swept', cap: null, patch: false, beard: 0.00, beardColor: 0xa8a8a8, brow: 0x4a4a4a, browThick: 1.5, smile: 1.15, nose: 1.05, eye: 0x3a2a1a },
+    "HAL":       { skin: 0xe0a878, hair: 0x4a3527, hairStyle: 'cap',  cap: 0x23232e, patch: true, beard: 0.55, beardColor: 0x9a9a9a, brow: 0x4a3527, browThick: 1.0, smile: 0.60, nose: 1.10, eye: 0x3a2a1a },
+    "CARABALLO": { skin: 0xdfa878, hair: 0x3a2a1a, hairStyle: 'quiff', cap: null, patch: false, beard: 0.25, beardColor: 0x4a3a2a, brow: 0x3a2a1a, browThick: 1.0, smile: 0.85, nose: 1.00, eye: 0x2a1a0a }
   };
   var CARAS_ORDEN = ["SEJOPA", "HAL", "CARABALLO"];
   function caraConfigFor(name, i) {
     return CARAS_CONFIG[name] || CARAS_CONFIG[CARAS_ORDEN[i % CARAS_ORDEN.length]] || null;
   }
 
-  // ---------- Ropa inspirada en las fotos reales ----------
   var OUTFITS = {
-    "HAL":       { jacket: 0x1e56c8, zip: true,  pants: 0x5f7fa8, shoes: 0xf5f5f5, cap: 0x141414, patch: true,  sleeves: 1, hood: false, inner: 0xffffff },
-    "SEJOPA":    { jacket: 0xb9bdc4, zip: false, pants: 0x2f3a4f, shoes: 0xdedede, cap: null,     patch: false, sleeves: 1, hood: true,  inner: 0x111111 },
-    "CARABALLO": { jacket: 0x8f9484, zip: true,  pants: 0x3a3f4a, shoes: 0xe8e8e8, cap: null,     patch: false, sleeves: 1, hood: false, inner: 0x5a6b52 }
+    "CARABALLO": { style: 'hoodie', jacket: 0xc7cbd1, inner: 0x141414, zip: true, zipColor: 0xb8b8b8, pants: 0x2e3d5c, shoes: 0x8a7a6a },
+    "HAL":       { style: 'track',  jacket: 0x1e56c8, inner: 0xffffff, zip: true, zipColor: 0xf0f0f0, stripes: 0xffffff, watch: true, pants: 0x4a6a9a, shoes: 0x2a4a9a, shoeStripe: 0xffffff },
+    "SEJOPA":    { style: 'bomber', jacket: 0x9aa0a6, rib: 0x3a3a3e, inner: 0x4a4a4a, zip: true, zipColor: 0x888888, pants: 0x232327, shoes: 0x4a4a4e }
   };
   function outfitFor(name) { return OUTFITS[name] || null; }
 
-  // ---------- Canales de animación (swing) ----------
-  function chan(t, kf) {
-    for (var i = 0; i < kf.length - 1; i++) {
-      if (t <= kf[i + 1][0]) {
-        var f = ease((t - kf[i][0]) / (kf[i + 1][0] - kf[i][0]));
-        return kf[i][1] + (kf[i + 1][1] - kf[i][1]) * f;
-      }
-    }
-    return kf[kf.length - 1][1];
-  }
-  function ease(x) { return x * x * (3 - 2 * x); }
-
-  var KF_SWING    = [[0,0.45],[0.26,-2.10],[0.38,-2.20],[0.52,0.45],[0.64,0.95],[0.80,2.30],[1,2.45]];
-  var KF_PRACT    = [[0,0.45],[0.30,-1.60],[0.45,-1.70],[0.70,0.60],[0.85,1.60],[1,0.45]];
-  var KF_SHOULDER = [[0,0],[0.30,-1.45],[0.40,-1.55],[0.52,0.15],[0.75,1.25],[1,1.35]];
-  var KF_HIP      = [[0,0],[0.30,-0.55],[0.40,-0.60],[0.52,0.30],[0.75,1.05],[1,1.15]];
-  var KF_WEIGHT   = [[0,0],[0.30,-0.07],[0.40,-0.09],[0.52,0.08],[0.75,0.15],[1,0.17]];
-  var KF_SEAT     = [[0,-0.12],[0.40,-0.16],[0.52,-0.10],[0.75,-0.02],[1,0.0]];
-  var KF_TILT     = [[0,0.02],[0.40,0.05],[0.52,-0.04],[0.75,-0.12],[1,-0.16]];
-  var KF_BEND     = [[0,0.55],[0.30,0.60],[0.40,0.62],[0.52,0.50],[0.75,0.28],[1,0.16]];
-  var KF_HEAD     = [[0,0],[0.40,-0.45],[0.52,-0.35],[0.75,0.55],[1,0.75]];
-  var KF_COCK     = [[0,0.06],[0.30,1.05],[0.40,1.15],[0.50,0.35],[0.55,0.0],[0.75,-0.45],[1,-0.55]];
-  var KF_LEGF_HIP = [[0,0.16],[0.40,0.20],[0.52,0.06],[0.75,0.02],[1,0.02]];
-  var KF_LEGF_KNE = [[0,-0.24],[0.40,-0.30],[0.52,-0.10],[0.75,-0.05],[1,-0.05]];
-  var KF_LEGB_HIP = [[0,0.16],[0.40,0.10],[0.52,0.16],[0.75,-0.45],[1,-0.55]];
-  var KF_LEGB_KNE = [[0,-0.24],[0.40,-0.28],[0.52,-0.20],[0.75,0.55],[1,0.70]];
-
-  // Perfiles de swing por tipo de golpe (pitch & putt, sin drives)
-  var PROF = {
-    TEE:      { a: 0.85, sh: 0.80, hp: 0.75, ck: 0.85, bd: 1.00, lg: 1.00, st: 0.52, pr: 0.55 },
-    FULL:     { a: 0.78, sh: 0.72, hp: 0.68, ck: 0.80, bd: 1.00, lg: 1.00, st: 0.52, pr: 0.30 },
-    APPROACH: { a: 0.60, sh: 0.52, hp: 0.48, ck: 0.60, bd: 0.95, lg: 0.95, st: 0.48, pr: 0.30 },
-    CHIP:     { a: 0.36, sh: 0.28, hp: 0.20, ck: 0.30, bd: 0.90, lg: 0.85, st: 0.44, pr: 0.35 },
-    PUTT:     { a: 0.10, sh: 0.05, hp: 0.02, ck: 0.00, bd: 0.78, lg: 0.60, st: 0.40, pr: 0.25 }
+  // ---------- Pipeline opcional de GLB externos (si algún día los añades) ----------
+  var CARAS_MODELOS_CONFIG = {   // deja las rutas a null para usar el constructor cartoon
+    "SEJOPA":    { head_model: null, skin_texture: null, accessory: null },
+    "HAL":       { head_model: null, skin_texture: null, accessory: null },
+    "CARABALLO": { head_model: null, skin_texture: null, accessory: null }
   };
-  function perfilSwing(tk) {
-    if (tk.club === 'putt') return 'PUTT';
-    if (tk.club === 'tee') return 'TEE';
-    if (tk._fromDist <= 10) return 'CHIP';
-    if (tk._fromDist <= 24) return 'APPROACH';
-    return 'FULL';
+  var AssetCache = {
+    models: {}, textures: {}, loading: {}, errors: {}, loader: null, texLoader: null,
+    init: function () {
+      if (this.loader || typeof THREE.GLTFLoader === 'undefined') return;
+      this.loader = new THREE.GLTFLoader();
+      this.texLoader = new THREE.TextureLoader();
+    },
+    loadModel: function (url) {
+      if (!url || this.errors[url]) return Promise.resolve(null);
+      if (this.models[url]) return Promise.resolve(this.models[url]);
+      if (this.loading[url]) return this.loading[url];
+      this.init();
+      if (!this.loader) return Promise.resolve(null);
+      var self = this;
+      var p = new Promise(function (resolve) {
+        self.loader.load(url, function (g) { self.models[url] = g; delete self.loading[url]; resolve(g); },
+          undefined, function () { self.errors[url] = true; delete self.loading[url]; resolve(null); });
+      });
+      this.loading[url] = p;
+      return p;
+    },
+    cloneModel: function (gltf) {
+      if (!gltf) return null;
+      var c = gltf.scene.clone(true);
+      c.traverse(function (n) {
+        if (n.isMesh) {
+          if (Array.isArray(n.material)) n.material = n.material.map(function (m) { return m.clone(); });
+          else if (n.material) n.material = n.material.clone();
+          n.castShadow = true; n.receiveShadow = true;
+        }
+      });
+      return c;
+    }
+  };
+  function precargarActivos(nombres) {
+    var ps = [];
+    nombres.forEach(function (n) {
+      var fc = CARAS_MODELOS_CONFIG[n];
+      if (fc && fc.head_model) ps.push(AssetCache.loadModel(fc.head_model));
+      if (fc && fc.accessory) ps.push(AssetCache.loadModel(fc.accessory));
+    });
+    return Promise.all(ps);
   }
 
-  // ---------- Palos (colineales: grip + varilla + cabeza) ----------
+  // ---------- CABEZA CARTOON DETALLADA ----------
+  function hairBackShell(fc, tStart) {
+    var m = new THREE.Mesh(
+      new THREE.SphereGeometry(0.112, 16, 10, Math.PI, Math.PI, Math.PI * tStart, Math.PI * (0.95 - tStart)),
+      matL(fc.hair)
+    );
+    m.scale.set(1.02, 1.05, 1.02);
+    m.position.y = -0.005;
+    return m;
+  }
+
+  function buildCartoonHead(fc) {
+    var g = new THREE.Group();
+    var skin = matL(fc.skin);
+    var skinD = matL(shadeHex(fc.skin, -18));
+    var hairC = matL(fc.hair);
+
+    g.add(ell(0.105, 0.112, 0.100, skin, 0, 0.010, 0));            // cráneo
+    g.add(ell(0.078, 0.062, 0.072, skin, 0, -0.070, 0.028));      // mandíbula/mentón
+    g.add(ell(0.036, 0.030, 0.030, skin, -0.058, -0.028, 0.070)); // mejillas
+    g.add(ell(0.036, 0.030, 0.030, skin,  0.058, -0.028, 0.070));
+    g.add(ell(0.012, 0.028, 0.020, skin, -0.104, -0.005, 0.010)); // orejas
+    g.add(ell(0.012, 0.028, 0.020, skin,  0.104, -0.005, 0.010));
+    g.add(ell(0.016 * fc.nose, 0.020 * fc.nose, 0.018 * fc.nose, skinD, 0, -0.012, 0.100)); // nariz
+
+    [-1, 1].forEach(function (sd) {                                 // ojos + cejas
+      g.add(ell(0.020, 0.024, 0.013, matL(0xf5f5f5), sd * 0.042, 0.020, 0.086));
+      g.add(ell(0.010, 0.011, 0.008, matL(fc.eye), sd * 0.042, 0.020, 0.096));
+      g.add(ell(0.005, 0.005, 0.004, matL(0x101010), sd * 0.042, 0.020, 0.101));
+      var bt = fc.browThick || 1;
+      var brow = new THREE.Mesh(new THREE.TorusGeometry(0.026, 0.0055 * bt, 6, 10, Math.PI * 0.7), matL(fc.brow));
+      brow.position.set(sd * 0.044, 0.050, 0.090);
+      brow.rotation.set(0.15, sd * 0.25, sd * -0.35 + Math.PI * 0.15);
+      g.add(brow);
+    });
+
+    var mw = fc.smile || 0.7;                                       // boca
+    var mouth = new THREE.Mesh(new THREE.TorusGeometry(0.030, 0.0075, 8, 16, Math.PI), matL(0x8a4a3a));
+    mouth.rotation.z = Math.PI;
+    mouth.scale.set(mw, 0.8 + mw * 0.4, 1);
+    mouth.position.set(0, -0.048, 0.092);
+    g.add(mouth);
+    if (mw > 0.9) g.add(ell(0.022, 0.007, 0.006, matL(0xf8f8f8), 0, -0.050, 0.096)); // dientes
+
+    if (fc.beard > 0) {                                             // barba + bigote
+      var beard = new THREE.Mesh(
+        new THREE.SphereGeometry(0.112, 18, 12, 0, Math.PI * 2, Math.PI * 0.68, Math.PI * 0.30),
+        matL(fc.beardColor)
+      );
+      beard.scale.set(0.98, 1.02, 1.0);
+      beard.position.y = -0.010;
+      g.add(beard);
+      g.add(ell(0.020, 0.008, 0.010, matL(fc.beardColor), -0.018, -0.030, 0.096));
+      g.add(ell(0.020, 0.008, 0.010, matL(fc.beardColor),  0.018, -0.030, 0.096));
+    }
+
+    var style = fc.hairStyle || 'short';                            // pelo / gorra
+    if (style === 'cap') {
+      var capM = matL(fc.cap);
+      var dome = new THREE.Mesh(new THREE.SphereGeometry(0.116, 18, 10, 0, Math.PI * 2, 0, Math.PI * 0.52), capM);
+      dome.position.y = 0.012;
+      g.add(dome);
+      var brim = new THREE.Mesh(new THREE.CylinderGeometry(0.10, 0.10, 0.012, 20, 1, false, -0.95, 1.9), capM);
+      brim.scale.set(1, 1, 1.7);
+      brim.position.set(0, 0.040, 0.055);
+      g.add(brim);
+      if (fc.patch) {
+        g.add(box(0.056, 0.046, 0.010, matL(0xb03030), 0, 0.062, 0.104));
+        g.add(box(0.046, 0.036, 0.012, matL(0xf0f0f0), 0, 0.062, 0.108));
+        var bird = box(0.018, 0.012, 0.013, matL(0x1a1a1a), 0, 0.062, 0.114);
+        bird.rotation.z = 0.3;
+        g.add(bird);
+      }
+      g.add(hairBackShell(fc, 0.42));
+    } else if (style === 'quiff') {
+      g.add(hairBackShell(fc, 0.35));
+      g.add(ell(0.100, 0.030, 0.092, hairC, 0, 0.098, -0.008));
+      var quiff = ell(0.048, 0.052, 0.055, hairC, 0, 0.112, 0.052);
+      quiff.rotation.x = -0.55;
+      g.add(quiff);
+      g.add(ell(0.030, 0.030, 0.040, hairC, -0.045, 0.100, 0.055));
+      g.add(ell(0.030, 0.030, 0.040, hairC,  0.045, 0.100, 0.055));
+    } else if (style === 'swept') {
+      g.add(hairBackShell(fc, 0.35));
+      var top = ell(0.104, 0.042, 0.104, hairC, 0, 0.092, -0.018);
+      top.rotation.x = 0.25;
+      g.add(top);
+      g.add(ell(0.080, 0.028, 0.060, hairC, 0, 0.108, -0.045));
+      [-0.05, 0, 0.05].forEach(function (sx) {
+        g.add(ell(0.016, 0.020, 0.070, hairC, sx, 0.100, 0.010));
+      });
+    } else {
+      g.add(hairBackShell(fc, 0.35));
+      g.add(ell(0.100, 0.034, 0.096, hairC, 0, 0.096, -0.004));
+    }
+    return g;
+  }
+
+  // ---------- TORSO CON ROPA DETALLADA ----------
+  function buildCartoonTorso(of, teamHex) {
+    var g = new THREE.Group();
+    var jacket = matL(of.jacket);
+    var jacketD = matL(shadeHex(of.jacket, -22));
+    var inner = matL(of.inner);
+
+    var torso = new THREE.Mesh(new THREE.CylinderGeometry(0.185, 0.155, 0.50, 16), jacket);
+    torso.position.y = 0.23; torso.castShadow = true;
+    g.add(torso);
+    g.add(ell(0.075, 0.06, 0.07, jacket, -0.16, 0.44, 0));   // hombros
+    g.add(ell(0.075, 0.06, 0.07, jacket,  0.16, 0.44, 0));
+    g.add(ell(0.075, 0.05, 0.06, inner, 0, 0.47, 0.02));     // camiseta interior
+    if (of.zip) g.add(box(0.016, 0.44, 0.012, matL(of.zipColor || 0xd8d8d8), 0, 0.24, 0.175));
+
+    var stripe = new THREE.Mesh(new THREE.CylinderGeometry(0.188, 0.188, 0.055, 16, 1, true, -0.55, 1.10), matL(teamHex));
+    stripe.material.side = THREE.DoubleSide;
+    stripe.position.y = 0.36;
+    g.add(stripe);
+
+    if (of.style === 'hoodie') {
+      var hood = new THREE.Mesh(new THREE.SphereGeometry(0.13, 14, 10, 0, Math.PI * 2, 0, Math.PI * 0.55), jacketD);
+      hood.scale.set(1.0, 0.75, 0.85);
+      hood.position.set(0, 0.44, -0.10);
+      hood.rotation.x = 0.55;
+      g.add(hood);
+      [-0.045, 0.045].forEach(function (sx) {
+        g.add(box(0.010, 0.14, 0.010, matL(0xe8e8e8), sx, 0.40, 0.165));
+        g.add(ell(0.010, 0.016, 0.010, matL(0xc8c8c8), sx, 0.33, 0.168));
+      });
+      var pk = box(0.20, 0.10, 0.03, jacketD, 0, 0.10, 0.150);
+      pk.rotation.x = -0.10;
+      g.add(pk);
+    } else if (of.style === 'track') {
+      g.add(box(0.05, 0.04, 0.008, matL(0xffffff), 0.085, 0.34, 0.170));
+      var coll = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.095, 0.06, 14, 1, true), jacket);
+      coll.material.side = THREE.DoubleSide;
+      coll.position.y = 0.485;
+      g.add(coll);
+    } else if (of.style === 'bomber') {
+      var ribM = matL(of.rib || 0x3a3a3e);
+      var coll2 = new THREE.Mesh(new THREE.TorusGeometry(0.085, 0.022, 8, 18), ribM);
+      coll2.rotation.x = Math.PI / 2;
+      coll2.position.y = 0.485;
+      g.add(coll2);
+      var hem = new THREE.Mesh(new THREE.CylinderGeometry(0.158, 0.150, 0.06, 16), ribM);
+      hem.position.y = 0.015;
+      g.add(hem);
+    }
+    return g;
+  }
+
+  // ---------- Palos, zócalos e IK (sin cambios) ----------
   var KIND_GEOM = {
     tee:   { tilt: 0.20, L: 0.96, headDrop: 0.05 },
     iron:  { tilt: 0.20, L: 0.90, headDrop: 0.05 },
@@ -127,7 +316,6 @@
     return c;
   }
 
-  // Zócalo del palo resuelto analíticamente (cabeza junto a la bola)
   var _SOCK = new THREE.Vector3();
   var CARRY_POS = new THREE.Vector3(0, -0.30, 0.12);
   function socketFor(kind, P, out) {
@@ -140,7 +328,6 @@
     return out.set(0, sy, sz);
   }
 
-  // ---------- IK de 2 huesos (manos siempre sobre el grip) ----------
   var _w = new THREE.Vector3(), _u = new THREE.Vector3(), _ed = new THREE.Vector3(), _fd = new THREE.Vector3();
   var _E = new THREE.Vector3(), _H1 = new THREE.Vector3(), _H2 = new THREE.Vector3();
   var _q = new THREE.Quaternion(), _qi = new THREE.Quaternion();
@@ -168,36 +355,61 @@
     el.quaternion.setFromUnitVectors(_DOWN, _fd);
   }
 
-  function limb(len, r1, r2, mat) {
-    var m = new THREE.Mesh(new THREE.CylinderGeometry(r1, r2, len, 10), mat);
-    m.position.y = -len / 2;
-    m.castShadow = true;
-    return m;
+  // ---------- Canales y perfiles (sin cambios) ----------
+  function chan(t, kf) {
+    for (var i = 0; i < kf.length - 1; i++) {
+      if (t <= kf[i + 1][0]) {
+        var f = ease((t - kf[i][0]) / (kf[i + 1][0] - kf[i][0]));
+        return kf[i][1] + (kf[i + 1][1] - kf[i][1]) * f;
+      }
+    }
+    return kf[kf.length - 1][1];
   }
-  function joint(r, mat) {
-    var m = new THREE.Mesh(new THREE.SphereGeometry(r, 10, 8), mat);
-    m.castShadow = true;
-    return m;
+  function ease(x) { return x * x * (3 - 2 * x); }
+  function lerpN(a, b, f) { return a + (b - a) * f; }
+  var KF_SWING    = [[0,0.45],[0.26,-2.10],[0.38,-2.20],[0.52,0.45],[0.64,0.95],[0.80,2.30],[1,2.45]];
+  var KF_PRACT    = [[0,0.45],[0.30,-1.60],[0.45,-1.70],[0.70,0.60],[0.85,1.60],[1,0.45]];
+  var KF_SHOULDER = [[0,0],[0.30,-1.45],[0.40,-1.55],[0.52,0.15],[0.75,1.25],[1,1.35]];
+  var KF_HIP      = [[0,0],[0.30,-0.55],[0.40,-0.60],[0.52,0.30],[0.75,1.05],[1,1.15]];
+  var KF_WEIGHT   = [[0,0],[0.30,-0.07],[0.40,-0.09],[0.52,0.08],[0.75,0.15],[1,0.17]];
+  var KF_SEAT     = [[0,-0.12],[0.40,-0.16],[0.52,-0.10],[0.75,-0.02],[1,0.0]];
+  var KF_TILT     = [[0,0.02],[0.40,0.05],[0.52,-0.04],[0.75,-0.12],[1,-0.16]];
+  var KF_BEND     = [[0,0.55],[0.30,0.60],[0.40,0.62],[0.52,0.50],[0.75,0.28],[1,0.16]];
+  var KF_HEAD     = [[0,0],[0.40,-0.45],[0.52,-0.35],[0.75,0.55],[1,0.75]];
+  var KF_COCK     = [[0,0.06],[0.30,1.05],[0.40,1.15],[0.50,0.35],[0.55,0.0],[0.75,-0.45],[1,-0.55]];
+  var KF_LEGF_HIP = [[0,0.16],[0.40,0.20],[0.52,0.06],[0.75,0.02],[1,0.02]];
+  var KF_LEGF_KNE = [[0,-0.24],[0.40,-0.30],[0.52,-0.10],[0.75,-0.05],[1,-0.05]];
+  var KF_LEGB_HIP = [[0,0.16],[0.40,0.10],[0.52,0.16],[0.75,-0.45],[1,-0.55]];
+  var KF_LEGB_KNE = [[0,-0.24],[0.40,-0.28],[0.52,-0.20],[0.75,0.55],[1,0.70]];
+  var PROF = {
+    TEE:      { a: 0.85, sh: 0.80, hp: 0.75, ck: 0.85, bd: 1.00, lg: 1.00, st: 0.52, pr: 0.55 },
+    FULL:     { a: 0.78, sh: 0.72, hp: 0.68, ck: 0.80, bd: 1.00, lg: 1.00, st: 0.52, pr: 0.30 },
+    APPROACH: { a: 0.60, sh: 0.52, hp: 0.48, ck: 0.60, bd: 0.95, lg: 0.95, st: 0.48, pr: 0.30 },
+    CHIP:     { a: 0.36, sh: 0.28, hp: 0.20, ck: 0.30, bd: 0.90, lg: 0.85, st: 0.44, pr: 0.35 },
+    PUTT:     { a: 0.10, sh: 0.05, hp: 0.02, ck: 0.00, bd: 0.78, lg: 0.60, st: 0.40, pr: 0.25 }
+  };
+  function perfilSwing(tk) {
+    if (tk.club === 'putt') return 'PUTT';
+    if (tk.club === 'tee') return 'TEE';
+    if (tk._fromDist <= 10) return 'CHIP';
+    if (tk._fromDist <= 24) return 'APPROACH';
+    return 'FULL';
   }
 
-  // ---------- Humano completo (cuerpo + ropa + cara) ----------
-  function makeHuman(teamHex, fc, of) {
+  // ---------- HUMANO COMPLETO ----------
+  function makeHuman(teamHex, name) {
+    var fc = caraConfigFor(name, 0) || { skin: 0xe8b078, hair: 0x3a2a1a, hairStyle: 'short', brow: 0x3a2a1a, smile: 0.7, nose: 1, eye: 0x3a2a1a, beard: 0, beardColor: 0x3a2a1a, browThick: 1 };
+    var of = outfitFor(name) || { style: 'track', jacket: teamHex, inner: 0xffffff, zip: false, pants: 0x2f3a4f, shoes: 0xf2f2f2 };
     var g = new THREE.Group();
-    var jacketC = of && of.jacket != null ? of.jacket : teamHex;
-    var pantsC = of && of.pants != null ? of.pants : 0x2f3a4f;
-    var shoesC = of && of.shoes != null ? of.shoes : 0xf2f2f2;
-    var jacket = new THREE.MeshLambertMaterial({ color: jacketC });
-    var jacketDark = new THREE.MeshLambertMaterial({ color: new THREE.Color(jacketC).multiplyScalar(0.85) });
-    var pants = new THREE.MeshLambertMaterial({ color: pantsC });
-    var shoeM = new THREE.MeshLambertMaterial({ color: shoesC });
-    var skin = new THREE.MeshLambertMaterial({ color: 0xe8b078 });
+    var skin = matL(fc.skin);
+    var pants = matL(of.pants);
+    var shoeM = matL(of.shoes);
+    var jacket = matL(of.jacket);
 
     var hips = new THREE.Group();
     hips.position.y = 0.98;
-    var pelvis = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.15, 0.28, 12), pants);
-    pelvis.castShadow = true;
-    hips.add(pelvis);
-    var belt = new THREE.Mesh(new THREE.CylinderGeometry(0.165, 0.165, 0.05, 12), new THREE.MeshLambertMaterial({ color: 0x222222 }));
+    hips.add(new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.15, 0.28, 12), pants));
+    var belt = new THREE.Mesh(new THREE.CylinderGeometry(0.165, 0.165, 0.05, 12), matL(0x222222));
     belt.position.y = 0.12;
     hips.add(belt);
 
@@ -215,6 +427,11 @@
       shoe.position.set(0, -0.385, 0.06);
       shoe.castShadow = true;
       knee.add(shoe);
+      if (of.shoeStripe) {
+        var s1 = box(0.012, 0.03, 0.16, matL(of.shoeStripe), 0.056, -0.385, 0.06);
+        var s2 = box(0.012, 0.03, 0.16, matL(of.shoeStripe), -0.056, -0.385, 0.06);
+        knee.add(s1); knee.add(s2);
+      }
       hipJ.add(knee);
       return { hip: hipJ, knee: knee };
     }
@@ -225,130 +442,47 @@
     var twistG = new THREE.Group();
     twistG.position.y = 0.14;
     hips.add(twistG);
-    var torso = new THREE.Mesh(new THREE.CylinderGeometry(0.185, 0.155, 0.50, 14), jacket);
-    torso.position.y = 0.23;
-    torso.castShadow = true;
-    twistG.add(torso);
-    //banda de equipo curvada (sin alas)
-    var stripe = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.183, 0.183, 0.06, 14, 1, true, -0.55, 1.10),
-      new THREE.MeshLambertMaterial({ color: teamHex, side: THREE.DoubleSide })
-    );
-    stripe.position.set(0, 0.40, 0);
-    twistG.add(stripe);
-
-    if (of && of.zip) {
-      var zip = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.44, 0.02), new THREE.MeshLambertMaterial({ color: 0xe8e8e8 }));
-      zip.position.set(0, 0.24, 0.165);
-      twistG.add(zip);
-    }
-    var collarC = of && of.inner != null ? of.inner : 0xffffff;
-    var collar = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.085, 0.06, 10), new THREE.MeshLambertMaterial({ color: collarC }));
-    collar.position.y = 0.47;
-    twistG.add(collar);
-    if (of && of.hood) {
-      var hood = new THREE.Mesh(new THREE.SphereGeometry(0.14, 10, 8, 0, Math.PI * 2, 0, Math.PI / 2), jacketDark);
-      hood.position.set(0, 0.50, -0.10);
-      hood.scale.set(1, 0.6, 1);
-      twistG.add(hood);
-    }
+    twistG.add(buildCartoonTorso(of, teamHex));
     var neck = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.055, 0.07, 10), skin);
     neck.position.y = 0.51;
     twistG.add(neck);
 
-    // Cabeza + rostro procedural
     var headG = new THREE.Group();
     headG.position.y = 0.62;
-    var skinC = fc && fc.skin != null ? fc.skin : 0xe8b078;
-    var hairC = fc && fc.hair != null ? fc.hair : 0x3a2a1a;
-    var browC = fc && fc.brow != null ? fc.brow : hairC;
-    var beardC = fc && fc.beardColor != null ? fc.beardColor : hairC;
-    var smileW = fc && fc.smile != null ? fc.smile : 0.6;
-    var noseS = fc && fc.nose != null ? fc.nose : 1.0;
-    var skinMat = new THREE.MeshLambertMaterial({ color: skinC });
-    var skinDark = new THREE.MeshLambertMaterial({ color: new THREE.Color(skinC).multiplyScalar(0.88) });
-    var head = new THREE.Mesh(new THREE.SphereGeometry(0.115, 16, 14), skinMat);
-    head.scale.set(0.95, 1.08, 1.0);
-    head.castShadow = true;
-    headG.add(head);
-    var earG = new THREE.SphereGeometry(0.02, 8, 6);
-    var earL = new THREE.Mesh(earG, skinMat); earL.position.set(-0.104, -0.005, 0.01);
-    var earR = new THREE.Mesh(earG, skinMat); earR.position.set(0.104, -0.005, 0.01);
-    headG.add(earL); headG.add(earR);
-    var eyeWG = new THREE.SphereGeometry(0.016, 10, 8);
-    var eyeWM = new THREE.MeshLambertMaterial({ color: 0xf5f5f5 });
-    var irisM = new THREE.MeshBasicMaterial({ color: 0x2a1a0a });
-    var browM = new THREE.MeshLambertMaterial({ color: browC });
-    [-1, 1].forEach(function (sd) {
-      var ew = new THREE.Mesh(eyeWG, eyeWM); ew.position.set(sd * 0.042, 0.012, 0.096); headG.add(ew);
-      var ir = new THREE.Mesh(new THREE.SphereGeometry(0.008, 8, 6), irisM); ir.position.set(sd * 0.042, 0.012, 0.110); headG.add(ir);
-      var bw = new THREE.Mesh(new THREE.BoxGeometry(0.040, 0.009, 0.012), browM);
-      bw.position.set(sd * 0.042, 0.038, 0.100);
-      bw.rotation.z = sd * -0.12;
-      headG.add(bw);
-    });
-    var nose = new THREE.Mesh(new THREE.SphereGeometry(0.017 * noseS, 8, 6), skinDark);
-    nose.position.set(0, -0.012, 0.112);
-    headG.add(nose);
-    var mouth = new THREE.Mesh(
-      new THREE.TorusGeometry(0.030, 0.007, 8, 14, Math.PI),
-      new THREE.MeshLambertMaterial({ color: 0x7a3a32 })
-    );
-    mouth.rotation.z = Math.PI;
-    mouth.scale.set(smileW, 0.7 + smileW * 0.5, 1);
-    mouth.position.set(0, -0.042, 0.102);
-    headG.add(mouth);
-    if (fc && fc.beard > 0) {
-      var beard = new THREE.Mesh(
-        //barba debajo de la boca
-        new THREE.SphereGeometry(0.116, 14, 10, 0, Math.PI * 2, Math.PI * (0.66 - fc.beard * 0.06), Math.PI * (0.30 + fc.beard * 0.08)),
-        new THREE.MeshLambertMaterial({ color: beardC })
-      );
-      beard.scale.set(0.97, 1.06, 1.0);
-      beard.position.y = -0.012;
-      headG.add(beard);
-    }
-
-    var capColor = (of && of.cap != null) ? of.cap : ((fc && fc.cap != null) ? fc.cap : 0xffffff);
-    var hasPatch = (of && of.patch) || (fc && fc.patch);
-    // Pelo SOLO detrás (azimut PI..2PI): nunca tapa la cara
-    var hairBackGeo = new THREE.SphereGeometry(0.118, 12, 10, Math.PI, Math.PI, Math.PI * 0.30, Math.PI * 0.58);
-    var hairMat2 = new THREE.MeshLambertMaterial({ color: hairC });
-    if (capColor !== 0xffffff || hasPatch) {
-      var capD = new THREE.Mesh(new THREE.SphereGeometry(0.122, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshLambertMaterial({ color: capColor }));
-      capD.position.y = 0.015;
-      headG.add(capD);
-      var brim2 = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.014, 0.15), new THREE.MeshLambertMaterial({ color: capColor }));
-      brim2.position.set(0, 0.012, 0.14);
-      headG.add(brim2);
-      if (hasPatch) {
-        var patch = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.04, 0.012), new THREE.MeshLambertMaterial({ color: 0xf0f0f0 }));
-        patch.position.set(0, 0.055, 0.112);
-        headG.add(patch);
-      }
-      headG.add(new THREE.Mesh(hairBackGeo, hairMat2));
-    } else {
-      var hairTop = new THREE.Mesh(new THREE.SphereGeometry(0.118, 14, 10, 0, Math.PI * 2, 0, Math.PI * 0.36), hairMat2);
-      headG.add(hairTop);
-      headG.add(new THREE.Mesh(hairBackGeo, hairMat2));
-    }
-
+    headG.add(buildCartoonHead(fc));
+    headG.scale.setScalar(1.15);
     twistG.add(headG);
 
     var swing = new THREE.Group();
     swing.position.y = 0.42;
     twistG.add(swing);
 
-    var sleeveMat = (of && of.sleeves) ? jacket : skin;
-    function arm(sx) {
+    function arm(sx, isLeft) {
       var sh = new THREE.Group();
       sh.position.set(sx, 0, 0);
       sh.add(joint(0.062, jacket));
       sh.add(limb(0.30, 0.05, 0.042, jacket));
+      if (of.stripes) {
+        for (var si = 0; si < 3; si++) {
+          var stb = box(0.010, 0.28, 0.010, matL(of.stripes), (si - 1) * 0.018, -0.15, 0.045);
+          sh.add(stb);
+        }
+      }
       var el = new THREE.Group();
       el.position.y = -0.30;
-      el.add(joint(0.045, sleeveMat));
-      el.add(limb(0.27, 0.04, 0.032, sleeveMat));
+      el.add(joint(0.045, skin));
+      el.add(limb(0.27, 0.04, 0.032, skin));
+      if (of.style === 'bomber' || of.style === 'hoodie') {
+        var cuff = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.042, 0.05, 10), matL(of.rib || shadeHex(of.jacket, -22)));
+        cuff.position.y = -0.24;
+        el.add(cuff);
+      }
+      if (of.watch && isLeft) {
+        var watch = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.012, 8, 14), matL(0x1a1a1a));
+        watch.rotation.x = Math.PI / 2;
+        watch.position.y = -0.20;
+        el.add(watch);
+      }
       var hand = new THREE.Mesh(new THREE.SphereGeometry(0.048, 10, 8), skin);
       hand.position.y = window.GOLF_TUNE.handY;
       hand.castShadow = true;
@@ -356,8 +490,8 @@
       sh.add(el);
       return { sh: sh, el: el, hand: hand };
     }
-    var armL = arm(-0.19);
-    var armR = arm(0.19);
+    var armL = arm(-0.19, true);
+    var armR = arm(0.19, false);
     swing.add(armL.sh); swing.add(armR.sh);
 
     var socket = new THREE.Group();
@@ -387,7 +521,6 @@
     h2.copy(u.clubSocket.position).add(_off2);
   }
 
-  // Pose completa: rutina, swing, ensayo, mirada, IK de brazos
   function poseHumano(h, o) {
     var u = h.userData;
     var P = o.prof;
@@ -430,13 +563,12 @@
     u.clubs.wedge.visible = show && kind === 'wedge';
     u.clubs.putt.visible = show && kind === 'putt';
   }
-  function lerpN(a, b, f) { return a + (b - a) * f; }
 
-  function crearHumano(teamHex, name, idx) {
-    return makeHuman(teamHex, caraConfigFor(name, idx), outfitFor(name));
+  function crearHumano(teamHex, name) {
+    return makeHuman(teamHex, name);
   }
 
-    // ---------- ANTONIO, EL VENDEDOR DE BOLAS ----------
+  // ---------- ANTONIO (sin cambios) ----------
   function roundRectPath(x, rx, ry, rw, rh, rr) {
     x.beginPath();
     x.moveTo(rx + rr, ry);
@@ -462,16 +594,15 @@
     x.fillText(text, 256, 70);
     return new THREE.CanvasTexture(c);
   }
-
   function makeVendedor() {
     var g = new THREE.Group();
-    var skin = new THREE.MeshLambertMaterial({ color: 0xe0b090 });
-    var hairW = new THREE.MeshLambertMaterial({ color: 0xe8e8e8 });
-    var vest = new THREE.MeshLambertMaterial({ color: 0x7a4a2a, side: THREE.DoubleSide });
-    var shirtM = new THREE.MeshLambertMaterial({ color: 0xe8dcc8 });
-    var pants = new THREE.MeshLambertMaterial({ color: 0x4a4a4a });
-    var shoes = new THREE.MeshLambertMaterial({ color: 0x5a3a22 });
-    var straw = new THREE.MeshLambertMaterial({ color: 0xd8c08a });
+    var skin = matL(0xe0b090);
+    var hairW = matL(0xe8e8e8);
+    var vest = matL(0x7a4a2a); vest.side = THREE.DoubleSide;
+    var shirtM = matL(0xe8dcc8);
+    var pants = matL(0x4a4a4a);
+    var shoes = matL(0x5a3a22);
+    var straw = matL(0xd8c08a);
 
     var hips = new THREE.Group();
     hips.position.y = 0.95;
@@ -485,54 +616,40 @@
       var sh = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.07, 0.26), shoes);
       sh.position.set(0, -0.385, 0.06);
       kn.add(sh);
-      hj.add(kn);
-      hj.rotation.x = 0.05;
+      hj.add(kn); hj.rotation.x = 0.05;
       return hj;
     }
     hips.add(vleg(-0.10)); hips.add(vleg(0.10));
-
     var torsoG = new THREE.Group();
     torsoG.position.y = 0.13;
-    torsoG.rotation.x = 0.12;   // ligera chepa de señor mayor
+    torsoG.rotation.x = 0.12;
     hips.add(torsoG);
-    var torso = new THREE.Mesh(new THREE.CylinderGeometry(0.185, 0.155, 0.5, 14), shirtM);
-    torso.position.y = 0.23;
-    torsoG.add(torso);
+    torsoG.add(new THREE.Mesh(new THREE.CylinderGeometry(0.185, 0.155, 0.5, 14), shirtM));
     var vestM = new THREE.Mesh(new THREE.CylinderGeometry(0.195, 0.165, 0.46, 14, 1, true, 0.55, Math.PI * 2 - 1.1), vest);
     vestM.position.y = 0.23;
     torsoG.add(vestM);
-
     var headG = new THREE.Group();
     headG.position.y = 0.60;
     torsoG.add(headG);
     var head = new THREE.Mesh(new THREE.SphereGeometry(0.115, 16, 14), skin);
-    head.scale.set(0.95, 1.05, 1.0);
+    head.scale.set(0.95, 1.05, 1);
     headG.add(head);
-    // Calvo con pelo blanco en laterales y nuca
     headG.add(new THREE.Mesh(new THREE.SphereGeometry(0.118, 12, 8, Math.PI, Math.PI, Math.PI * 0.42, Math.PI * 0.30), hairW));
-    var earG = new THREE.SphereGeometry(0.02, 8, 6);
-    var el1 = new THREE.Mesh(earG, skin); el1.position.set(-0.104, -0.005, 0.01);
-    var el2 = new THREE.Mesh(earG, skin); el2.position.set(0.104, -0.005, 0.01);
-    headG.add(el1); headG.add(el2);
-    var eyeM = new THREE.MeshBasicMaterial({ color: 0x2a1a0a });
-    var o1 = new THREE.Mesh(new THREE.SphereGeometry(0.012, 8, 6), eyeM); o1.position.set(-0.04, 0.02, 0.10);
-    var o2 = new THREE.Mesh(new THREE.SphereGeometry(0.012, 8, 6), eyeM); o2.position.set(0.04, 0.02, 0.10);
-    headG.add(o1); headG.add(o2);
-    var nose = new THREE.Mesh(new THREE.SphereGeometry(0.02, 8, 6), skin);
-    nose.position.set(0, -0.005, 0.115);
-    headG.add(nose);
+    headG.add(ell(0.02, 0.02, 0.02, skin, -0.104, -0.005, 0.01));
+    headG.add(ell(0.02, 0.02, 0.02, skin, 0.104, -0.005, 0.01));
+    headG.add(ell(0.012, 0.012, 0.012, matL(0x2a1a0a), -0.04, 0.02, 0.10));
+    headG.add(ell(0.012, 0.012, 0.012, matL(0x2a1a0a), 0.04, 0.02, 0.10));
+    headG.add(ell(0.02, 0.02, 0.02, skin, 0, -0.005, 0.115));
     var must = new THREE.Mesh(new THREE.TorusGeometry(0.035, 0.010, 8, 12, Math.PI), hairW);
     must.rotation.z = Math.PI;
     must.position.set(0, -0.028, 0.105);
     headG.add(must);
-    // Sombrero de paja
     var brimH = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.02, 18), straw);
     brimH.position.y = 0.075;
     headG.add(brimH);
     var dome = new THREE.Mesh(new THREE.SphereGeometry(0.13, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2), straw);
     dome.position.y = 0.08; dome.scale.y = 0.7;
     headG.add(dome);
-
     function varm(sx) {
       var sh = new THREE.Group();
       sh.position.set(sx, 0.44, 0);
@@ -550,31 +667,21 @@
     var armL = varm(-0.19);
     var armR = varm(0.19);
     torsoG.add(armL); torsoG.add(armR);
-    armL.rotation.x = 0.5; armL.rotation.z = 0.5;   // sostiene el cubo delante
-
-    // Cubo con bolas colgado del brazo izquierdo
+    armL.rotation.x = 0.5; armL.rotation.z = 0.5;
     var bucket = new THREE.Group();
-    var bkt = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.14, 0.11, 0.22, 14, 1, true),
-      new THREE.MeshLambertMaterial({ color: 0x2a6db2, side: THREE.DoubleSide })
-    );
-    bucket.add(bkt);
+    bucket.add(new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.11, 0.22, 14, 1, true), matL(0x2a6db2)));
     for (var bi2 = 0; bi2 < 6; bi2++) {
-      var bl = new THREE.Mesh(new THREE.SphereGeometry(0.042, 8, 6), new THREE.MeshLambertMaterial({ color: 0xffffff }));
+      var bl = new THREE.Mesh(new THREE.SphereGeometry(0.042, 8, 6), matL(0xffffff));
       bl.position.set(((bi2 % 3) - 1) * 0.06, 0.10 + (bi2 > 2 ? 0.05 : 0), (Math.floor(bi2 / 3) - 0.5) * 0.06);
       bucket.add(bl);
     }
     bucket.position.set(0, -0.62, 0.10);
     armL.add(bucket);
-
-    // Bolas sueltas junto a sus pies
     for (var lb = 0; lb < 3; lb++) {
-      var lbm = new THREE.Mesh(new THREE.SphereGeometry(0.042, 8, 6), new THREE.MeshLambertMaterial({ color: 0xffffff }));
+      var lbm = new THREE.Mesh(new THREE.SphereGeometry(0.042, 8, 6), matL(0xffffff));
       lbm.position.set(-0.35 + lb * 0.12, 0.042, 0.35 + (lb % 2) * 0.1);
       g.add(lbm);
     }
-
-    // Bocadillo
     var bubble = new THREE.Mesh(
       new THREE.PlaneGeometry(1.7, 0.64),
       new THREE.MeshBasicMaterial({ map: bubbleTexture('Queréis bolas?'), transparent: true, side: THREE.DoubleSide, depthWrite: false })
@@ -582,12 +689,10 @@
     bubble.position.set(0, 2.05, 0.15);
     bubble.visible = false;
     g.add(bubble);
-
     g.add(hips);
     g.userData = { torso: torsoG, head: headG, waveArm: armR, bucketArm: armL, bubble: bubble };
     return g;
   }
-
   function poseVendedor(g, t, speaking, pop) {
     var u = g.userData;
     u.torso.rotation.x = 0.12 + Math.sin(t * 1.1) * 0.02;
@@ -601,9 +706,44 @@
     u.bubble.scale.set(scl, scl, scl);
   }
 
+  // ---------- EXPORTADOR GLB (convierte el avatar en archivo real) ----------
+    function exportarGLB(name, teamHex) {
+    return new Promise(function (resolve, reject) {
+      if (typeof THREE.GLTFExporter === 'undefined') {
+        reject(new Error('GLTFExporter no cargado (revisa el <script> en index.html)'));
+        return;
+      }
+      try {
+        var g = makeHuman(teamHex || 0x888888, name);
+        poseHumano(g, { t: 0, kind: 'iron', prof: PROF.FULL, settle: 1 });
+        g.updateMatrixWorld(true);
+        var exporter = new THREE.GLTFExporter();
+        // three r128: parse(input, onDone, options) — SIN callback de error en medio
+        exporter.parse(g, function (result) {
+          try {
+            var isBinary = (result instanceof ArrayBuffer);
+            if (isBinary) console.log('[GLB] ' + name + ' → ' + result.byteLength + ' bytes');
+            else console.log('[GLTF] ' + name + ' → JSON, ' + JSON.stringify(result).length + ' chars');
+            var blob = isBinary
+              ? new Blob([result], { type: 'model/gltf-binary' })
+              : new Blob([JSON.stringify(result, null, 1)], { type: 'model/gltf+json' });
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'avatar_' + name.toLowerCase() + (isBinary ? '.glb' : '.gltf');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function () { URL.revokeObjectURL(a.href); }, 5000);
+            resolve(isBinary);
+          } catch (e2) { reject(e2); }
+        }, { binary: true, onlyVisible: true });
+      } catch (e) { reject(e); }
+    });
+  }
+
   window.GolfAvatars = {
     crearHumano: crearHumano,
-    crearVendedor: makeVendedor,
+     crearVendedor: makeVendedor,
     poseVendedor: poseVendedor,
     makeHuman: makeHuman,
     makeClub: makeClub,
@@ -613,9 +753,12 @@
     poseHumano: poseHumano,
     chan: chan,
     KF_PRACT: KF_PRACT,
-    caraConfigFor: caraConfigFor,
-    outfitFor: outfitFor,
+    precargarActivos: precargarActivos,
+    exportarGLB: exportarGLB,
+    makeVendedor: makeVendedor,
+    poseVendedor: poseVendedor,
     CARAS_CONFIG: CARAS_CONFIG,
-    OUTFITS: OUTFITS
+    OUTFITS: OUTFITS,
+    AssetCache: AssetCache
   };
 })();
