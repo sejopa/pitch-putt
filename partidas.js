@@ -1,6 +1,6 @@
 // Partidas de pitch & putt. Para añadir una, copia la última línea, pégala debajo
 // y cambia la fecha, el número, la temporada y los 9 golpes de cada jugador.
-window.PARTIDAS = [{date:"2026-10-20", num:10, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,4,3,3,3,5,2,3,3]},{name:"HAL", scores:[3,3,3,3,3,3,3,3,3]}]},{date:"2026-10-26", num:9, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,3,2,3,4,5,3,5,4]},{name:"HAL", scores:[3,4,7,3,3,3,5,3,5]},{name:"CARABALLO", scores:[4,4,5,3,5,4,3,3,7]}]},
+window.PARTIDAS = [{date:"2026-10-30", num:10, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,4,3,3,3,5,2,3,3]},{name:"HAL", scores:[3,3,3,3,3,3,3,3,3]}]},{date:"2026-10-26", num:9, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,3,2,3,4,5,3,5,4]},{name:"HAL", scores:[3,4,7,3,3,3,5,3,5]},{name:"CARABALLO", scores:[4,4,5,3,5,4,3,3,7]}]},
   {date:"2026-09-15", num:1, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,3,2,4,3,3,3,4,5]},{name:"HAL", scores:[4,3,4,3,3,5,3,3,4]}]},
   {date:"2026-09-18", num:2, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[4,3,3,3,3,3,3,3,3]},{name:"HAL", scores:[3,5,4,3,4,3,3,3,3]}]},
   {date:"2026-09-22", num:3, season:"26/27", course:"Pitch & Putt de Badalona", players:[{name:"SEJOPA", scores:[3,5,5,3,3,4,3,2,5]},{name:"HAL", scores:[3,3,3,3,3,3,4,3,5]}]},
